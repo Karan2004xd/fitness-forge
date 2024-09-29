@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: fitnessforge 
+
+  datasource:
+      url: jdbc:mysql://localhost:3306/fitnessforge?useSSL=false&serverTimezone=UTC
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD} 
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+      database-platform: org.hibernate.dialect.MySQLDialect
+      hibernate:
+        ddl-auto: update 
