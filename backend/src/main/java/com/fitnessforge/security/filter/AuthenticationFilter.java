@@ -1,13 +1,9 @@
 package com.fitnessforge.security.filter;
 
 import com.fitnessforge.security.manager.MemberAuthenticationManager;
-import com.fitnessforge.service.MemberService;
-import com.fitnessforge.service.MemberServiceImpl;
-import com.fitnessforge.service.TokenService;
 import com.fitnessforge.utils.JWTTokenGeneratorUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitnessforge.entity.Member;
-import com.fitnessforge.entity.Token;
 import com.fitnessforge.security.SecurityConstants;
 
 import java.io.IOException;
@@ -28,12 +24,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   @Autowired
   private MemberAuthenticationManager authenticationManager;
 
-  @Autowired
-  private TokenService tokenService; 
-
-  @Autowired
-  private MemberService memberService = new MemberServiceImpl();
-
   public AuthenticationFilter(MemberAuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
   }
@@ -53,12 +43,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   @Override
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
       Authentication authResult) throws IOException, ServletException {
-    Member member = memberService.getMember(authResult.getName());
     String token = JWTTokenGeneratorUtil.getNewJWTToken(authResult.getName());
-
-    Token newToken = new Token(token, SecurityConstants.FIRST_TOKEN_EXPIRATION_IN_HOURS, member.getId());
-    tokenService.createNewToken(newToken);
-
     response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);
   }
 
