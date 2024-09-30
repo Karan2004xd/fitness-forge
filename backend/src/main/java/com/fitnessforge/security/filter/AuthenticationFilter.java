@@ -1,14 +1,16 @@
 package com.fitnessforge.security.filter;
 
 import com.fitnessforge.security.manager.MemberAuthenticationManager;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import com.fitnessforge.service.MemberService;
+import com.fitnessforge.service.MemberServiceImpl;
+import com.fitnessforge.service.TokenService;
+import com.fitnessforge.utils.JWTTokenGeneratorUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitnessforge.entity.Member;
+import com.fitnessforge.entity.Token;
 import com.fitnessforge.security.SecurityConstants;
 
 import java.io.IOException;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +27,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
   @Autowired
   private MemberAuthenticationManager authenticationManager;
+
+  @Autowired
+  private TokenService tokenService; 
+
+  @Autowired
+  private MemberService memberService = new MemberServiceImpl();
 
   public AuthenticationFilter(MemberAuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
@@ -45,10 +53,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   @Override
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
       Authentication authResult) throws IOException, ServletException {
-    String token = JWT.create()
-      .withSubject(authResult.getName())
-      .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
-      .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
+    Member member = memberService.getMember(authResult.getName());
+    String token = JWTTokenGeneratorUtil.getNewJWTToken(authResult.getName());
+
+    Token newToken = new Token(token, SecurityConstants.FIRST_TOKEN_EXPIRATION_IN_HOURS, member.getId());
+    tokenService.createNewToken(newToken);
 
     response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);
   }

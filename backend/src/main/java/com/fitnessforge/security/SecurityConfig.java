@@ -32,6 +32,8 @@ public class SecurityConfig {
         authorizeHttpRequests
           .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH)
           .permitAll()
+          .requestMatchers(HttpMethod.GET, SecurityConstants.TOKEN_PATH)
+          .permitAll()
           .anyRequest()
           .authenticated()
     );
