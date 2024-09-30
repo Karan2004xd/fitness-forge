@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 550;
+  font-style: normal;
+  font-size: 14px;
+  letter-spacing: 2px;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.main-container {
+  display: block;
+  position: absolute;
+  background: url('../../images/pexels-victorfreitas-841130.jpg');
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
+
+.backdrop {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.main-nav {
+  z-index: 2;
+  position: relative;
+}
+
+.main-nav__items {
+  display: flex;
+  list-style: none;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.main-nav__item {
+  display: block;
+  position: relative;
+  margin: 2rem 1rem 0 1rem;
+}
+
+.main-nav__item a {
+  text-decoration: none;
+  color: #E42E41;
+}
+
+@media (max-width: 85rem) {
+  .main-container {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
