@@ -23,7 +23,6 @@ public class MemberAuthenticationManager implements AuthenticationManager {
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    System.out.println(authentication.getName());
     Member member = memberService.getMember(authentication.getName());
 
     if (!encoder.matches(authentication.getCredentials().toString(), member.getPassword())) {
