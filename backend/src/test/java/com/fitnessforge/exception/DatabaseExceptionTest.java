@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fitnessforge.exception.DatabaseException.DatabaseExceptionTypes;
+import com.fitnessforge.exception.DatabaseExceptionTypes;
 
 @ExtendWith(MockitoExtension.class)
 public class DatabaseExceptionTest {
@@ -16,7 +16,7 @@ public class DatabaseExceptionTest {
     String className = DatabaseExceptionTest.class.getName();
 
     String testString = DatabaseException.getExceptionMessage(
-      DatabaseExceptionTypes.MEMBER_NOT_FOUND, 
+      DatabaseExceptionTypes.MEMBER_NOT_FOUND,
       DatabaseExceptionTest.class.getName()
     );
 

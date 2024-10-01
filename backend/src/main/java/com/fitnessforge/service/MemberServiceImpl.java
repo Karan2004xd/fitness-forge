@@ -7,11 +7,17 @@ import org.springframework.stereotype.Service;
 
 import com.fitnessforge.entity.Member;
 import com.fitnessforge.exception.DatabaseException;
-import com.fitnessforge.exception.DatabaseException.DatabaseExceptionTypes;
+import com.fitnessforge.exception.DatabaseExceptionTypes;
 import com.fitnessforge.repository.MemberRepository;
 import com.fitnessforge.utils.FetchEntityUtil;
 import com.fitnessforge.utils.JWTTokenGeneratorUtil;
 
+/** 
+ * <b>Description:</b>
+ * <p>
+ *  Concrete Implementation class for interface {@link com.fitnessforge.service.MemberService}
+ * </p>
+ * */
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -21,6 +27,17 @@ public class MemberServiceImpl implements MemberService {
   @Autowired
   private BCryptPasswordEncoder encoder;
 
+  /** 
+   * Empty default constructor
+   * */
+  public MemberServiceImpl() {}
+
+  /** 
+   * Checks if the member exists in the database or not
+   *
+   * @param member an object of {@link com.fitnessforge.entity.Member}
+   * @return Boolean if the member exists or not
+   * */
   private boolean checkIfMemberExists(Member member) {
     try {
       FetchEntityUtil.GetEntity(memberRepository.findByEmail(member.getEmail()), Member.class);
@@ -30,6 +47,14 @@ public class MemberServiceImpl implements MemberService {
     return true;
   }
 
+  /** 
+   * Creates new member in the database while checking if the member already exists or not
+   *
+   * @param member an object of {@link com.fitnessforge.entity.Member}
+   * @return an object of {@link com.fitnessforge.entity.Member}
+   * @throws DatabaseException if the member does not exist
+   * @throws DataIntegrityViolationException if any database constraint are violeted
+   * */
   @Override
   public Member createNewMember(Member member) {
     try {
@@ -43,16 +68,36 @@ public class MemberServiceImpl implements MemberService {
     }
   }
 
+  /** 
+   * Fetches the {@link com.fitnessforge.entity.Member} from the database
+   *
+   * @param id of {@link com.fitnessforge.entity.Member} class
+   * @return an object of {@link com.fitnessforge.entity.Member}
+   * @throws DatabaseException from {@link com.fitnessforge.utils.FetchEntityUtil}
+   * */
   @Override
   public Member getMember(Long id) {
     return FetchEntityUtil.GetEntity(memberRepository.findById(id), Member.class);
   }
 
+  /** 
+   * Fetches the {@link com.fitnessforge.entity.Member} from the database
+   *
+   * @param email of {@link com.fitnessforge.entity.Member} class
+   * @return an object of {@link com.fitnessforge.entity.Member}
+   * @throws DatabaseException from {@link com.fitnessforge.utils.FetchEntityUtil}
+   * */
   @Override
   public Member getMember(String email) {
     return FetchEntityUtil.GetEntity(memberRepository.findByEmail(email), Member.class);
   }
 
+  /** 
+   * Generates a new JWT refresh token, using the util {@link com.fitnessforge.utils.JWTTokenGeneratorUtil}
+   *
+   * @param id of {@link com.fitnessforge.entity.Member} class
+   * @return String of new JWT token
+   * */
   @Override
   public String getRefreshToken(Long id) {
     try {

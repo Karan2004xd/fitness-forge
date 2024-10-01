@@ -17,15 +17,35 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.fitnessforge.exception.DatabaseException;
 import com.fitnessforge.exception.ErrorResponse;
 
+/** 
+ * <b>Description:</b>
+ * <p>
+ *  Central Application Exception handler for handling exceptions occuring throughout the application
+ * </p>
+ * */
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
+  /** 
+   * Generates an error response {@link com.fitnessforge.exception.ErrorResponse} for
+   * the {@link com.fitnessforge.exception.DatabaseException} exceptions
+   *
+   * @param error an object of RuntimeException
+   * @return an object of org.springframework.http.ResponseEntity
+   * */
   @ExceptionHandler({DatabaseException.class})
-  public ResponseEntity<Object> handleDatabaseException(RuntimeException e) {
-    ErrorResponse error = new ErrorResponse(Arrays.asList(e.getMessage()));
-    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+  public ResponseEntity<Object> handleDatabaseException(RuntimeException error) {
+    ErrorResponse errorResponse = new ErrorResponse(Arrays.asList(error.getMessage()));
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
+  /** 
+   * Generates an error response {@link com.fitnessforge.exception.ErrorResponse}
+   * for invalid argument types or data passed
+   *
+   * @param error an object of RuntimeException
+   * @return an object of org.springframework.http.ResponseEntity
+   * */
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest request) {

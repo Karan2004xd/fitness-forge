@@ -14,12 +14,31 @@ import com.fitnessforge.security.filter.JWTAuthorizationFilter;
 
 import com.fitnessforge.security.manager.MemberAuthenticationManager;
 
+/** 
+ * <b>Description:</b>
+ * <p>
+ *  The configuration class which defines the configuration of the Spring security.
+ * </p>
+ * */
 @Configuration
 public class SecurityConfig {
 
   @Autowired
   private MemberAuthenticationManager authenticationManager; 
 
+  /** 
+   * Empty Default Constructor
+   * */
+  public SecurityConfig() {}
+
+  /** 
+   * Defines the configuration of the Spring security i.e
+   * like which endpoints are allowed and session policies and etc.
+   *
+   * @param http An object of org.springframework.security.config.annotation.web.builders.HttpSecurity
+   * @return An object of org.springframework.security.web.SecurityFilterChain
+   * @throws Exception In case some internal error occurs due the config defined.
+   * */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager);

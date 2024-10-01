@@ -1,19 +1,35 @@
 package com.fitnessforge.exception;
 
+/** 
+ * <b>Description</b>
+ * <p>
+ *  Custom Exception class for all exception related to database 
+ *  or in general while persisting the data in the database.
+ * </p>
+ * */
 public class DatabaseException extends RuntimeException {
-  public static enum DatabaseExceptionTypes {
-    MEMBER_NOT_FOUND,
-    MEMBER_ALREADY_EXISTS,
-    CONSTRAINT_VIOLATIONS,
-    UNDEFINED_EXCEPTION
-  };
 
+  /** 
+   * Defined protected constructor for testing
+   * */
   protected DatabaseException() {}
 
+  /** 
+   * Constructor which calls the constructor of the parent class (RuntimeException)
+   * with the custom made exception message.
+   * @param exceptionType enum of DatabaseExceptionTypes
+   * @param className name of the class from where the exception is being thrown
+   * */
   public DatabaseException(DatabaseExceptionTypes exceptionType, String className) {
     super(getExceptionMessage(exceptionType, className));
   }
 
+  /** 
+   * Helper method for generating an custom excpetion message
+   * @param exceptionType enum of DatabaseExceptionTypes
+   * @param className name of the class from where the exception is being thrown
+   * @return A custom message defined for specific exception types
+   * */
   protected static String getExceptionMessage(DatabaseExceptionTypes exceptionType, String className) {
     String message = "\nClass : " + className + "\nException : ";
 

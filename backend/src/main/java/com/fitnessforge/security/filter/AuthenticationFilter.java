@@ -19,15 +19,38 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/** 
+ * <b>Description:</b>
+ * <p>
+ *  Component of the Filter Chain of JWT (token based) authentication,
+ *  which handles the authentication process of the user and token as well.
+ * </p>
+ * */
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+  /** 
+   * Empty Default Constructor
+   * */
+  public AuthenticationFilter() {}
 
   @Autowired
   private MemberAuthenticationManager authenticationManager;
 
+  /** 
+   * Sets the Object of the authentication manager {@link com.fitnessforge.security.manager.MemberAuthenticationManager}
+   * @param authenticationManager An object of custom authentication Manager 
+   * {@link com.fitnessforge.security.manager.MemberAuthenticationManager}
+   * */
   public AuthenticationFilter(MemberAuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
   }
 
+  /** 
+   * This methods gets invocked when the filter is first time called.
+   * @param request Contains the header and request information made on the api endpoint
+   * @param response Contains the methods to write a response back to the user
+   * @return An Object of the {@link com.fitnessforge.security.manager.MemberAuthenticationManager}
+   * */
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
       throws AuthenticationException {
@@ -40,6 +63,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
   }
 
+  /** 
+   * This methods gets invocked if the authentication is successfull and generates the
+   * JWT token using the {@link com.fitnessforge.utils.JWTTokenGeneratorUtil} class and the JWT token to
+   * the header under the Authorization tag.
+   * @param request Contains the header and request information made on the api endpoint
+   * @param response Contains the methods to write a response back to the user
+   * */
   @Override
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
       Authentication authResult) throws IOException, ServletException {
@@ -47,6 +77,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);
   }
 
+  /** 
+   * This methods gets invoked if the authentication was not successfull and generates an
+   * Status code of UNAUTHORIZED (401) with the error message received from the exception
+   * @param request Contains the header and request information made on the api endpoint
+   * @param response Contains the methods to write a response back to the user
+   * @param failed Contains the methods to get the exception message.
+   * */
   @Override
   protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
       AuthenticationException failed) throws IOException, ServletException {
