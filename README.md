@@ -3,6 +3,7 @@
 
 # Current Project Status
 ### Under development
+#### For checking out the latest changes please refer to the **dev** branch.
 
 # Backend API Docs (Beta)
 Backend API : https://karan2004xd.github.io/fitness-forge/
