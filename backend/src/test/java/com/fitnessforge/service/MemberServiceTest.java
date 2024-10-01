@@ -145,4 +145,21 @@ public class MemberServiceTest {
 
     assertEquals(testMember.getEmail(), member.getEmail());
   }
+
+  @Test
+  public void getRefreshToken() {
+    Member member = new Member();
+    String testEmail = "test@gmail.com";
+    Long id = (long) 1;
+
+    member.setId(id);
+    member.setEmail(testEmail);
+
+    when(memberRepository.findById(id)).thenReturn(Optional.of(member));
+
+    assertDoesNotThrow(() -> {
+      String token = memberService.getRefreshToken(id);
+      assertNotNull(token);
+    });
+  }
 }

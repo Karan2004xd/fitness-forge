@@ -59,8 +59,8 @@ public class MemberController {
     return new ResponseEntity<>(responseToSend, HttpStatus.OK);
   }
 
-  @GetMapping("/refresh/{id}")
+  @GetMapping("/auth_refresh/{id}")
   public ResponseEntity<String> getRefreshToken(@PathVariable Long id) {
-    return null;
+    return new ResponseEntity<>(memberService.getRefreshToken(id), HttpStatus.OK);
   }
 }

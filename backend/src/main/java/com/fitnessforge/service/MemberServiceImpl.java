@@ -10,6 +10,7 @@ import com.fitnessforge.exception.DatabaseException;
 import com.fitnessforge.exception.DatabaseException.DatabaseExceptionTypes;
 import com.fitnessforge.repository.MemberRepository;
 import com.fitnessforge.utils.FetchEntityUtil;
+import com.fitnessforge.utils.JWTTokenGeneratorUtil;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -50,5 +51,15 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public Member getMember(String email) {
     return FetchEntityUtil.GetEntity(memberRepository.findByEmail(email), Member.class);
+  }
+
+  @Override
+  public String getRefreshToken(Long id) {
+    try {
+      Member member = FetchEntityUtil.GetEntity(memberRepository.findById(id), Member.class);
+      return JWTTokenGeneratorUtil.getNewJWTToken(member.getEmail());
+    } catch (DatabaseException e) {
+      throw new DatabaseException(DatabaseExceptionTypes.MEMBER_NOT_FOUND, MemberService.class.getName());
+    }
   }
 }
