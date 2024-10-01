@@ -6,14 +6,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "member")
 /**
  * <b>Description:</b>
  * <p>
  *  This is a member Entity. It holds all the member data 
  * </p>
  * */
+@Entity
+@Table(name = "member")
 public class Member {
 
   @Id

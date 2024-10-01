@@ -21,6 +21,7 @@ public class FetchEntityUtil {
   /** 
    * Helper utility for unwraping the Optional objects while making necessary checks.
    *
+   * @param <T> the type of the entity being passed in 
    * @param entity an Optional object of Generic class type T
    * @param entityClass class type of the Generic class type T
    * @return Generic class Type T

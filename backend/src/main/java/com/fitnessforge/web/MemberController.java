@@ -41,7 +41,7 @@ public class MemberController {
   /** 
    * Provides the post mapping for creating a new {@link com.fitnessforge.entity.Member}.
    *
-   * @param an object of {@link com.fitnessforge.entity.Member} class
+   * @param member an object of {@link com.fitnessforge.entity.Member} class
    * @return an object of org.springframework.http.ResponseEntity
    * */
   @PostMapping("/create")
@@ -61,7 +61,7 @@ public class MemberController {
    * Provides the get mapping for fetching {@link com.fitnessforge.entity.Member}
    * with its corresponding id.
    *
-   * @param an object of {@link com.fitnessforge.entity.Member} class
+   * @param id an object of {@link com.fitnessforge.entity.Member} class
    * @return an object of org.springframework.http.ResponseEntity
    * */
   @GetMapping("/{id}")
@@ -85,7 +85,7 @@ public class MemberController {
   /** 
    * Provides the get mapping for fetching new refresh token with its corresponding id.
    *
-   * @param an object of {@link com.fitnessforge.entity.Member} class
+   * @param id an object of {@link com.fitnessforge.entity.Member} class
    * @return an object of org.springframework.http.ResponseEntity
    * */
   @GetMapping("/auth_refresh/{id}")

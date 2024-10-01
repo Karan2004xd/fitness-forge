@@ -27,6 +27,11 @@ import com.fitnessforge.exception.ErrorResponse;
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
   /** 
+   * Empty default constructor
+   * */
+  public ApplicationExceptionHandler() {}
+
+  /** 
    * Generates an error response {@link com.fitnessforge.exception.ErrorResponse} for
    * the {@link com.fitnessforge.exception.DatabaseException} exceptions
    *
@@ -43,7 +48,10 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
    * Generates an error response {@link com.fitnessforge.exception.ErrorResponse}
    * for invalid argument types or data passed
    *
-   * @param error an object of RuntimeException
+   * @param ex an object of org.springframework.web.bind.MethodArgumentNotValidException
+   * @param headers an object of org.springframework.http.HttpHeaders
+   * @param status an object of org.springframework.http.HttpStatusCode
+   * @param request org.springframework.web.context.request.WebRequest
    * @return an object of org.springframework.http.ResponseEntity
    * */
   @Override

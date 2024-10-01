@@ -70,12 +70,6 @@
 		</dependency>
 
     <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-javadoc-plugin</artifactId>
-      <version>3.10.0</version>
-    </dependency>
-
-    <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
       <version>4.0.0</version>
@@ -89,7 +83,18 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version>
+        <configuration>
+          <doctitle>Fitness Forge Application API Documentation</doctitle>
+          <header>Fitness Forge Application - API Docs</header>
+          <windowtitle>Fitness Forge - API Docs</windowtitle>
+          </configuration>
+        </plugin>
+      </plugins>
 	</build>
 
 </project>
