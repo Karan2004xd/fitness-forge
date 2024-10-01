@@ -1,4 +1,4 @@
-# fitness-forge
+# FitnessForge
  A smart, adaptive fitness app that personalizes workout plans based on user goals, fitness levels.
 
 # Current Project Status
