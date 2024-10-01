@@ -1,0 +1,10 @@
+com.fitnessforge
+com.fitnessforge.entity
+com.fitnessforge.exception
+com.fitnessforge.repository
+com.fitnessforge.security
+com.fitnessforge.security.filter
+com.fitnessforge.security.manager
+com.fitnessforge.service
+com.fitnessforge.utils
+com.fitnessforge.web
