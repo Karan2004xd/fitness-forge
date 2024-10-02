@@ -1,7 +1,6 @@
 const Login = () => {
   return (
-    <div>
-      This is the login page.
+    <div className="auth-main-container">
     </div>
   );
 }
