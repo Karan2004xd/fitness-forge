@@ -1,0 +1,129 @@
+body {
+  letter-spacing: 1.5px;
+}
+
+.main-container {
+  display: block;
+  position: absolute;
+  background-image: url('../../assets/images/home-page-background.jpg');
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.main-container__backdrop {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+  position: fixed;
+}
+
+.main-container__navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.main-container__navbar a {
+  text-decoration: none;
+}
+
+.navbar-link__left {
+  flex: 1;
+  font-size: 30px;
+  font-weight: bold;
+  padding-left: 5rem;
+}
+
+#title {
+  color: #FCEAEC;
+}
+
+#inner-title {
+  color: #E42E41;
+}
+
+.navbar-link__middle {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  list-style: none;
+  margin-right: 15rem;
+}
+
+.navbar-link__middle .middle-body {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.middle-body a {
+  color: #FCEAEC;
+  position: relative;
+}
+
+.middle-body a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #E42E41;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-out;
+}
+
+.middle-body a:hover::after {
+  transform: scaleX(1);
+}
+
+.navbar-link__right {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5rem;
+  padding: 1.5rem 3.2rem 1.5rem 3.2rem;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: #E42E41;
+  border: none;
+  color: #FCEAEC;
+  border-radius: 1.2rem;
+}
+
+.navbar-link__right:hover,
+.navbar-link__right:active {
+  background-color: #170507;
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.main-description-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #FCEAEC;
+  margin-left: 5rem;
+  margin-top: 5rem;
+}
+
+.main-description-container__title {
+  font-size: 60px;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+.main-description-container__description {
+  margin-top: 2rem;
+  line-height: 5px;
+  font-size: 20px;
+}
+
+.main-description-container__btn {
+}
