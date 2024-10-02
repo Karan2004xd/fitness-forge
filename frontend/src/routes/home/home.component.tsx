@@ -43,8 +43,12 @@ const Home = () => {
 
         <div className='main-description-container'>
           <div className='main-description-container__title'>
-            <p>Elevate Your</p>
-            <p>Workout</p>
+            <p>Elevate Your
+              <span> </span>
+              <span>
+                Workout
+              </span>
+            </p>
           </div>
 
           <div className='main-description-container__description'>
