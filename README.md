@@ -7,7 +7,7 @@
 
 Some Images
 ----------
-![Landing page](./frontend/src/assets/images/home-page-background.jpg)
+![Landing page](./webpage-images/landing-page.png)
 
 # Backend API Docs (Beta)
 Backend API : https://karan2004xd.github.io/fitness-forge/
