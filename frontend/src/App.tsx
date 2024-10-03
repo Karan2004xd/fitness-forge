@@ -1,4 +1,3 @@
-import './App.css';
 import { 
   BrowserRouter as Router,
   Routes,
@@ -16,11 +15,11 @@ const App = () => {
     <Router>
       <Navigation />
       <Routes>
-          <Route index element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/exercises' element={<Exercises />} />
-          <Route path='/about' element={<About />} />
+        <Route index element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/exercises' element={<Exercises />} />
+        <Route path='/about' element={<About />} />
       </Routes>
     </Router>
   );

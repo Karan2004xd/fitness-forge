@@ -4,6 +4,9 @@
   justify-content: space-between;
   align-items: center;
   background: black;
+  width: 100vw;
+  position: fixed;
+  z-index: 100;
 }
 
 .main-container__navbar a {
@@ -77,7 +80,8 @@
 
 .navbar-link__right:hover,
 .navbar-link__right:active {
-  background-color: #170507;
+  background-color: #FCEAEC;
+  color: #E42E41;
   transition: 0.3s ease-out;
   cursor: pointer;
 }
@@ -89,11 +93,13 @@
 
   .navbar-link__middle {
     margin-right: 5rem;
+    margin-top: -0.80rem;
   }
 
   .navbar-link__right {
     margin-left: 2rem;
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 1rem;
   }
 
   .main-container__navbar {

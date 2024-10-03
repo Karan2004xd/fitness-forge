@@ -1,24 +1,11 @@
-body {
-  letter-spacing: 1.5px;
-}
-
 .main-container {
   display: block;
-  position: fixed;
+  position: absolute;
   background-image: url('../../assets/images/home-page-background.jpg');
   background-size: cover;
   height: 100%;
   width: 100%;
   z-index: 0;
-}
-
-.main-container__backdrop {
-  display: block;
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1;
-  position: fixed;
 }
 
 .main-description-container {
@@ -34,7 +21,8 @@ body {
   font-size: 60px;
   font-weight: bold;
   line-height: 1.5rem;
-  margin-top: 5rem;
+  margin-top: 10rem;
+  z-index: 1;
 }
 
 .main-description-container__title span {
@@ -44,11 +32,13 @@ body {
 .main-description-container__description {
   line-height: 5px;
   font-size: 20px;
+  z-index: 1;
 }
 
 .main-description-container__btn {
   font-size: 20px;
   margin-top: 2rem;
+  z-index: 1;
 }
 
 @media (max-width: 75rem) {
