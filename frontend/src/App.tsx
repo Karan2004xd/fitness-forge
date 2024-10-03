@@ -1,5 +1,4 @@
 import { 
-  BrowserRouter as Router,
   Routes,
   Route 
 } from 'react-router-dom';
@@ -12,16 +11,15 @@ import Navigation from './routes/navigation/navigation.component';
 
 const App = () => {
   return (
-    <Router>
-      <Navigation />
-      <Routes>
+    <Routes>
+      <Route path='/' element={<Navigation />}>
         <Route index element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/exercises' element={<Exercises />} />
         <Route path='/about' element={<About />} />
-      </Routes>
-    </Router>
+      </Route>
+    </Routes>
   );
 }
 

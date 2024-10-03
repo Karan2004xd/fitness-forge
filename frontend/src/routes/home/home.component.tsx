@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.component';
+import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import './home.styles.css'
 
 const Home = () => {
@@ -32,7 +33,12 @@ const Home = () => {
           </p>
         </div>
 
-        <button onClick={() => navigateToPage('/register')} className='navbar-link__right main-description-container__btn'>Get Started</button>
+        <Button 
+          onClick={() => navigateToPage('/register')} buttonType={BUTTON_TYPE_CLASSES.base}
+        >
+          Get Started
+        </Button>
+
       </div>
     </div>
   );

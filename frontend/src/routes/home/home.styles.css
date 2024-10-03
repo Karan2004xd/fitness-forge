@@ -35,9 +35,9 @@
   z-index: 1;
 }
 
-.main-description-container__btn {
+.main-description-container button {
   font-size: 20px;
-  margin-top: 2rem;
+  margin-top: 3rem;
   z-index: 1;
 }
 

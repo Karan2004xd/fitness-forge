@@ -1,6 +1,7 @@
 import { useCallback } from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
+import LinkTag from "../../components/link-tag/link-tag.component";
 import './navigation.styles.css'
 
 const Navigation = () => {
@@ -13,32 +14,38 @@ const Navigation = () => {
   return (
     <>
       <nav className='main-container__navbar'>
-        <Link to='/' className='navbar-link__left'>
+        <LinkTag to='/' id='navbar-link__left' animate={false}>
           <p id='title'>
             Fitness<span id='inner-title'>Forge</span>
           </p>
-        </Link>
+        </LinkTag>
         <ul className='navbar-link__middle'>
           <li className='middle-body'>
-            <Link to='/'>
+            <LinkTag to='/'>
               Home
-            </Link>
+            </LinkTag>
           </li>
 
           <li className='middle-body'>
-            <Link to='/exercises'>
+            <LinkTag to='/exercises'>
               Exercises
-            </Link>
+            </LinkTag>
           </li>
 
           <li className='middle-body'>
-            <Link to='/about'>
+            <LinkTag to='/about'>
               About
-            </Link>
+            </LinkTag>
           </li>
         </ul>
 
-        <button onClick={() => navigateToPage('/login')} className='navbar-link__right'>Login</button>
+        <Button
+          onClick={() => navigateToPage('/login')}
+          buttonType={BUTTON_TYPE_CLASSES.base}
+          className='navbar-link__right'
+        >
+          Login
+        </Button>
       </nav>
       <Outlet />
     </>

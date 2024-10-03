@@ -20,12 +20,13 @@
   align-items: center;
   flex-direction: column;
   line-height: 1.5;
+  margin-top: 3rem;
 }
 
 .main-input-box__title {
   position: relative;
   font-size: 30px;
-  margin-left: 3rem;
+  margin-left: -1rem;
   margin-right: 3rem;
 }
 
@@ -34,4 +35,26 @@
   margin-right: 15px;
   font-weight: bold;
   color: #E42E41;
+}
+
+.main-input-box-btn-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+#main-input-box__sign-in-btn {
+  position: relative;
+  left: 12%;
+}
+
+#main-input-box__google-sign-in-btn {
+  position: relative;
+  left: 4%;
+}
+
+.main-input-box a {
+  margin-bottom: 2rem;
 }
