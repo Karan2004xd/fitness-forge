@@ -7,6 +7,9 @@ import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.comp
 import FormInput from "../../components/form-input/form-input.component";
 
 import './register.styles.css'
+import { Member } from "../../store/member/member.types";
+import { useDispatch } from "react-redux";
+import { signUpStart } from "../../store/member/member.reducer";
 
 const defaultFormFields = {
   email: '',
@@ -18,6 +21,7 @@ const defaultFormFields = {
 const Register = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password, name, confirmPassword } = formFields;
+  const dispatch = useDispatch();
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -31,8 +35,17 @@ const Register = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(email, password);
+    const member: Member = {
+      name: name,
+      email: email,
+      password: password,
+      gender: 'male',
+      height: 5.2,
+      weight: 80,
+      fitnessLevel: 'beginner',
+    };
 
+    dispatch(signUpStart({member: member}));
     resetFormFields();
   }
 
