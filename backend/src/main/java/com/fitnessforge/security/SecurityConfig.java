@@ -1,5 +1,7 @@
 package com.fitnessforge.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,12 +9,16 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fitnessforge.security.filter.AuthenticationFilter;
 import com.fitnessforge.security.filter.ExceptionHandlerFilter;
 import com.fitnessforge.security.filter.JWTAuthorizationFilter;
 
 import com.fitnessforge.security.manager.MemberAuthenticationManager;
+import com.fitnessforge.service.MemberService;
 
 /** 
  * <b>Description:</b>
@@ -25,6 +31,9 @@ public class SecurityConfig {
 
   @Autowired
   private MemberAuthenticationManager authenticationManager; 
+
+  @Autowired
+  private MemberService memberService;
 
   /** 
    * Empty Default Constructor
@@ -41,15 +50,18 @@ public class SecurityConfig {
    * */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager);
+    AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager, memberService);
     authenticationFilter.setFilterProcessesUrl("/auth");
 
     http.csrf((csrf) -> csrf.disable());
+    http.cors();
 
     http.authorizeHttpRequests(
       (authorizeHttpRequests) ->
         authorizeHttpRequests
           .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH)
+          .permitAll()
+          .requestMatchers(HttpMethod.POST, "/auth")
           .permitAll()
           .anyRequest()
           .authenticated()
@@ -67,5 +79,25 @@ public class SecurityConfig {
       );
 
     return http.build();
+  }
+
+  /** 
+   * A method to configure allow cors for communicating with the front-end application
+   *
+   * @return an object of org.springframework.web.cors.CorsConfigurationSource.
+   * */
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Allow specific origin(s)
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+    configuration.setExposedHeaders(Arrays.asList("Authorization")); // Expose JWT in the Authorization header
+    configuration.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration); // Apply the configuration to `/auth`
+    
+    return source;
   }
 }
