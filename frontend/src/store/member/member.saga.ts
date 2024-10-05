@@ -5,6 +5,7 @@ import { ApiVariables, makeGetRequest, makePostRequest } from "../../utils/api/a
 import { AUTHENTICATION, MEMBER_API_ROUTES } from "../../utils/api/api-routes.util";
 import { signInWithGooglePopUp } from "../../utils/firebase/firebase.util";
 import { 
+    googleSignInStart,
   googleSignUpFailed, 
   googleSignUpStart, 
   googleSignUpSuccess, 
@@ -76,21 +77,40 @@ function* signIn(action: PayloadAction<{ member: Member}> ) {
     };
 
     if (authenticatedMember.id) {
-      console.log('entered')
-      const accessToken = firstResponse.headers['auhorization'];
-      const secondResponse: AxiosResponse = yield call(getMemberById, authenticatedMember.id, accessToken);
+      let accessToken: string = firstResponse.headers['authorization'];
+      if (accessToken) {
+        accessToken = accessToken.replace('Bearer', '').trim();
+        const secondResponse: AxiosResponse = yield call(getMemberById, authenticatedMember.id, { accessToken });
 
-      const resultMember: Member = {
-        ...secondResponse.data,
-        accessToken: accessToken
-      };
-
-      yield put(signInSuccess({member: resultMember}));
+        const resultMember: Member = {
+          ...secondResponse.data,
+          accessToken: accessToken
+        };
+        yield put(signInSuccess({member: resultMember}));
+      }
     }
 
   } catch (error: any) {
     yield put(signInFailed(error.response.data));
   }
+}
+
+function* googleSignIn() {
+  const { user } = yield call(signInWithGooglePopUp);
+  const { email, uid } = user;
+  const newMember: Member = {
+    email: email,
+    password: uid,
+  };
+
+  const action: PayloadAction<{ member: Member }> = {
+    type: signUpStart.type,
+    payload: {
+      member: newMember
+    }
+  };
+
+  yield call(signIn, action);
 }
 
 export function* onSignUpStart() {
@@ -101,6 +121,10 @@ export function* onGoogleSignUpStart() {
   yield takeLatest(googleSignUpStart.type, googleSignUp);
 }
 
+export function* onGoogleSignInStart() {
+  yield takeLatest(googleSignInStart.type, googleSignIn);
+}
+
 export function* onSignInStart() {
   yield takeLatest(signInStart.type, signIn);
 }
@@ -109,6 +133,7 @@ export function* memberSagas() {
   yield all([
     call(onSignUpStart),
     call(onGoogleSignUpStart),
-    call(onSignInStart)
+    call(onSignInStart),
+    call(onGoogleSignInStart)
   ]);
 }

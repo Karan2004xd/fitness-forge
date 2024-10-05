@@ -63,6 +63,10 @@ const memberSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+
+    googleSignInStart: (state) => {
+      state.isLoading = true;
+    },
   }
 });
 
@@ -75,7 +79,8 @@ export const {
   googleSignUpSuccess,
   signInStart,
   signInSuccess,
-  signInFailed
+  signInFailed,
+  googleSignInStart,
 } = memberSlice.actions;
 
 export default memberSlice.reducer;

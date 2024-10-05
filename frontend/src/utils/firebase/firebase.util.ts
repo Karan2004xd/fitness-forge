@@ -6,8 +6,10 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 
+const apiKey = process.env.REACT_APP_FIREBASE_API_KEY;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBQA0oe5b80mBgkvyvKGXtP0OW1JIIWMPw",
+  apiKey: apiKey,
   authDomain: "fitnessforge-6b185.firebaseapp.com",
   projectId: "fitnessforge-6b185",
   storageBucket: "fitnessforge-6b185.appspot.com",

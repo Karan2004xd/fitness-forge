@@ -18,6 +18,7 @@ import com.fitnessforge.security.filter.ExceptionHandlerFilter;
 import com.fitnessforge.security.filter.JWTAuthorizationFilter;
 
 import com.fitnessforge.security.manager.MemberAuthenticationManager;
+import com.fitnessforge.service.MemberService;
 
 /** 
  * <b>Description:</b>
@@ -30,6 +31,9 @@ public class SecurityConfig {
 
   @Autowired
   private MemberAuthenticationManager authenticationManager; 
+
+  @Autowired
+  private MemberService memberService;
 
   /** 
    * Empty Default Constructor
@@ -46,7 +50,7 @@ public class SecurityConfig {
    * */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager);
+    AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager, memberService);
     authenticationFilter.setFilterProcessesUrl("/auth");
 
     http.csrf((csrf) -> csrf.disable());
@@ -77,6 +81,11 @@ public class SecurityConfig {
     return http.build();
   }
 
+  /** 
+   * A method to configure allow cors for communicating with the front-end application
+   *
+   * @return an object of org.springframework.web.cors.CorsConfigurationSource.
+   * */
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();

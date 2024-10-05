@@ -6,7 +6,7 @@ import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.com
 import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import FormInput from '../../components/form-input/form-input.component';
 import LinkTag from '../../components/link-tag/link-tag.component';
-import { googleSignUpStart, signInStart } from '../../store/member/member.reducer';
+import { googleSignInStart, googleSignUpStart, signInStart } from '../../store/member/member.reducer';
 import { Member } from '../../store/member/member.types';
 import './login.styles.css';
 
@@ -26,17 +26,7 @@ const Login = () => {
   };
 
   const signInWithGoogleHandler = async () => {
-    const member: Member = {
-      name: '',
-      email: '',
-      password: '',
-      gender: 'male',
-      height: 5.2,
-      weight: 80,
-      fitnessLevel: 'beginner',
-    };
-
-    dispatch(googleSignUpStart({member: member}))
+    dispatch(googleSignInStart());
   }
 
   const resetFormFields = () => {

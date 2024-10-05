@@ -9,7 +9,7 @@ const apiDetails = {
 };
 
 export interface ApiVariables {
-  accessToken?: string;
+  accessToken: string;
 }
 
 export const makePostRequest = async (url: string, data: any) => {
@@ -17,12 +17,12 @@ export const makePostRequest = async (url: string, data: any) => {
   return await clientApi.post(url, data);
 };
 
-export const makeGetRequest = async (url: string, variables?: ApiVariables) => {
+export const makeGetRequest = async (url: string, variables: ApiVariables) => {
   const clientApi = axios.create({
     ...apiDetails,
     headers: {
       ...apiDetails.headers,
-      'Authorization': `Bearer ${variables ? variables.accessToken : ''}`
+      Authorization: `Bearer ${variables.accessToken}`
     }
   });
 
