@@ -51,6 +51,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     this.authenticationManager = authenticationManager;
   }
 
+  /** 
+   * Sets the Object of the authentication manager {@link com.fitnessforge.security.manager.MemberAuthenticationManager}
+   * and the Object of Member Service, an object of the Member Entity
+   * {@link com.fitnessforge.service.MemberService}
+   * 
+   * @param authenticationManager An object of custom authentication Manager 
+   * {@link com.fitnessforge.security.manager.MemberAuthenticationManager}
+   * @param memberService An object of the Member Entity
+   * {@link com.fitnessforge.service.MemberService}
+   * */
   public AuthenticationFilter(MemberAuthenticationManager authenticationManager, MemberService memberService) {
     this.authenticationManager = authenticationManager;
     this.memberService = memberService;
