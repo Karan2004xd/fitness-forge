@@ -33,9 +33,8 @@ const memberSlice = createSlice({
       state.currentMember = null;
     },
 
-    googleSignUpStart: (state, action: PayloadAction<{ member: Member }>) => {
+    googleSignUpStart: (state) => {
       state.isLoading = false;
-      state.currentMember = action.payload.member;
     },
     
     googleSignUpSuccess: (state, action: PayloadAction<{ member: Member }> ) => {
@@ -67,6 +66,30 @@ const memberSlice = createSlice({
     googleSignInStart: (state) => {
       state.isLoading = true;
     },
+
+    googleSignInSuccess: (state, action: PayloadAction<{ member: Member}> ) => {
+      state.isLoading = false;
+      state.currentMember = action.payload.member;
+    },
+
+    googleSignInFailed: (state, action: PayloadAction<Object> ) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    
+    signOutStart: (state) => {
+      state.isLoading = true;
+    },
+
+    signOutSuccess: (state, action: PayloadAction<{ member: Member | null}> ) => {
+      state.isLoading = false;
+      state.currentMember = action.payload.member;
+    },
+
+    signOutFailed: (state, action: PayloadAction<Object> ) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    }
   }
 });
 
@@ -81,6 +104,11 @@ export const {
   signInSuccess,
   signInFailed,
   googleSignInStart,
+  googleSignInSuccess,
+  googleSignInFailed,
+  signOutStart,
+  signOutSuccess,
+  signOutFailed
 } = memberSlice.actions;
 
 export default memberSlice.reducer;

@@ -1,17 +1,23 @@
 import { call, put, all, takeLatest } from "@redux-saga/core/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
+import { UserCredential } from "firebase/auth";
 import { ApiVariables, makeGetRequest, makePostRequest } from "../../utils/api/api-calls.utils";
 import { AUTHENTICATION, MEMBER_API_ROUTES } from "../../utils/api/api-routes.util";
 import { signInWithGooglePopUp } from "../../utils/firebase/firebase.util";
 import { 
-    googleSignInStart,
+  googleSignInFailed,
+  googleSignInStart,
+  googleSignInSuccess,
   googleSignUpFailed, 
   googleSignUpStart, 
   googleSignUpSuccess, 
   signInFailed, 
   signInStart, 
   signInSuccess, 
+  signOutFailed, 
+  signOutStart, 
+  signOutSuccess, 
   signUpFailed, 
   signUpStart, 
   signUpSuccess 
@@ -36,81 +42,143 @@ const getMemberById = async (id: number, accessToken: ApiVariables) => {
   }
 }
 
-function* signUp(action: PayloadAction<{member: Member}>) {
+const getAccessTokenAndId = async (email: string, password: string) => {
+  const firstResponse: AxiosResponse = await signUpApi(
+    AUTHENTICATION.authencticateMember,
+    { email: email, password: password }
+  );
+
+  let accessToken: string = firstResponse.headers['authorization'];
+
+  if (accessToken) {
+    accessToken = accessToken.replace('Bearer', '').trim();
+
+    const resultMember: Member = {
+      accessToken: accessToken,
+      email: email,
+      password: undefined,
+      id: firstResponse.data.id
+    };
+    return resultMember;
+  }
+};
+
+const populateMember = async (id: number, accessToken: string) => {
+  const secondResponse: AxiosResponse = await getMemberById(id, { accessToken });
+
+  const resultMember: Member = {
+    ...secondResponse.data,
+    accessToken: accessToken
+  };
+
+  return resultMember;
+};
+
+const signInMember = async (email: string, password: string) => {
   try {
-    const member: AxiosResponse = yield call(signUpApi, MEMBER_API_ROUTES.createMember, action.payload.member);
-    yield put(signUpSuccess({member: member.data}));
-  } catch (error: any) {
-    yield put(signUpFailed(error.response.data));
+    const accessMember = await getAccessTokenAndId(email, password)
+    if (accessMember && accessMember.id && accessMember.accessToken) {
+      const resultMember: Member = await populateMember(accessMember.id, accessMember.accessToken);
+      return resultMember;
+    }
+  } catch (error: any){
+    throw error;
   }
 }
 
-function* googleSignUp(action: PayloadAction<{member: Member}>) {
+const signUpMemberWithGoogle = async (userCredential: UserCredential, member?: Member) => {
   try {
-    const { user } = yield call(signInWithGooglePopUp);
+    const { user } = userCredential
     const { email, uid, displayName } = user;
     const newMember = {
-      ...action.payload.member,
+      ...member,
       email: email,
       password: uid,
       name: displayName
     };
 
-    const createdMember: AxiosResponse = yield call(signUpApi, MEMBER_API_ROUTES.createMember, newMember);
-    yield put(googleSignUpSuccess({member: createdMember.data}));
+    await signUpApi(MEMBER_API_ROUTES.createMember, newMember);
+    if (email && uid) {
+      const resultMember = await getAccessTokenAndId(email, uid);
+      return resultMember;
+    }
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+function* signUp(action: PayloadAction<{member: Member}>) {
+  try {
+    const respone: AxiosResponse = yield call(signUpApi, MEMBER_API_ROUTES.createMember, action.payload.member);
+    const { email, password } = action.payload.member;
+
+    if (email && password) {
+      const accessMember: Member = yield call(getAccessTokenAndId, email, password);
+      const resultMember = {
+        ...accessMember,
+        ...respone.data,
+      }
+      yield put(signUpSuccess({member: resultMember}));
+    }
 
   } catch (error: any) {
-    yield put(googleSignUpFailed(error.response.data));
+    yield put(signUpFailed(error.response.data));
+  }
+}
+
+function* googleSignUp() {
+  try {
+    const userCredential: UserCredential = yield call(signInWithGooglePopUp);
+    const createdMember: Member = yield call(signUpMemberWithGoogle, userCredential);
+
+    yield put(googleSignUpSuccess({member: createdMember}));
+  } catch (error: any) {
+    yield put(googleSignUpFailed(error));
   }
 }
 
 function* signIn(action: PayloadAction<{ member: Member}> ) {
   try {
     const { email, password } = action.payload.member;
-    const firstResponse: AxiosResponse = yield call(
-      signUpApi,
-      AUTHENTICATION.authencticateMember,
-      { email: email, password: password });
-
-    const authenticatedMember: Member = {
-      ...firstResponse.data
-    };
-
-    if (authenticatedMember.id) {
-      let accessToken: string = firstResponse.headers['authorization'];
-      if (accessToken) {
-        accessToken = accessToken.replace('Bearer', '').trim();
-        const secondResponse: AxiosResponse = yield call(getMemberById, authenticatedMember.id, { accessToken });
-
-        const resultMember: Member = {
-          ...secondResponse.data,
-          accessToken: accessToken
-        };
-        yield put(signInSuccess({member: resultMember}));
-      }
+    if (email && password) {
+      const resultMember: Member = yield call(signInMember, email, password);
+      yield put(signInSuccess({member: resultMember}));
     }
-
   } catch (error: any) {
     yield put(signInFailed(error.response.data));
   }
 }
 
 function* googleSignIn() {
-  const { user } = yield call(signInWithGooglePopUp);
-  const { email, uid } = user;
-  const newMember: Member = {
-    email: email,
-    password: uid,
-  };
+  const userCredential: UserCredential = yield call(signInWithGooglePopUp);
 
-  const action: PayloadAction<{ member: Member }> = {
-    type: signUpStart.type,
-    payload: {
-      member: newMember
+  try {
+    const { user } = userCredential;
+    const { email, uid } = user;
+
+    if (email && uid) {
+      const member: Member = yield call(signInMember, email, uid);
+      yield put(googleSignInSuccess({member: member}));
     }
-  };
 
-  yield call(signIn, action);
+  } catch (error: any) {
+    try {
+      const member: Member = yield call(signUpMemberWithGoogle, userCredential);
+      yield put(googleSignUpSuccess({member: member}));
+      return;
+    } catch (error: any) {
+      yield put(googleSignUpFailed(error.response.data));
+    }
+    yield put(googleSignInFailed(error.response.data));
+  }
+}
+
+function* signOutMember() {
+  try {
+    yield put(signOutSuccess({member: null}));
+  } catch (error: any) {
+    yield put(signOutFailed(error))
+  }
 }
 
 export function* onSignUpStart() {
@@ -129,11 +197,16 @@ export function* onSignInStart() {
   yield takeLatest(signInStart.type, signIn);
 }
 
+export function* onSignOutStart() {
+  yield takeLatest(signOutStart.type, signOutMember);
+}
+
 export function* memberSagas() {
   yield all([
     call(onSignUpStart),
     call(onGoogleSignUpStart),
     call(onSignInStart),
-    call(onGoogleSignInStart)
+    call(onGoogleSignInStart),
+    call(onSignOutStart)
   ]);
 }

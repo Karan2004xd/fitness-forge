@@ -1,14 +1,22 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { ReactComponent as LockIcon } from '../../assets/icons/lock-icon.svg';
 import { ReactComponent as PersonIcon } from '../../assets/icons/person-icon.svg';
 import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.component';
-import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
+import { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import FormInput from '../../components/form-input/form-input.component';
 import LinkTag from '../../components/link-tag/link-tag.component';
-import { googleSignInStart, googleSignUpStart, signInStart } from '../../store/member/member.reducer';
-import { Member } from '../../store/member/member.types';
-import './login.styles.css';
+import { googleSignInStart, signInStart } from '../../store/member/member.reducer';
+import { selectIsMemberAuthenticated } from '../../store/member/member.selector';
+import { 
+  MainAuthContainer, 
+  MainInputBox, 
+  MainInputBoxBtnContainer, 
+  MainInputBoxTitle, 
+  MainInputGoogleBtn, 
+  MainInputSignInBtn 
+} from './login.styles';
 
 const defaultFormFields = {
   email: '',
@@ -19,6 +27,14 @@ const Login = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector(selectIsMemberAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [navigate, isAuthenticated]);
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -41,15 +57,15 @@ const Login = () => {
   }
 
   return (
-    <div className='auth-main-container'>
+    <MainAuthContainer>
       <Backdrop backdropType={BACKDROP_TYPES.dark} />
-      <form className='main-input-box' onSubmit={handleSubmit}>
-        <p className='main-input-box__title'>
+      <MainInputBox onSubmit={handleSubmit}>
+        <MainInputBoxTitle>
           <span>Login</span>
           <span>
             Back To Your Account
           </span>
-        </p>
+        </MainInputBoxTitle>
 
         <FormInput
           type='email'
@@ -71,29 +87,27 @@ const Login = () => {
           Icon={LockIcon}
         />
 
-        <div className='main-input-box-btn-container'>
-          <Button 
+        <MainInputBoxBtnContainer>
+          <MainInputSignInBtn 
             buttonType={BUTTON_TYPE_CLASSES.google}
-            id='main-input-box__sign-in-btn'
             type='submit'
           >
             Sign In
-          </Button>
+          </MainInputSignInBtn>
 
-          <Button 
+          <MainInputGoogleBtn
             buttonType={BUTTON_TYPE_CLASSES.base}
-            id='main-input-box__google-sign-in-btn'
             onClick={signInWithGoogleHandler}
           >
             Google Sign In
-          </Button>
-        </div>
+          </MainInputGoogleBtn>
+        </MainInputBoxBtnContainer>
 
-        <LinkTag to={'/register'}>
+        <LinkTag to={'/register'} animate={true}>
           No account? Register now.
         </LinkTag>
-      </form>
-    </div>
+      </MainInputBox>
+    </MainAuthContainer>
   );
 }
 

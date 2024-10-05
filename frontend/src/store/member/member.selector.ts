@@ -8,3 +8,8 @@ export const selectCurrentMember = createSelector(
   selectMemberReducer,
   (member: UserState) => member.currentMember
 );
+
+export const selectIsMemberAuthenticated = createSelector(
+  selectMemberReducer,
+  (member: UserState) => member.currentMember
+)

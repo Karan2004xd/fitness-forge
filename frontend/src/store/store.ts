@@ -20,9 +20,7 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['persist/PERSIST']
-      },
+      serializableCheck: false
     }).concat(sagaMiddleware, logger),
   devTools: process.env.NODE_ENV !== 'production',
 });

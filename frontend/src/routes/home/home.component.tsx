@@ -1,8 +1,16 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.component';
-import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
-import './home.styles.css'
+import { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
+
+import { 
+    GetStartedButton,
+  MainContainer, 
+  MainDescription, 
+  MainDescriptionContainer, 
+  MainTitle, 
+  MainTitleSpan 
+} from './home.styles';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -12,35 +20,35 @@ const Home = () => {
   }, [navigate]);
 
   return (
-    <div className='main-container'>
+    <MainContainer>
       <Backdrop backdropType={BACKDROP_TYPES.normal} />
-      <div className='main-description-container'>
-        <div className='main-description-container__title'>
+      <MainDescriptionContainer>
+        <MainTitle>
           <p>Elevate Your
             <span> </span>
-            <span>
+            <MainTitleSpan>
               Workout
-            </span>
+            </MainTitleSpan>
           </p>
-        </div>
+        </MainTitle>
 
-        <div className='main-description-container__description'>
+        <MainDescription>
           <p>
             Forge your Fitness with Customized Workouts and Smart Calorie Tracking,
           </p>
           <p>
             if you are ready to see the change get started now!
           </p>
-        </div>
+        </MainDescription>
 
-        <Button 
+        <GetStartedButton 
           onClick={() => navigateToPage('/register')} buttonType={BUTTON_TYPE_CLASSES.base}
         >
           Get Started
-        </Button>
+        </GetStartedButton>
 
-      </div>
-    </div>
+      </MainDescriptionContainer>
+    </MainContainer>
   );
 };
 

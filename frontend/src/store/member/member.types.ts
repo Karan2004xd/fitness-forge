@@ -1,7 +1,7 @@
 export interface Member {
   id?: number;
   name?: string;
-  email: string;
+  email?: string;
   password?: string;
   gender?: string;
   height?: number;
@@ -9,4 +9,5 @@ export interface Member {
   fitnessLevel?: string;
   joinedOn?: string;
   accessToken?: string;
+  age?: number;
 };

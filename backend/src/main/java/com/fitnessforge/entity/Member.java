@@ -4,7 +4,6 @@ import java.util.Date;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 /**
  * <b>Description:</b>
@@ -31,15 +30,12 @@ public class Member {
   @Column(name = "gender")
   private String gender;
 
-  @NotBlank(message = "Fitness Level is required")
   @Column(name = "fitness_level")
   private String fitnessLevel;
 
-  @NotNull(message = "Weight of the member is required")
   @Column(name = "weight")
   private float weight;
 
-  @NotNull(message = "Height of the member is required")
   @Column(name = "height")
   private float height;
 

@@ -1,15 +1,24 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ReactComponent as LockIcon } from '../../assets/icons/lock-icon.svg';
 import { ReactComponent as PersonIcon } from '../../assets/icons/person-icon.svg';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail-icon.svg';
 import Backdrop, { BACKDROP_TYPES } from "../../components/backdrop/backdrop.component";
-import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
+import { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
 import FormInput from "../../components/form-input/form-input.component";
 
-import './register.styles.css'
 import { Member } from "../../store/member/member.types";
-import { useDispatch } from "react-redux";
-import { signUpStart } from "../../store/member/member.reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { googleSignUpStart, signUpStart } from "../../store/member/member.reducer";
+import { useNavigate } from "react-router";
+import { selectIsMemberAuthenticated } from "../../store/member/member.selector";
+import {
+  MainAuthContainer,
+  MainInputBoxBtnContainer,
+  MainInputBoxTitle,
+  MainInputGoogleBtn,
+  MainInputSignInBtn 
+} from "../login/login.styles";
+import { MainRegisterInputBox } from "./register.styles";
 
 const defaultFormFields = {
   email: '',
@@ -22,6 +31,14 @@ const Register = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password, name, confirmPassword } = formFields;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector(selectIsMemberAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/exercises');
+    }
+  }, [navigate, isAuthenticated]);
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -39,26 +56,26 @@ const Register = () => {
       name: name,
       email: email,
       password: password,
-      gender: 'male',
-      height: 5.2,
-      weight: 80,
-      fitnessLevel: 'beginner',
     };
 
     dispatch(signUpStart({member: member}));
     resetFormFields();
   }
 
+  const handleGoogleSignUp = () => {
+    dispatch(googleSignUpStart());
+  }
+
   return (
-    <div className='auth-main-container'>
+    <MainAuthContainer>
       <Backdrop backdropType={BACKDROP_TYPES.dark} />
-      <form className='main-input-box' id="main-input-box__register" onSubmit={handleSubmit}>
-        <p className='main-input-box__title main-input-box__title-register'>
+      <MainRegisterInputBox onSubmit={handleSubmit}>
+        <MainInputBoxTitle>
           <span>Register</span>
           <span>
             Your New Account
           </span>
-        </p>
+        </MainInputBoxTitle>
 
         <FormInput
           type='text'
@@ -100,24 +117,23 @@ const Register = () => {
           Icon={LockIcon}
         />
 
-        <div className='main-input-box-btn-container'>
-          <Button 
+        <MainInputBoxBtnContainer>
+          <MainInputSignInBtn 
             buttonType={BUTTON_TYPE_CLASSES.google}
-            id='main-input-box__sign-in-btn'
             type='submit'
           >
             Sign Up 
-          </Button>
+          </MainInputSignInBtn>
 
-          <Button 
+          <MainInputGoogleBtn 
             buttonType={BUTTON_TYPE_CLASSES.base}
-            id='main-input-box__google-sign-in-btn'
+            onClick={handleGoogleSignUp}
           >
             Google Sign Up 
-          </Button>
-        </div>
-      </form>
-    </div>
+          </MainInputGoogleBtn>
+        </MainInputBoxBtnContainer>
+      </MainRegisterInputBox>
+    </MainAuthContainer>
   );
 };
 

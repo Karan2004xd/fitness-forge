@@ -1,39 +1,29 @@
 import { ButtonHTMLAttributes } from 'react';
-import './button.styles.css'
+import { BaseButton, GoogleButton } from './button.styles';
 
 export enum BUTTON_TYPE_CLASSES {
-  base = 'base-btn',
-  google = 'google-btn'
+  base = 'base',
+  google = 'google'
 };
+
+const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) => (
+  {
+    [BUTTON_TYPE_CLASSES.base]: BaseButton,
+    [BUTTON_TYPE_CLASSES.google]: GoogleButton 
+  }[buttonType]
+);
 
 export type ButtonProps = {
   buttonType: BUTTON_TYPE_CLASSES;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const getButtonClass = (buttonType: BUTTON_TYPE_CLASSES): string => {
-  let buttonClass;
-
-  switch (buttonType) {
-    case BUTTON_TYPE_CLASSES.base:
-      buttonClass = BUTTON_TYPE_CLASSES.base;
-      break;
-    case BUTTON_TYPE_CLASSES.google:
-      buttonClass = BUTTON_TYPE_CLASSES.google;
-      break;
-    default:
-      buttonClass = BUTTON_TYPE_CLASSES.base;
-      break;
-  };
-  return buttonClass;
-};
-
 const Button = ({ buttonType, children, ...otherProps}: ButtonProps) => {
-  const buttonClass = getButtonClass(buttonType);
+  const CustomButton = getButton(buttonType);
 
   return (
-    <button {...otherProps} className={buttonClass}>
+    <CustomButton {...otherProps}>
       {children}
-    </button>
+    </CustomButton>
   );
 }
 

@@ -1,5 +1,5 @@
 import { FC, InputHTMLAttributes } from 'react';
-import './form-input.styles.css';
+import { InputContainer, InputFieldContainer } from './form-input.styles';
 
 export type FormInputProps = {
   Icon?: React.FunctionComponent;
@@ -7,12 +7,12 @@ export type FormInputProps = {
 
 const FormInput: FC<FormInputProps> = ({ Icon, ...otherProps }) => {
   return (
-    <div className='input-field-container'>
-      <input {...otherProps} />
+    <InputFieldContainer>
+      <InputContainer {...otherProps}/>
       {
         Icon && (<Icon />)
       }
-    </div>
+    </InputFieldContainer>
   );
 };
 

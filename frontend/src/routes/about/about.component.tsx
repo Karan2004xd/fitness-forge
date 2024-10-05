@@ -1,5 +1,3 @@
-import './about.component.css';
-
 const About = () => {
   return (
     <div>

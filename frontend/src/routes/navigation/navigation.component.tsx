@@ -1,52 +1,80 @@
-import { useCallback } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
+import { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
 import LinkTag from "../../components/link-tag/link-tag.component";
-import './navigation.styles.css'
+import { signOutStart } from "../../store/member/member.reducer";
+import { selectIsMemberAuthenticated } from "../../store/member/member.selector";
+import { MainContainerNavbar, MainLogo, NavbarBodyLeft, NavbarBodyMiddle, NavbarBodyRight } from "./navigation.styles";
+
+const defaultBtnValues = {
+  signIn: {
+    name: 'Sign In',
+    path: '/login'
+  },
+  signOut: {
+    name: 'Sign Out',
+    path: '/'
+  },
+};
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(selectIsMemberAuthenticated);
   const navigate = useNavigate();
 
-  const navigateToPage = useCallback((path: string) => {
-    navigate(path);
-  }, [navigate]);
+  const [buttonChildren, setButtonChildren] = useState(defaultBtnValues.signIn);
+
+  const handleBtnClick = () => {
+    if (buttonChildren === defaultBtnValues.signOut) {
+      dispatch(signOutStart());
+    }
+    navigate(buttonChildren.path);
+  }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setButtonChildren(defaultBtnValues.signOut);
+    } else {
+      setButtonChildren(defaultBtnValues.signIn);
+    }
+  }, [isAuthenticated])
 
   return (
     <>
-      <nav className='main-container__navbar'>
-        <LinkTag to='/' id='navbar-link__left' animate={false}>
-          <p id='title'>
-            Fitness<span id='inner-title'>Forge</span>
-          </p>
-        </LinkTag>
-        <ul className='navbar-link__middle'>
-          <li className='middle-body'>
-            <LinkTag to='/'>
+      <MainContainerNavbar>
+        <NavbarBodyLeft to='/' id='navbar-link__left' animate={false}>
+          <MainLogo>
+            Fitness<span>Forge</span>
+          </MainLogo>
+        </NavbarBodyLeft>
+        <NavbarBodyMiddle>
+          <li>
+            <LinkTag to='/' animate={true}>
               Home
             </LinkTag>
           </li>
 
-          <li className='middle-body'>
-            <LinkTag to='/exercises'>
+          <li>
+            <LinkTag to='/exercises' animate={true}>
               Exercises
             </LinkTag>
           </li>
 
-          <li className='middle-body'>
-            <LinkTag to='/about'>
+          <li>
+            <LinkTag to='/about' animate={true}>
               About
             </LinkTag>
           </li>
-        </ul>
+        </NavbarBodyMiddle>
 
-        <Button
-          onClick={() => navigateToPage('/login')}
+        <NavbarBodyRight
           buttonType={BUTTON_TYPE_CLASSES.base}
-          className='navbar-link__right'
+          onClick={handleBtnClick}
         >
-          Login
-        </Button>
-      </nav>
+          {buttonChildren.name}
+        </NavbarBodyRight>
+      </MainContainerNavbar>
       <Outlet />
     </>
   );
