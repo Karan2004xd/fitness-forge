@@ -36,7 +36,7 @@ const Register = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/exercises');
+      navigate('/');
     }
   }, [navigate, isAuthenticated]);
 

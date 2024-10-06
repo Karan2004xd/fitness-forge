@@ -9,3 +9,7 @@ export enum MEMBER_API_ROUTES {
   getMember = 'member/',
   getRefreshToken = 'member/auth_refresh/'
 };
+
+export enum EXERCISE_API_ROUTES {
+  getTotalExercises = 'exercise/count'
+};
