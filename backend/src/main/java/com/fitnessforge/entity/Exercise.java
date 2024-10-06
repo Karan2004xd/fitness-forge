@@ -2,8 +2,6 @@ package com.fitnessforge.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -13,7 +11,6 @@ public class Exercise {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  @JsonIgnore
   private Long id;
 
   @Column(name = "name")

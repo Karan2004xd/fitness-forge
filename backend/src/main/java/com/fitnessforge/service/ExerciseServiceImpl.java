@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fitnessforge.entity.Exercise;
 import com.fitnessforge.repository.ExerciseRepository;
 import com.fitnessforge.utils.Constants;
+import com.fitnessforge.utils.FetchEntityUtil;
 
 @Service
 public class ExerciseServiceImpl implements ExerciseService {
@@ -28,5 +29,10 @@ public class ExerciseServiceImpl implements ExerciseService {
 
       exerciseRepository.saveAll(List.of(exercises));
     }
+  }
+
+  @Override
+  public Exercise getExerciseById(Long id) {
+    return FetchEntityUtil.GetEntity(exerciseRepository.findById(id), Exercise.class);
   }
 }
