@@ -1,9 +1,13 @@
 package com.fitnessforge;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.fitnessforge.service.ExerciseService;
 
 /** 
  * <b>Description:</b>
@@ -12,7 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * </p>
  * */
 @SpringBootApplication
-public class FitnessforgeApplication {
+public class FitnessforgeApplication implements CommandLineRunner {
+
+  @Autowired
+  private ExerciseService exerciseService;
 
   /** 
    * Empty default constructor
@@ -37,5 +44,10 @@ public class FitnessforgeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FitnessforgeApplication.class, args);
 	}
+
+  @Override
+  public void run(String... args) throws Exception {
+    exerciseService.populateDataIfNeeded();
+  }
 
 }
