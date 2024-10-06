@@ -45,6 +45,13 @@ public class FitnessforgeApplication implements CommandLineRunner {
 		SpringApplication.run(FitnessforgeApplication.class, args);
 	}
 
+  /** 
+   * Implemented method of the interface org.springframework.boot.CommandLineRunner,
+   * which runs the method to populate the database with exercises if doesn't exists yet.
+   *
+   * @param args String arguments
+   * @throws Exception thrown in case of an internal exception
+   * */
   @Override
   public void run(String... args) throws Exception {
     exerciseService.populateDataIfNeeded();

@@ -8,7 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * <b>Description:</b>
  * <p>
- *  This is a member Entity. It holds all the member data 
+ *  This is a member Entity class.
+ *  It holds the blueprint of all the member data.
  * </p>
  * */
 @Entity

@@ -35,11 +35,11 @@ public class DatabaseException extends RuntimeException {
 
     switch (exceptionType) {
       case MEMBER_NOT_FOUND:
-        message += "The provided member was not found";
+        message += "The provided entity was not found";
         break;
 
       case MEMBER_ALREADY_EXISTS:
-        message += "The provided member already exists";
+        message += "The provided entity already exists";
         break;
 
       case CONSTRAINT_VIOLATIONS:
