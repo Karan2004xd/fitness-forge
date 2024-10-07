@@ -4,10 +4,14 @@ import { makeGetRequest } from "../../utils/api/api-calls.utils"
 import { EXERCISE_API_ROUTES } from "../../utils/api/api-routes.util";
 import { selectCurrentMember } from "../member/member.selector";
 import { Member } from "../member/member.types";
-import { fetchTotalExercisesFailed, fetchTotalExercisesStart, fetchTotalExercisesSuccess } from "./exercise.reducer";
+
+import { 
+  fetchTotalExercisesFailed,
+  fetchTotalExercisesStart,
+  fetchTotalExercisesSuccess 
+} from "./exercise.reducer";
 
 function* getTotalExercises() {
-  console.log('entered');
   try {
     const accessMember: Member = yield select(selectCurrentMember);
     const { accessToken } = accessMember;

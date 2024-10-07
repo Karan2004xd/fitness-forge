@@ -23,8 +23,9 @@ const exerciseSlice = createSlice({
       state.isLoading = true;
     },
 
-    fetchTotalExercisesSuccess: (state, action: PayloadAction<{ exercise: ExerciseState }> ) => {
+    fetchTotalExercisesSuccess: (state, action: PayloadAction<{ totalExercises: number }> ) => {
       state.isLoading = false;
+      state.totalExercises = action.payload.totalExercises;
     },
     
     fetchTotalExercisesFailed: (state, action: PayloadAction<Object> ) => {
