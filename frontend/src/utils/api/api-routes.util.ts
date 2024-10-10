@@ -13,5 +13,6 @@ export enum MEMBER_API_ROUTES {
 export enum EXERCISE_API_ROUTES {
   getTotalExercises = 'exercise/count',
   getExerciseByPage = 'exercise',
-  getExerciseById = 'exercise/'
+  getExerciseById = 'exercise/',
+  getImage = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises'
 };

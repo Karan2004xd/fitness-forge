@@ -52,26 +52,3 @@ export const MainDescription = styled.div`
     line-height: 1.3rem;
   }
 `;
-
-// .main-description-container {
-// }
-
-// .main-description-container__title {
-// }
-
-// .main-description-container__title span {
-// }
-
-// .main-description-container__description {
-// }
-
-// .main-description-container button {
-// }
-
-// @media (max-width: 75rem) {
-//   .main-description-container__title {
-//   }
-
-//   .main-description-container__description {
-//   }
-// }

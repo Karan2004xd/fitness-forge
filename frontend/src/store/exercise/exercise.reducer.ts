@@ -55,6 +55,7 @@ const exerciseSlice = createSlice({
 
     fetchExerciseByPageFailed: (state, action: PayloadAction<Object>) => {
       state.isLoading = false;
+      state.currentExercises = null;
       state.error = action.payload;
     },
 

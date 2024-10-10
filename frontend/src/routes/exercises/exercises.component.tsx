@@ -1,16 +1,18 @@
+import './exercises.styles.css';
 import { useDispatch, useSelector } from 'react-redux';
+import ExerciseCard from '../../components/exercise-card/exercise-card.component';
 import {
   fetchExerciseByExerciseIdStart,
   fetchExerciseByPageStart,
   fetchTotalExercisesStart 
 } from '../../store/exercise/exercise.reducer';
 
-import { selectTotalExercises } from '../../store/exercise/exersice.selector';
-import './exercises.styles.css';
+import { selectCurrentExercises, selectTotalExercises } from '../../store/exercise/exersice.selector';
 
 const Exercises = () => {
   const dispatch = useDispatch();
   const currentCount = useSelector(selectTotalExercises);
+  const currentExercises = useSelector(selectCurrentExercises);
   
   const getTotalExercises = () => {
     if (currentCount === 0) {
@@ -32,6 +34,20 @@ const Exercises = () => {
       <button type='button' onClick={getTotalExercises}>Get Total Exercises</button>
       <button type='button' onClick={() => getExerciseByPage()}>Get Exercise by page</button>
       <button type='button' onClick={() => getExerciseById(873)}>Get Exercise by id</button>
+
+      <div className='main-container__exercises'>
+        {
+          currentExercises?.length ? (
+            currentExercises.map(
+              (item) => (
+                <ExerciseCard exercise={item} key={item.exerciseId} />
+              )
+            )
+          ) : (
+              <></>
+            )
+        }
+      </div>
     </div>
   );
 }
