@@ -11,5 +11,7 @@ export enum MEMBER_API_ROUTES {
 };
 
 export enum EXERCISE_API_ROUTES {
-  getTotalExercises = 'exercise/count'
+  getTotalExercises = 'exercise/count',
+  getExerciseByPage = 'exercise',
+  getExerciseById = 'exercise/'
 };

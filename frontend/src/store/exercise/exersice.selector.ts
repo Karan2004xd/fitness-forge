@@ -13,3 +13,8 @@ export const selectTotalExercises = createSelector(
   selectExersiceReducer,
   (exercise: ExerciseState) => exercise.totalExercises
 );
+
+export const selectCurrentExercise = createSelector(
+  selectExersiceReducer,
+  (exercise: ExerciseState) => exercise.currentExercise
+);
