@@ -1,6 +1,7 @@
 package com.fitnessforge.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fitnessforge.entity.Exercise;
 
@@ -29,6 +30,8 @@ public interface ExerciseService {
    * @return an List {@link com.fitnessforge.entity.Exercise}
    * */
   List<Exercise> getExerciseByPage(int page, int size);
+
+  List<Exercise> getExerciseByPage(int page, int size, Map<String, String> filters);
 
   /** 
    * This method uses pagination to fetch the fetch the data,

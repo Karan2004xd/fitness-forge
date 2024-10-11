@@ -7,7 +7,7 @@ export type ExerciseCardProps = {
 };
 
 const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
-  const { name, images, level } = exercise;
+  const { name, images, level, force } = exercise;
   return (
     <div className='card-container'>
       <img 
@@ -15,8 +15,21 @@ const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
         alt={name}
         className='card-image'
       /> 
-      <h1>{name}</h1>
-      <span>{level}</span>
+      <div className='card-container__content'>
+        <h1>{name}</h1>
+        <span>
+          {level 
+            ? level?.at(0)?.toUpperCase() + level?.substring(1).toLowerCase() 
+            : ''
+          }
+        </span>
+        <span id='content-force'>Force: {
+          force
+            ? force.at(0)?.toUpperCase() + force.substring(1).toLowerCase()
+            : ''
+        }
+        </span>
+      </div>
     </div>
   );
 };

@@ -18,3 +18,13 @@ export const selectCurrentExercise = createSelector(
   selectExersiceReducer,
   (exercise: ExerciseState) => exercise.currentExercise
 );
+
+export const selectCurrentFilters = createSelector(
+  selectExersiceReducer,
+  (exercise: ExerciseState) => exercise.filters
+);
+
+export const selectCurrentPage = createSelector(
+  selectExersiceReducer,
+  (exercise: ExerciseState) => exercise.currentPage
+);

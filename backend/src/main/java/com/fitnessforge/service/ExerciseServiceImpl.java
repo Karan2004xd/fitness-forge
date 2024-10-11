@@ -1,10 +1,12 @@
 package com.fitnessforge.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,6 +14,7 @@ import com.fitnessforge.entity.Exercise;
 import com.fitnessforge.repository.ExerciseRepository;
 import com.fitnessforge.utils.Constants;
 import com.fitnessforge.utils.FetchEntityUtil;
+import com.fitnessforge.utils.SpecificationUtils;
 
 /** 
  * <b>Description:</b>
@@ -91,5 +94,25 @@ public class ExerciseServiceImpl implements ExerciseService {
   @Override
   public Exercise getExerciseById(Long exerciseId) {
     return FetchEntityUtil.GetEntity(exerciseRepository.findByExerciseId(exerciseId), Exercise.class);
+  }
+
+  @Override
+  public List<Exercise> getExerciseByPage(int page, int size, Map<String, String> filters) {
+    Pageable pageable = PageRequest.of(page, size);
+    Specification<Exercise> spec = Specification.where(null);
+
+    for (String filter : filters.keySet()) {
+      String value = filters.get(filter);
+
+      if (value != null) {
+        if (filter == "name") {
+          spec = spec.and(SpecificationUtils.like(filter, value.toLowerCase()));
+        } else {
+          spec = spec.and(SpecificationUtils.equal(filter, value));
+        }
+      }
+    }
+
+    return exerciseRepository.findAll(spec, pageable).getContent();
   }
 }

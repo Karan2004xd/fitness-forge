@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Exercise } from "./exercise.types"
+import { Exercise, ExerciseFilter } from "./exercise.types"
 
 export type ExerciseState = {
   currentExercises: Exercise[] | null;
@@ -8,6 +8,7 @@ export type ExerciseState = {
   error: Object | null;
   totalExercises: number;
   currentExercise: Exercise | null;
+  filters: ExerciseFilter | null;
 };
 
 const initialState: ExerciseState = {
@@ -16,7 +17,8 @@ const initialState: ExerciseState = {
   error: null,
   totalExercises: 0,
   currentPage: 0,
-  currentExercise: null
+  currentExercise: null,
+  filters: null
 };
 
 const exerciseSlice = createSlice({
@@ -73,6 +75,40 @@ const exerciseSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
       state.currentExercise = null;
+    },
+
+    fetchExerciseByPageWithFilterStart: (
+      state,
+      action: PayloadAction<{
+        pageNumber: number;
+        size: number;
+        filters: ExerciseFilter
+      }>
+    ) => {
+      state.filters = action.payload.filters;
+      state.currentPage = action.payload.pageNumber;
+      state.isLoading = true;
+    },
+
+    fetchExerciseByPageWithFilterSuccess: (
+      state,
+      action: PayloadAction<{
+        pageNumber: number;
+        currentExercises: Exercise[];
+        filters: ExerciseFilter;
+      }>
+    ) => {
+      state.filters = action.payload.filters;
+      state.currentPage = action.payload.pageNumber;
+      state.currentExercises = action.payload.currentExercises;
+      state.isLoading = false;
+    },
+
+    fetchExerciseByPageWithFilterFailed: (state, action: PayloadAction<Object>) => {
+      state.error = action.payload;
+      state.isLoading = false;
+      state.filters = null;
+      state.currentPage = 0;
     }
   }
 });
@@ -86,7 +122,10 @@ export const {
   fetchExerciseByPageFailed,
   fetchExerciseByExerciseIdStart,
   fetchExerciseByExerciseIdSuccess,
-  fetchExerciseByExerciseIdFailed
+  fetchExerciseByExerciseIdFailed,
+  fetchExerciseByPageWithFilterStart,
+  fetchExerciseByPageWithFilterSuccess,
+  fetchExerciseByPageWithFilterFailed
 } = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

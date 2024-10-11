@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +20,7 @@ import com.fitnessforge.entity.Exercise;
  * </p>
  * */
 @Repository
-public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
+public interface ExerciseRepository extends JpaRepository<Exercise, Long>, JpaSpecificationExecutor<Exercise> {
 
   /** 
    * Fetches the total count of the exercises currently
@@ -45,4 +47,6 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
    * @return Optional {@link com.fitnessforge.entity.Exercise}
    * */
   Optional<Exercise> findByExerciseId(Long exerciseId);
+
+  Page<Exercise> findAll(Specification<Exercise> specification, Pageable pageable);
 }

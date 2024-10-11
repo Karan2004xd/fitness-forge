@@ -43,12 +43,38 @@ public class ExerciseController {
    * @param size number of entries to display in a page.
    * @return an object of org.springframework.http.ResponseEntity
    * */
-  @GetMapping("")
+  @GetMapping("/page")
   public ResponseEntity<List<Exercise>> getExerciseByPage(
     @RequestParam(value = "page", defaultValue = "0") int page,
     @RequestParam(value = "size", defaultValue = "10") int size
   ) {
     return new ResponseEntity<>(exerciseService.getExerciseByPage(page, size), HttpStatus.OK);
+  }
+
+  @GetMapping("/page/filter")
+  public ResponseEntity<List<Exercise>> getExerciseByPageWithFilter(
+    @RequestParam(value = "page", defaultValue = "0") int page,
+    @RequestParam(value = "size", defaultValue = "10") int size,
+
+    // optional filters
+    @RequestParam(value = "category", required = false) String category,
+    @RequestParam(value = "equipment", required = false) String equipment,
+    @RequestParam(value = "force", required = false) String force,
+    @RequestParam(value = "level", required = false) String level,
+    @RequestParam(value = "mechanic", required = false) String mechanic,
+    @RequestParam(value = "name", required = false) String name 
+  ) {
+
+    Map<String, String> filters = new HashMap<>();
+
+    filters.put("category", category);
+    filters.put("equipment", equipment);
+    filters.put("force", force);
+    filters.put("level", level);
+    filters.put("mechanic", mechanic);
+    filters.put("name", name);
+
+    return new ResponseEntity<>(exerciseService.getExerciseByPage(page, size, filters), HttpStatus.OK);
   }
 
   /** 

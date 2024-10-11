@@ -1,15 +1,32 @@
 .main-container {
   position: absolute;
-  top: 20%;
+  top: 10%;
   display: flex;
   width: 100%;
   flex-direction: column;
+  background: -webkit-linear-gradient(to right, #1565C0, #b92b27);
+  background: linear-gradient(to right, #1565C0, #b92b27);
 }
 
 .main-container__exercises {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   column-gap: 10px;
+  row-gap: 10px;
+}
+
+.main-container__title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #FCEAEC;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5px;
+  margin: 4rem 0 15rem 2rem;
+}
+
+#title-count span {
+  color: #E42E41;
 }
 
 @media (max-width: 75rem) {

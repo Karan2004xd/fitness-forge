@@ -12,3 +12,12 @@ export type Exercise = {
   category?: string;
   images?: string[];
 };
+
+export type ExerciseFilter = {
+  category?: string;
+  name?: string;
+  level?: string;
+  force?: string;
+  mechanic?: string;
+  equipment?: string;
+};
