@@ -19,12 +19,12 @@ export const selectCurrentExercise = createSelector(
   (exercise: ExerciseState) => exercise.currentExercise
 );
 
-export const selectCurrentFilters = createSelector(
-  selectExersiceReducer,
-  (exercise: ExerciseState) => exercise.filters
-);
-
 export const selectCurrentPage = createSelector(
   selectExersiceReducer,
   (exercise: ExerciseState) => exercise.currentPage
+);
+
+export const selectFilters = createSelector(
+  selectExersiceReducer,
+  (exercise: ExerciseState) => exercise.filters
 );

@@ -18,7 +18,7 @@ const initialState: ExerciseState = {
   totalExercises: 0,
   currentPage: 0,
   currentExercise: null,
-  filters: null
+  filters: null,
 };
 
 const exerciseSlice = createSlice({
@@ -109,6 +109,22 @@ const exerciseSlice = createSlice({
       state.isLoading = false;
       state.filters = null;
       state.currentPage = 0;
+    },
+
+    setFiltersStart: (state, action: PayloadAction<{filters: ExerciseFilter}>) => {
+      state.filters = action.payload.filters;
+      state.isLoading = true;
+    },
+
+    setFiltersSuccess: (state, action: PayloadAction<{filters: ExerciseFilter}>) => {
+      state.filters = action.payload.filters;
+      state.isLoading = false;
+    },
+
+    setFiltersFailed: (state, action: PayloadAction<Object>) => {
+      state.filters = null;
+      state.isLoading = false;
+      state.error = action.payload;
     }
   }
 });
@@ -125,7 +141,10 @@ export const {
   fetchExerciseByExerciseIdFailed,
   fetchExerciseByPageWithFilterStart,
   fetchExerciseByPageWithFilterSuccess,
-  fetchExerciseByPageWithFilterFailed
+  fetchExerciseByPageWithFilterFailed,
+  setFiltersStart,
+  setFiltersSuccess,
+  setFiltersFailed
 } = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

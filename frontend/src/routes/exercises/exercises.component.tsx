@@ -1,39 +1,30 @@
 import './exercises.styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component';
+
 import {
+  fetchExerciseByPageStart,
   fetchExerciseByPageWithFilterStart,
   fetchTotalExercisesStart 
 } from '../../store/exercise/exercise.reducer';
 
 import { 
   selectCurrentExercises, 
-  selectCurrentFilters, 
   selectCurrentPage, 
+  selectFilters, 
   selectTotalExercises 
 } from '../../store/exercise/exersice.selector';
 
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import useDebounce from '../../utils/debounce/use-debounce.utils';
-import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
-import Filters from '../../components/filters/filters.component';
+import { DEFAULT_SIZE } from '../../store/exercise/exercise.types';
 
 const Exercises = () => {
   const dispatch = useDispatch();
-  const size = 20;
-
   const currentCount = useSelector(selectTotalExercises);
   const currentExercises = useSelector(selectCurrentExercises);
   const page = useSelector(selectCurrentPage);
-  const filters = useSelector(selectCurrentFilters);
-
-  const filtersMap = useMemo(() => {
-    if (filters) {
-      return new Map<string, string | undefined>(Object.entries(filters));
-    } else {
-      return new Map<string, string | undefined>();
-    }
-  }, [filters]);
+  const filters = useSelector(selectFilters);
 
   const [searchFieldValue, setSearchFieldValue] = useState('');
   
@@ -46,7 +37,7 @@ const Exercises = () => {
   const debouncedSearch = useDebounce(() => {
     dispatch(fetchExerciseByPageWithFilterStart({
       pageNumber: page,
-      size: size,
+      size: DEFAULT_SIZE,
       filters: {
         name: searchFieldValue 
       }
@@ -63,6 +54,20 @@ const Exercises = () => {
     getTotalExercises();
   });
 
+  useEffect(() => {
+    dispatch(fetchExerciseByPageStart({pageNumber: page, size: DEFAULT_SIZE}));
+  }, [page, dispatch]);
+
+  useEffect(() => {
+    if (filters) {
+      dispatch(fetchExerciseByPageWithFilterStart({
+        pageNumber: page,
+        size: DEFAULT_SIZE,
+        filters: filters
+      }));
+    }
+  }, [filters, dispatch, page]);
+
   return (
     <div className='main-container'>
       <div className='main-container__title'>
@@ -76,18 +81,13 @@ const Exercises = () => {
         </p>
       </div>
 
-      <div className='main-container__utils'>
-        <input type='search' placeholder='search exercise' name='searchBox' onChange={handleSearchInput}/>
-        <Button buttonType={BUTTON_TYPE_CLASSES.base} onClick={() => {}}>Apply Filter</Button>
-
-        <div className='filter-box'>
-          {
-            Array.from(filtersMap.entries()).map(([key, value]) => (
-              <Filters checked={!!value} content={key} key={key} />
-            ))
-          }
-        </div>
-      </div>
+      <input 
+        type='search' 
+        placeholder='Search Exercise' 
+        name='searchBox' 
+        onChange={handleSearchInput}
+        id='search-box'
+      />
 
       <div className='main-container__exercises'>
         {

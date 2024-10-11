@@ -14,10 +14,12 @@ export type Exercise = {
 };
 
 export type ExerciseFilter = {
-  category?: string;
+  category?: boolean;
   name?: string;
-  level?: string;
-  force?: string;
-  mechanic?: string;
-  equipment?: string;
+  level?: boolean;
+  force?: boolean;
+  mechanic?: boolean;
+  equipment?: boolean;
 };
+
+export const DEFAULT_SIZE = 20;

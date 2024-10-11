@@ -4,8 +4,8 @@
   display: flex;
   width: 100%;
   flex-direction: column;
-  background: -webkit-linear-gradient(to right, #1565C0, #b92b27);
-  background: linear-gradient(to right, #1565C0, #b92b27);
+  background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .main-container__exercises {
@@ -23,6 +23,16 @@
   flex-direction: column;
   line-height: 1.5px;
   margin: 4rem 0 15rem 2rem;
+}
+
+#search-box {
+  width: 30%;
+  padding: 1rem;
+  margin: 2rem;
+  color: black;
+  font-size: 15px;
+  border-radius: 8px;
+  background: #FCEAEC;
 }
 
 #title-count span {

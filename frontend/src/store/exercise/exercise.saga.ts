@@ -25,12 +25,15 @@ import {
   fetchExerciseByPageWithFilterSuccess,
   fetchTotalExercisesFailed,
   fetchTotalExercisesStart,
-  fetchTotalExercisesSuccess 
+  fetchTotalExercisesSuccess, 
+  setFiltersFailed,
+  setFiltersStart,
+  setFiltersSuccess
 } from "./exercise.reducer";
 
 import { Exercise, ExerciseFilter } from "./exercise.types";
 
-const getFilterUrl = (filters: Map<string, string | number>) => {
+const getFilterUrl = (filters: Map<string, boolean | string | number>) => {
   let url: string = EXERCISE_API_ROUTES.getExerciseByPageWithFilter;
   filters.forEach((value, key) => {
     if (value || value === 0) {
@@ -118,7 +121,7 @@ function* getExerciseByPageWithFilters(action: PayloadAction<{
         size: size
       };
 
-      const filtersMap = new Map<string, string | number>(Object.entries(newFilter));
+      const filtersMap = new Map<string, string | boolean | number>(Object.entries(newFilter));
       const url = getFilterUrl(filtersMap);
 
       const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
@@ -138,6 +141,14 @@ function* getExerciseByPageWithFilters(action: PayloadAction<{
   }
 };
 
+function* setFilters(action: PayloadAction<{filters: ExerciseFilter}>) {
+  try {
+    yield put(setFiltersSuccess({filters: action.payload.filters}));
+  } catch (error: any) {
+    yield put(setFiltersFailed(error));
+  }
+}
+
 export function* onGetTotalExercisesStart() {
   yield takeLatest(fetchTotalExercisesStart.type, getTotalExercises);
 }
@@ -154,11 +165,16 @@ export function* onGetExerciseById() {
   yield takeLatest(fetchExerciseByExerciseIdStart.type, getExerciseById);
 }
 
+export function* onSetFilterStart() {
+  yield takeLatest(setFiltersStart.type, setFilters);
+}
+
 export function* exerciseSagas() {
   yield all([
     call(onGetTotalExercisesStart),
     call(onGetExerciseByPageStart),
     call(onGetExerciseById),
-    call(onGetExerciseByPageWithFilterStart)
+    call(onGetExerciseByPageWithFilterStart),
+    call(onSetFilterStart)
   ]);
 }
