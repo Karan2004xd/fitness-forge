@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { BackdropDark, BackdropDarker, BackdropMain } from './backdrop.styles';
 
 export enum BACKDROP_TYPES {
@@ -9,7 +9,7 @@ export enum BACKDROP_TYPES {
 
 export type BackdropProps = {
   backdropType: BACKDROP_TYPES;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const getBackdrop = (backdropType = BACKDROP_TYPES.normal) => (
   {
@@ -19,11 +19,11 @@ const getBackdrop = (backdropType = BACKDROP_TYPES.normal) => (
   }[backdropType]
 );
 
-const Backdrop: FC<BackdropProps> = ({ backdropType }) => {
+const Backdrop: FC<BackdropProps> = ({ backdropType, ...otherProps }) => {
   const CustomBackdrop = getBackdrop(backdropType);
 
   return (
-    <CustomBackdrop/>
+    <CustomBackdrop {...otherProps} />
   );
 };
 

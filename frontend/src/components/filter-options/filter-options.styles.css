@@ -1,0 +1,6 @@
+.filter-options-container {
+  margin-top: 4rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}

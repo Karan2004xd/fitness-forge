@@ -1,0 +1,8 @@
+.filters-menu-container {
+  display: flex;
+  position: fixed;
+  left: 50%;
+  right: 50%;
+  background: white;
+  z-index: 5
+};
