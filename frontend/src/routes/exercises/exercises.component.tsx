@@ -6,7 +6,7 @@ import {
   fetchExerciseByPageStart,
   fetchExerciseByPageWithFilterStart,
   fetchTotalExercisesStart, 
-  setFiltersStart
+  setFilters
 } from '../../store/exercise/exercise.reducer';
 
 import { 
@@ -45,7 +45,7 @@ const Exercises = () => {
       name: searchFieldValue
     };
 
-    dispatch(setFiltersStart({filters: newFilter}));
+    dispatch(setFilters({filters: newFilter}));
   }, 500);
 
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +54,7 @@ const Exercises = () => {
       setSearchFieldValue(value);
       debouncedSearch();
     } else {
-      dispatch(setFiltersStart({filters: {...filters, name: undefined}}))
+      dispatch(setFilters({filters: {...filters, name: undefined}}))
     }
   };
 

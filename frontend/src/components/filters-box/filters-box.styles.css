@@ -1,8 +1,31 @@
-.filters-menu-container {
+.filters-box-container summary {
+  margin: 1rem;
+  font-size: 20px;
+}
+
+.filters-box-container:hover,
+.filters-box-container:active {
+  cursor: pointer;
+}
+
+.filters-box-container h1 {
+  color: #E42E41;
+}
+
+.filters-box-container {
   display: flex;
   position: fixed;
-  left: 50%;
+  left: 40%;
   right: 50%;
-  background: white;
-  z-index: 5
+  top: 15%;
+  background: #FCEAEC;
+  z-index: 5;
+  width: 20%;
+  flex-direction: column;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 2px solid #E42E41;
+  margin-bottom: 3rem;
 };

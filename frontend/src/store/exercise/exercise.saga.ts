@@ -26,9 +26,6 @@ import {
   fetchTotalExercisesFailed,
   fetchTotalExercisesStart,
   fetchTotalExercisesSuccess, 
-  setFiltersFailed,
-  setFiltersStart,
-  setFiltersSuccess
 } from "./exercise.reducer";
 
 import { Exercise, ExerciseFilter } from "./exercise.types";
@@ -152,14 +149,6 @@ function* getExerciseByPageWithFilters(action: PayloadAction<{
   }
 };
 
-function* setFilters(action: PayloadAction<{filters: ExerciseFilter}>) {
-  try {
-    yield put(setFiltersSuccess({filters: action.payload.filters}));
-  } catch (error: any) {
-    yield put(setFiltersFailed(error));
-  }
-}
-
 export function* onGetTotalExercisesStart() {
   yield takeLatest(fetchTotalExercisesStart.type, getTotalExercises);
 }
@@ -176,16 +165,11 @@ export function* onGetExerciseById() {
   yield takeLatest(fetchExerciseByExerciseIdStart.type, getExerciseById);
 }
 
-export function* onSetFilterStart() {
-  yield takeLatest(setFiltersStart.type, setFilters);
-}
-
 export function* exerciseSagas() {
   yield all([
     call(onGetTotalExercisesStart),
     call(onGetExerciseByPageStart),
     call(onGetExerciseById),
     call(onGetExerciseByPageWithFilterStart),
-    call(onSetFilterStart)
   ]);
 }

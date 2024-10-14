@@ -1,6 +1,6 @@
-import { HTMLAttributes, useState } from 'react';
+import { HTMLAttributes } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFiltersStart } from '../../store/exercise/exercise.reducer';
+import { setFilters } from '../../store/exercise/exercise.reducer';
 import { selectFilters } from '../../store/exercise/exersice.selector';
 import './filter-options.styles.css';
 
@@ -57,36 +57,50 @@ const FilterOptions = ({ filterType, ...otherProps }: FilterOptionsProps) => {
   const dispatch = useDispatch();
   const existingFilters = useSelector(selectFilters);
 
-  const [isChecked, setIsChecked] = useState(false);
+  const checkIfOptionExists = (option: string) => {
+    if (existingFilters) {
+      const filterArray = existingFilters[filterType];
+
+      if (Array.isArray(filterArray)) {
+        if (filterArray.indexOf(option) !== -1) {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    }
+    return false;
+  };
 
   const checkboxClickHandler = (option: string) => {
-    let newFilter = {
-      ...existingFilters
-    };
+    let newFilter = { ...existingFilters };
 
-    if (!isChecked) {
-      newFilter = {
-        [filterType]: option.toLowerCase()
-      };
-    } else {
-      newFilter = {
-        [filterType]: undefined
-      };
+    let existingFilterOptions = newFilter[filterType] || [];
+
+    if (!Array.isArray(existingFilterOptions)) {
+      existingFilterOptions = [];
     }
-    dispatch(setFiltersStart({filters: newFilter}));
-    setIsChecked(!isChecked);
+
+    if (!checkIfOptionExists(option)) {
+      existingFilterOptions = [...existingFilterOptions, option];
+    } else {
+      existingFilterOptions = existingFilterOptions.filter(
+        (item) => item !== option
+      );
+    }
+    newFilter[filterType] = existingFilterOptions.length > 0 ? existingFilterOptions : undefined;
+    dispatch(setFilters({filters: newFilter}));
   };
 
   return (
     <div className='filter-options-container' {...otherProps}>
-      <span>{filterType}</span>
       {
         options.map((option, index) => (
           <label key={index}>
             <input 
               type='checkbox'
-              defaultChecked={existingFilters ? existingFilters[filterType] === undefined : false}
-              onChange={() => checkboxClickHandler(option)}
+              checked={checkIfOptionExists(option.toLowerCase())}
+              onChange={() => checkboxClickHandler(option.toLowerCase())}
             /> {option}
           </label>
         ))
