@@ -9,3 +9,11 @@ export enum MEMBER_API_ROUTES {
   getMember = 'member/',
   getRefreshToken = 'member/auth_refresh/'
 };
+
+export enum EXERCISE_API_ROUTES {
+  getTotalExercises = 'exercise/count',
+  getExerciseByPage = 'exercise/page?',
+  getExerciseById = 'exercise/',
+  getImage = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises',
+  getExerciseByPageWithFilter = 'exercise/page/filter?'
+};

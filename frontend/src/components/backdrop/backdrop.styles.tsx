@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const BackdropMain = styled.div`
   display: block;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 1;
   position: absolute;

@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Member } from "./member.types";
 
-export type UserState = {
+export type MemberState = {
   currentMember: Member | null;
-  isLoading: boolean;
+  isAuthenticated: boolean;
   error: Object | null
 };
 
-const initialState: UserState = {
+const initialState: MemberState = {
   currentMember: null,
-  isLoading: false,
+  isAuthenticated: false,
   error: null
 };
 
@@ -18,77 +18,92 @@ const memberSlice = createSlice({
   initialState,
   reducers: {
     signUpStart: (state, action: PayloadAction<{ member: Member }>) => {
-      state.isLoading = true;
+      state.isAuthenticated = false;
       state.currentMember = action.payload.member;
     },
 
     signUpSuccess: (state, action: PayloadAction<{ member: Member }>) => {
-      state.isLoading = false;
+      state.isAuthenticated = true;
       state.currentMember = action.payload.member;
     },
     
     signUpFailed: (state, action: PayloadAction<Object>) => {
       state.error = action.payload;
-      state.isLoading = false;
+      state.isAuthenticated = false;
       state.currentMember = null;
     },
 
     googleSignUpStart: (state) => {
-      state.isLoading = false;
+      state.isAuthenticated = false;
     },
     
     googleSignUpSuccess: (state, action: PayloadAction<{ member: Member }> ) => {
       state.currentMember = action.payload.member;
-      state.isLoading = true;
+      state.isAuthenticated = true;
     },
 
     googleSignUpFailed: (state, action: PayloadAction<Object>) => {
       state.currentMember = null;
       state.error = action.payload;
-      state.isLoading = false;
+      state.isAuthenticated = false;
     },
 
     signInStart: (state, action: PayloadAction<{ member: Member }> ) => {
-      state.isLoading = true;
+      state.isAuthenticated = false;
       state.currentMember = action.payload.member;
     },
 
     signInSuccess: (state, action: PayloadAction<{ member: Member }> ) => {
-      state.isLoading = false;
+      state.isAuthenticated = true;
       state.currentMember = action.payload.member;
     },
 
     signInFailed: (state, action: PayloadAction<Object>) => {
-      state.isLoading = false;
+      state.isAuthenticated = false;
       state.error = action.payload;
+      state.currentMember = null;
     },
 
     googleSignInStart: (state) => {
-      state.isLoading = true;
+      state.isAuthenticated = false;
     },
 
     googleSignInSuccess: (state, action: PayloadAction<{ member: Member}> ) => {
-      state.isLoading = false;
+      state.isAuthenticated = true;
       state.currentMember = action.payload.member;
     },
 
     googleSignInFailed: (state, action: PayloadAction<Object> ) => {
-      state.isLoading = false;
+      state.isAuthenticated = false;
       state.error = action.payload;
     },
     
     signOutStart: (state) => {
-      state.isLoading = true;
+      state.isAuthenticated = true;
     },
 
     signOutSuccess: (state, action: PayloadAction<{ member: Member | null}> ) => {
-      state.isLoading = false;
+      state.isAuthenticated = false;
       state.currentMember = action.payload.member;
     },
 
     signOutFailed: (state, action: PayloadAction<Object> ) => {
-      state.isLoading = false;
+      state.isAuthenticated = true;
       state.error = action.payload;
+    },
+
+    getRefreshTokenStart: (state) => {
+      state.isAuthenticated = false;
+    },
+
+    getRefreshTokenSuccess: (state, action: PayloadAction<{ member: Member}> ) => {
+      state.isAuthenticated = true;
+      state.currentMember = action.payload.member;
+    },
+
+    getRefreshTokenFailed: (state, action: PayloadAction<Object>) => {
+      state.error = action.payload;
+      state.currentMember = null;
     }
   }
 });
@@ -108,7 +123,10 @@ export const {
   googleSignInFailed,
   signOutStart,
   signOutSuccess,
-  signOutFailed
+  signOutFailed,
+  getRefreshTokenStart,
+  getRefreshTokenSuccess,
+  getRefreshTokenFailed
 } = memberSlice.actions;
 
 export default memberSlice.reducer;

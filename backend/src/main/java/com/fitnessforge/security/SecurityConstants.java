@@ -3,7 +3,7 @@ package com.fitnessforge.security;
 /** 
  * <b>Description:</b>
  * <p>
- *  An Constants class which contains constains which are used inside the security methods.
+ *  An Constants class which contains constants which are used inside the security methods.
  *  {@link com.fitnessforge.security}
  * </p>
  * */

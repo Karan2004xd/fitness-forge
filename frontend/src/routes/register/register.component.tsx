@@ -36,7 +36,7 @@ const Register = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/exercises');
+      navigate('/');
     }
   }, [navigate, isAuthenticated]);
 
@@ -51,6 +51,11 @@ const Register = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("The password and confirm password don't match");
+      return;
+    }
 
     const member: Member = {
       name: name,
