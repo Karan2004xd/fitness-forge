@@ -9,6 +9,7 @@ export type ExerciseState = {
   totalExercises: number;
   currentExercise: Exercise | null;
   filters: ExerciseFilter | null;
+  toggleFilterBox: boolean;
 };
 
 const initialState: ExerciseState = {
@@ -19,6 +20,7 @@ const initialState: ExerciseState = {
   currentPage: 0,
   currentExercise: null,
   filters: null,
+  toggleFilterBox: false
 };
 
 const exerciseSlice = createSlice({
@@ -114,6 +116,10 @@ const exerciseSlice = createSlice({
     setFilters: (state, action: PayloadAction<{filters: ExerciseFilter}>) => {
       state.filters = action.payload.filters;
       state.isLoading = true;
+    },
+
+    setToggleFilterBox: (state, action: PayloadAction<{ toggleFilterBox: boolean }>) => {
+      state.toggleFilterBox = action.payload.toggleFilterBox;
     }
   }
 });
@@ -131,7 +137,8 @@ export const {
   fetchExerciseByPageWithFilterStart,
   fetchExerciseByPageWithFilterSuccess,
   fetchExerciseByPageWithFilterFailed,
-  setFilters
+  setFilters,
+  setToggleFilterBox
 } = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

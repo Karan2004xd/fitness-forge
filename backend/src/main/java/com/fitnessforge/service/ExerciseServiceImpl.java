@@ -78,24 +78,15 @@ public class ExerciseServiceImpl implements ExerciseService {
    * This method uses pagination to fetch the fetch the data,
    * in page number and size format.
    *
-   * @return total count of the exercise in the database.
-   * */
-  @Override
-  public Long getTotalExercisesCount() {
-    return exerciseRepository.getDataCount();
-  }
-
-  /** 
-   * Fetches the {@link com.fitnessforge.entity.Exercise} by its numeric id.
+   * The pagination is done using interfaces 
+   * org.springframework.data.domain.PageRequest,
+   * org.springframework.data.domain.PageRequest
    *
-   * @param exerciseId the numeric id of entity {@link com.fitnessforge.entity.Exercise} 
-   * @return an object of entity {@link com.fitnessforge.entity.Exercise}
+   * @param page The page number of data to fetch from.
+   * @param size The size of total entries to fetch.
+   * @param filters Key value pair of request parameters and data.
+   * @return an List {@link com.fitnessforge.entity.Exercise}
    * */
-  @Override
-  public Exercise getExerciseById(Long exerciseId) {
-    return FetchEntityUtil.GetEntity(exerciseRepository.findByExerciseId(exerciseId), Exercise.class);
-  }
-
   @Override
   public List<Exercise> getExerciseByPage(int page, int size, Map<String, List<String>> filters) {
     Pageable pageable = PageRequest.of(page, size);
@@ -114,5 +105,27 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     return exerciseRepository.findAll(spec, pageable).getContent();
+  }
+
+  /** 
+   * This method uses pagination to fetch the fetch the data,
+   * in page number and size format.
+   *
+   * @return total count of the exercise in the database.
+   * */
+  @Override
+  public Long getTotalExercisesCount() {
+    return exerciseRepository.getDataCount();
+  }
+
+  /** 
+   * Fetches the {@link com.fitnessforge.entity.Exercise} by its numeric id.
+   *
+   * @param exerciseId the numeric id of entity {@link com.fitnessforge.entity.Exercise} 
+   * @return an object of entity {@link com.fitnessforge.entity.Exercise}
+   * */
+  @Override
+  public Exercise getExerciseById(Long exerciseId) {
+    return FetchEntityUtil.GetEntity(exerciseRepository.findByExerciseId(exerciseId), Exercise.class);
   }
 }

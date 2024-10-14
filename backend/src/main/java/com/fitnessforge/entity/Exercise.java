@@ -174,7 +174,7 @@ public class Exercise {
    * Setter for the private attribute force 
    * @param force targeted in the exercise
    * */
-  public void setForceType(String force) {
+  public void setForce(String force) {
     this.force = force;
   }
   

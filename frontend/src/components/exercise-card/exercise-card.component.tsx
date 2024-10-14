@@ -1,36 +1,33 @@
-import './exercise-card.styles.css'
 import { Exercise } from '../../store/exercise/exercise.types';
 import { EXERCISE_API_ROUTES } from '../../utils/api/api-routes.util';
+import ExerciseCardContent from '../exercise-card-content/exercise-card-content.component';
+import { 
+  CardContainer,
+  CardContainerContent,
+  ContentCategory,
+  ContentForce 
+} from './exercise-card.styles';
 
 export type ExerciseCardProps = {
   exercise: Exercise;
 };
 
 const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
-  const { name, images, level, force } = exercise;
+  const { name, images, level, force, category } = exercise;
   return (
-    <div className='card-container'>
+    <CardContainer>
       <img 
         src={`${EXERCISE_API_ROUTES.getImage}/${images ? images[0] : ''}`} 
         alt={name}
         className='card-image'
       /> 
-      <div className='card-container__content'>
+      <CardContainerContent>
         <h1>{name}</h1>
-        <span>
-          {level 
-            ? level?.at(0)?.toUpperCase() + level?.substring(1).toLowerCase() 
-            : ''
-          }
-        </span>
-        <span id='content-force'>Force: {
-          force
-            ? force.at(0)?.toUpperCase() + force.substring(1).toLowerCase()
-            : ''
-        }
-        </span>
-      </div>
-    </div>
+        <ExerciseCardContent content={level ? level : ''} />
+        <ContentForce content={`Force: ${force ? force : 'None'}`} />
+        <ContentCategory content={`Category: ${category ? category : 'None'}`} />
+      </CardContainerContent>
+    </CardContainer>
   );
 };
 

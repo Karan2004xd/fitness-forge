@@ -28,3 +28,8 @@ export const selectFilters = createSelector(
   selectExersiceReducer,
   (exercise: ExerciseState) => exercise.filters
 );
+
+export const selectToggleFilterBox = createSelector(
+  selectExersiceReducer,
+  (exercise: ExerciseState) => exercise.toggleFilterBox
+);

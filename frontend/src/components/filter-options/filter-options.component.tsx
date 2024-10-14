@@ -2,7 +2,7 @@ import { HTMLAttributes } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilters } from '../../store/exercise/exercise.reducer';
 import { selectFilters } from '../../store/exercise/exersice.selector';
-import './filter-options.styles.css';
+import { FilterOptionsContainer } from './filter-options.styles';
 
 export const EXERCISE_FILTER_TYPES = {
   level: [
@@ -93,7 +93,7 @@ const FilterOptions = ({ filterType, ...otherProps }: FilterOptionsProps) => {
   };
 
   return (
-    <div className='filter-options-container' {...otherProps}>
+    <FilterOptionsContainer {...otherProps}>
       {
         options.map((option, index) => (
           <label key={index}>
@@ -105,7 +105,7 @@ const FilterOptions = ({ filterType, ...otherProps }: FilterOptionsProps) => {
           </label>
         ))
       }
-    </div>
+    </FilterOptionsContainer>
   );
 };
 

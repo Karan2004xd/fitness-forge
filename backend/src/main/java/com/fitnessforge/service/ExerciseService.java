@@ -31,6 +31,15 @@ public interface ExerciseService {
    * */
   List<Exercise> getExerciseByPage(int page, int size);
 
+  /** 
+   * This method uses pagination to fetch the fetch the data,
+   * in page number and size format.
+   *
+   * @param page The page number of data to fetch from.
+   * @param size The size of total entries to fetch.
+   * @param filters Key value pair of request parameters and data.
+   * @return an List {@link com.fitnessforge.entity.Exercise}
+   * */
   List<Exercise> getExerciseByPage(int page, int size, Map<String, List<String>> filters);
 
   /** 

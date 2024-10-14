@@ -51,6 +51,20 @@ public class ExerciseController {
     return new ResponseEntity<>(exerciseService.getExerciseByPage(page, size), HttpStatus.OK);
   }
 
+  /** 
+   * Fetches data in pagination format which by page number and size,
+   * and with any type and number of filters defined.
+   *
+   * @param page number of the page (optional).
+   * @param size number of entries to display in a page (optional).
+   * @param category List of exercise categories (optional).
+   * @param equipment List of exercise equipments (optional).
+   * @param force List of exercise force (optional).
+   * @param level List of exercise level (optional).
+   * @param mechanic List of exercise mechanic (optional).
+   * @param name String of name of exercise to search from (optional).
+   * @return an object of org.springframework.http.ResponseEntity.
+   * */
   @GetMapping("/page/filter")
   public ResponseEntity<List<Exercise>> getExerciseByPageWithFilter(
     @RequestParam(value = "page", defaultValue = "0") int page,

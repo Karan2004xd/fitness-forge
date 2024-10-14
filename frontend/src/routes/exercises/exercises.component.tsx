@@ -1,4 +1,3 @@
-import './exercises.styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component';
 
@@ -6,22 +5,35 @@ import {
   fetchExerciseByPageStart,
   fetchExerciseByPageWithFilterStart,
   fetchTotalExercisesStart, 
-  setFilters
+  setFilters,
+  setToggleFilterBox
 } from '../../store/exercise/exercise.reducer';
 
 import { 
   selectCurrentExercises, 
   selectCurrentPage, 
   selectFilters, 
+  selectToggleFilterBox, 
   selectTotalExercises 
 } from '../../store/exercise/exersice.selector';
 
 import { ChangeEvent, useEffect, useState } from 'react';
 import useDebounce from '../../utils/debounce/use-debounce.utils';
 import { DEFAULT_SIZE } from '../../store/exercise/exercise.types';
-import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
+import { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import FiltersBox from '../../components/filters-box/filters-box.component';
 import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.component';
+
+import {
+  ApplyFilterButton,
+  ExerciseNotFound,
+  MainContainer,
+  MainContainerExercises,
+  MainContainerTitle,
+  MainContainerUtils,
+  SearchExercise,
+  TitleCount 
+} from './exercises.styles';
 
 const Exercises = () => {
   const dispatch = useDispatch();
@@ -31,7 +43,7 @@ const Exercises = () => {
   const filters = useSelector(selectFilters);
 
   const [searchFieldValue, setSearchFieldValue] = useState('');
-  const [toggleFilters, setToggleFilters] = useState(false);
+  const toggleFilterBox = useSelector(selectToggleFilterBox);
   
   const getTotalExercises = () => {
     if (currentCount === 0) {
@@ -58,12 +70,8 @@ const Exercises = () => {
     }
   };
 
-  const handleFiltersClick = (isButtonClick: boolean = true) => {
-    if (isButtonClick) {
-      setToggleFilters(true);
-    } else {
-      setToggleFilters(false);
-    }
+  const handleFiltersClick = () => {
+    dispatch(setToggleFilterBox({toggleFilterBox: !toggleFilterBox}));
   };
 
   useEffect(() => {
@@ -84,39 +92,44 @@ const Exercises = () => {
   }, [filters, dispatch, page]);
 
   return (
-    <div className='main-container' >
+    <MainContainer>
       {
-        toggleFilters ? (
+        toggleFilterBox ? (
           <>
-            <Backdrop backdropType={BACKDROP_TYPES.dark} onClick={() => handleFiltersClick(false)} />
+            <Backdrop backdropType={BACKDROP_TYPES.dark} onClick={handleFiltersClick} />
             <FiltersBox />
           </>
         ) : (
             <></>
           )
       }
-      <div className='main-container__title'>
-        <p id='title-count'>
+      <MainContainerTitle>
+        <TitleCount>
           <span>{currentCount}</span>
           <span> </span>
           Total Exercises For Every Level
-        </p>
+        </TitleCount>
         <p>
           Beginner To Advanced, We Have Got You Covered!
         </p>
-      </div>
+      </MainContainerTitle>
 
-      <div className='main-container__utils'>
-        <input 
+      <MainContainerUtils>
+        <SearchExercise 
           type='search' 
           placeholder='Search Exercise' 
           name='searchBox' 
           onChange={handleSearchInput}
         />
-        <Button buttonType={BUTTON_TYPE_CLASSES.base} onClick={() => handleFiltersClick()}>Apply Filters</Button>
-      </div>
+        <ApplyFilterButton 
+          buttonType={BUTTON_TYPE_CLASSES.base}
+          onClick={() => handleFiltersClick()}
+        >
+          Apply Filters
+        </ApplyFilterButton>
+      </MainContainerUtils>
 
-      <div className='main-container__exercises'>
+      <MainContainerExercises>
         {
           currentExercises?.length ? (
             currentExercises.map(
@@ -125,11 +138,11 @@ const Exercises = () => {
               )
             )
           ) : (
-              <></>
+              <ExerciseNotFound>No exercises where found for the applied filter!</ExerciseNotFound>
             )
         }
-      </div>
-    </div>
+      </MainContainerExercises>
+    </MainContainer>
   );
 }
 
