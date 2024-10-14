@@ -97,18 +97,18 @@ public class ExerciseServiceImpl implements ExerciseService {
   }
 
   @Override
-  public List<Exercise> getExerciseByPage(int page, int size, Map<String, String> filters) {
+  public List<Exercise> getExerciseByPage(int page, int size, Map<String, List<String>> filters) {
     Pageable pageable = PageRequest.of(page, size);
     Specification<Exercise> spec = Specification.where(null);
 
     for (String filter : filters.keySet()) {
-      String value = filters.get(filter);
+      List<String> value = filters.get(filter);
 
       if (value != null) {
         if (filter == "name") {
-          spec = spec.and(SpecificationUtils.like(filter, value.toLowerCase()));
+          spec = spec.and(SpecificationUtils.like(filter, value.get(0)));
         } else {
-          spec = spec.and(SpecificationUtils.equal(filter, value));
+          spec = spec.and(SpecificationUtils.in(filter, value));
         }
       }
     }

@@ -31,7 +31,7 @@ public interface ExerciseService {
    * */
   List<Exercise> getExerciseByPage(int page, int size);
 
-  List<Exercise> getExerciseByPage(int page, int size, Map<String, String> filters);
+  List<Exercise> getExerciseByPage(int page, int size, Map<String, List<String>> filters);
 
   /** 
    * This method uses pagination to fetch the fetch the data,

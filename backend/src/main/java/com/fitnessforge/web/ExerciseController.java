@@ -57,15 +57,15 @@ public class ExerciseController {
     @RequestParam(value = "size", defaultValue = "10") int size,
 
     // optional filters
-    @RequestParam(value = "category", required = false) String category,
-    @RequestParam(value = "equipment", required = false) String equipment,
-    @RequestParam(value = "force", required = false) String force,
-    @RequestParam(value = "level", required = false) String level,
-    @RequestParam(value = "mechanic", required = false) String mechanic,
-    @RequestParam(value = "name", required = false) String name 
+    @RequestParam(value = "category", required = false) List<String> category,
+    @RequestParam(value = "equipment", required = false) List<String> equipment,
+    @RequestParam(value = "force", required = false) List<String> force,
+    @RequestParam(value = "level", required = false) List<String> level,
+    @RequestParam(value = "mechanic", required = false) List<String> mechanic,
+    @RequestParam(value = "name", required = false) List<String> name 
   ) {
 
-    Map<String, String> filters = new HashMap<>();
+    Map<String, List<String>> filters = new HashMap<>();
 
     filters.put("category", category);
     filters.put("equipment", equipment);

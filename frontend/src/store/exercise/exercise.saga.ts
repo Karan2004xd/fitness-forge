@@ -33,13 +33,23 @@ import {
 
 import { Exercise, ExerciseFilter } from "./exercise.types";
 
-const getFilterUrl = (filters: Map<string, boolean | string | number>) => {
+const getFilterUrl = (filters: Map<string, string[] | string | number>) => {
   let url: string = EXERCISE_API_ROUTES.getExerciseByPageWithFilter;
+  const queryParams: string[] = [];
+
   filters.forEach((value, key) => {
-    if (value || value === 0) {
-      url += `${key}=${value}&`;
+    if (value !== undefined && value !== null) {
+      if (key === 'name' || typeof value === 'number') {
+        queryParams.push(`${key}=${encodeURIComponent(value.toString())}`);
+      } else if (Array.isArray(value)) {
+        queryParams.push(`${key}=${value.map(v => encodeURIComponent(v)).join(',')}`);
+      }
     }
   });
+
+  if (queryParams.length > 0) {
+    url += `${queryParams.join('&')}`;
+  }
 
   return url;
 };
@@ -121,8 +131,9 @@ function* getExerciseByPageWithFilters(action: PayloadAction<{
         size: size
       };
 
-      const filtersMap = new Map<string, string | boolean | number>(Object.entries(newFilter));
+      const filtersMap = new Map<string, string | number | string[]>(Object.entries(newFilter));
       const url = getFilterUrl(filtersMap);
+      console.log(url);
 
       const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
       if (response.data) {
