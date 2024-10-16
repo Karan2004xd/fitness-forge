@@ -120,6 +120,10 @@ const exerciseSlice = createSlice({
 
     setToggleFilterBox: (state, action: PayloadAction<{ toggleFilterBox: boolean }>) => {
       state.toggleFilterBox = action.payload.toggleFilterBox;
+    },
+
+    setCurrentExercise: (state, action: PayloadAction<{ currentExercise: Exercise }>) => {
+      state.currentExercise = action.payload.currentExercise;
     }
   }
 });
@@ -138,7 +142,8 @@ export const {
   fetchExerciseByPageWithFilterSuccess,
   fetchExerciseByPageWithFilterFailed,
   setFilters,
-  setToggleFilterBox
+  setToggleFilterBox,
+  setCurrentExercise
 } = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

@@ -15,5 +15,6 @@ export enum EXERCISE_API_ROUTES {
   getExerciseByPage = 'exercise/page?',
   getExerciseById = 'exercise/',
   getImage = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises',
-  getExerciseByPageWithFilter = 'exercise/page/filter?'
+  getExerciseByPageWithFilter = 'exercise/page/filter?',
+  getExerciseInfo = '/exercise/info'
 };

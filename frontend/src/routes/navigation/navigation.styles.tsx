@@ -67,38 +67,3 @@ export const NavbarBodyRight = styled(Button)`
     margin-bottom: 1rem;
   }
 `;
-
-// .main-container__navbar {
-// }
-
-// .main-container__navbar a {
-// }
-
-// #navbar-link__left {
-// }
-
-// #title {
-// }
-
-// #inner-title {
-// }
-
-// .navbar-link__middle {
-// }
-
-// .navbar-link__middle .middle-body {
-// }
-
-// @media (max-width: 75rem) {
-//   .navbar-link__left {
-//   }
-
-//   .navbar-link__middle {
-//   }
-
-//   .navbar-link__right {
-//   }
-
-//   .main-container__navbar {
-//   }
-// }

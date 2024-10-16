@@ -5,6 +5,7 @@ import {
   fetchExerciseByPageStart,
   fetchExerciseByPageWithFilterStart,
   fetchTotalExercisesStart, 
+  setCurrentExercise, 
   setFilters,
   setToggleFilterBox
 } from '../../store/exercise/exercise.reducer';
@@ -19,7 +20,7 @@ import {
 
 import { ChangeEvent, useEffect, useState } from 'react';
 import useDebounce from '../../utils/debounce/use-debounce.utils';
-import { DEFAULT_SIZE } from '../../store/exercise/exercise.types';
+import { DEFAULT_SIZE, Exercise } from '../../store/exercise/exercise.types';
 import { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import FiltersBox from '../../components/filters-box/filters-box.component';
 import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.component';
@@ -34,6 +35,8 @@ import {
   SearchExercise,
   TitleCount 
 } from './exercises.styles';
+import { useNavigate } from 'react-router';
+import { EXERCISE_API_ROUTES } from '../../utils/api/api-routes.util';
 
 const Exercises = () => {
   const dispatch = useDispatch();
@@ -41,9 +44,17 @@ const Exercises = () => {
   const currentExercises = useSelector(selectCurrentExercises);
   const page = useSelector(selectCurrentPage);
   const filters = useSelector(selectFilters);
+  const navigate = useNavigate();
 
   const [searchFieldValue, setSearchFieldValue] = useState('');
   const toggleFilterBox = useSelector(selectToggleFilterBox);
+
+  const handleExerciseCardClick = (exercise: Exercise | undefined) => {
+    if (exercise) {
+      dispatch(setCurrentExercise({currentExercise: exercise}))
+      navigate(`${EXERCISE_API_ROUTES.getExerciseInfo}/${exercise.id}`);
+    }
+  }
   
   const getTotalExercises = () => {
     if (currentCount === 0) {
@@ -134,7 +145,10 @@ const Exercises = () => {
           currentExercises?.length ? (
             currentExercises.map(
               (item) => (
-                <ExerciseCard exercise={item} key={item.exerciseId} />
+                <ExerciseCard 
+                  exercise={item}
+                  key={item.exerciseId}
+                  onClick={() => handleExerciseCardClick(item ? item : undefined)} />
               )
             )
           ) : (
