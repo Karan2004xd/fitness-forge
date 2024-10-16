@@ -1,6 +1,13 @@
 import { styled } from "styled-components";
 import Button from "../../components/button/button.component";
 
+export const LoadMoreExerciseButton = styled (Button)`
+  width: 14%;
+  margin-left: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
 export const ExerciseNotFound = styled.h1`
   margin-left: 4rem;
   margin-top: 3rem;

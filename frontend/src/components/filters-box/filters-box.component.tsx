@@ -1,10 +1,11 @@
 import FilterOptions, { EXERCISE_FILTER_TYPES }  from '../filter-options/filter-options.component';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectToggleFilterBox } from '../../store/exercise/exersice.selector';
-import { setToggleFilterBox } from '../../store/exercise/exercise.reducer';
+import { setFilters, setToggleFilterBox } from '../../store/exercise/exercise.reducer';
 
 import { 
   BoxCloseIcon, 
+  ClearFilters, 
   FilterBoxContainer, 
   FilterBoxContentLabel 
 } from './filters-box.styles';
@@ -14,6 +15,11 @@ const FiltersBox = () => {
   const dispatch = useDispatch();
 
   const handleFilterBoxClose = () => {
+    dispatch(setToggleFilterBox({toggleFilterBox: !toggleFilterBox}));
+  };
+
+  const handleClearFilters = () => {
+    dispatch(setFilters({filters: {}}));
     dispatch(setToggleFilterBox({toggleFilterBox: !toggleFilterBox}));
   };
 
@@ -31,6 +37,10 @@ const FiltersBox = () => {
           </details>
         ))
       }
+      <ClearFilters to={'#'} animate={true} onClick={handleClearFilters}>
+        Clear Filters
+      </ClearFilters>
+
     </FilterBoxContainer>
   );
 };

@@ -6,6 +6,7 @@ import {
   fetchExerciseByPageWithFilterStart,
   fetchTotalExercisesStart, 
   setCurrentExercise, 
+  setCurrentSize, 
   setFilters,
   setToggleFilterBox
 } from '../../store/exercise/exercise.reducer';
@@ -13,12 +14,13 @@ import {
 import { 
   selectCurrentExercises, 
   selectCurrentPage, 
+  selectCurrentSize, 
   selectFilters, 
   selectToggleFilterBox, 
   selectTotalExercises 
 } from '../../store/exercise/exersice.selector';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import useDebounce from '../../utils/debounce/use-debounce.utils';
 import { DEFAULT_SIZE, Exercise } from '../../store/exercise/exercise.types';
 import { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
@@ -28,6 +30,7 @@ import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.com
 import {
   ApplyFilterButton,
   ExerciseNotFound,
+  LoadMoreExerciseButton,
   MainContainer,
   MainContainerExercises,
   MainContainerTitle,
@@ -43,6 +46,7 @@ const Exercises = () => {
   const currentCount = useSelector(selectTotalExercises);
   const currentExercises = useSelector(selectCurrentExercises);
   const page = useSelector(selectCurrentPage);
+  const currentSize = useSelector(selectCurrentSize);
   const filters = useSelector(selectFilters);
   const navigate = useNavigate();
 
@@ -71,6 +75,18 @@ const Exercises = () => {
     dispatch(setFilters({filters: newFilter}));
   }, 500);
 
+  const loadExercises = useCallback(() => {
+    if (filters) {
+      dispatch(fetchExerciseByPageWithFilterStart({
+        pageNumber: page,
+        size: currentSize,
+        filters: filters
+      }));
+    } else {
+      dispatch(fetchExerciseByPageStart({pageNumber: page, size: currentSize}));
+    }
+  }, [filters, page, currentSize, dispatch]);
+
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     if (value && value !== '') {
@@ -85,10 +101,19 @@ const Exercises = () => {
     dispatch(setToggleFilterBox({toggleFilterBox: !toggleFilterBox}));
   };
 
+  const loadMoreExercisesClick = () => {
+    dispatch(setCurrentSize({currentSize: currentSize + DEFAULT_SIZE}));
+  };
+
+  useEffect(() => {
+    loadExercises();
+  }, [loadExercises]);
+
   useEffect(() => {
     getTotalExercises();
-    if (!currentExercises) {
-      dispatch(fetchExerciseByPageStart({pageNumber: page, size: DEFAULT_SIZE}));
+    if (!currentExercises || currentExercises.length === 0) {
+      dispatch(fetchExerciseByPageStart({pageNumber: 0, size: DEFAULT_SIZE}));
+      dispatch(setCurrentSize({currentSize: DEFAULT_SIZE}));
     }
   });
 
@@ -96,11 +121,11 @@ const Exercises = () => {
     if (filters) {
       dispatch(fetchExerciseByPageWithFilterStart({
         pageNumber: page,
-        size: DEFAULT_SIZE,
+        size: currentSize,
         filters: filters
       }));
     }
-  }, [filters, dispatch, page]);
+  }, [filters, dispatch, page, currentSize]);
 
   return (
     <MainContainer>
@@ -156,6 +181,11 @@ const Exercises = () => {
             )
         }
       </MainContainerExercises>
+
+      <LoadMoreExerciseButton buttonType={BUTTON_TYPE_CLASSES.base} onClick={loadMoreExercisesClick}>
+        Load More
+      </LoadMoreExerciseButton>
+
     </MainContainer>
   );
 }

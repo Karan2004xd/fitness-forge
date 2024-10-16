@@ -15,9 +15,6 @@ import {
   signInFailed, 
   signInStart, 
   signInSuccess, 
-  signOutFailed, 
-  signOutStart, 
-  signOutSuccess, 
   signUpFailed, 
   signUpStart, 
   signUpSuccess 
@@ -173,14 +170,6 @@ function* googleSignIn() {
   }
 }
 
-function* signOutMember() {
-  try {
-    yield put(signOutSuccess({member: null}));
-  } catch (error: any) {
-    yield put(signOutFailed(error))
-  }
-}
-
 export function* onSignUpStart() {
   yield takeLatest(signUpStart.type, signUp);
 }
@@ -197,16 +186,11 @@ export function* onSignInStart() {
   yield takeLatest(signInStart.type, signIn);
 }
 
-export function* onSignOutStart() {
-  yield takeLatest(signOutStart.type, signOutMember);
-}
-
 export function* memberSagas() {
   yield all([
     call(onSignUpStart),
     call(onGoogleSignUpStart),
     call(onSignInStart),
-    call(onGoogleSignInStart),
-    call(onSignOutStart)
+    call(onGoogleSignInStart)
   ]);
 }

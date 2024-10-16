@@ -1,5 +1,5 @@
 import { Exercise } from '../../store/exercise/exercise.types';
-import './exercise-about-content.styles.css';
+import { ContentItem } from './exercise-about-content.styles';
 
 export type ExerciseAboutContentProps = {
   contentType: keyof Exercise;
@@ -8,6 +8,8 @@ export type ExerciseAboutContentProps = {
 
 const ExerciseAboutContent = ({ content, contentType }: ExerciseAboutContentProps) => {
   if (!content || content === null) {
+    return null;
+  } else if (Array.isArray(content) && content.length === 0) {
     return null;
   }
 
@@ -24,10 +26,10 @@ const ExerciseAboutContent = ({ content, contentType }: ExerciseAboutContentProp
   }
 
   return (
-    <li className='content-item'>
+    <ContentItem>
       <span>{formattedContentType}: </span>
       {contentToDisplay}
-    </li>
+    </ContentItem>
   );
 }
 

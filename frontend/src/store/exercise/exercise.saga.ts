@@ -130,7 +130,6 @@ function* getExerciseByPageWithFilters(action: PayloadAction<{
 
       const filtersMap = new Map<string, string | number | string[]>(Object.entries(newFilter));
       const url = getFilterUrl(filtersMap);
-      console.log(url);
 
       const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
       if (response.data) {

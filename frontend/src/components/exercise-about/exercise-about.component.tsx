@@ -1,7 +1,12 @@
 import { Exercise } from '../../store/exercise/exercise.types';
 import { EXERCISE_API_ROUTES } from '../../utils/api/api-routes.util';
 import ExerciseAboutContent from '../exercise-about-content/exercise-about-content.component';
-import './exercise-about.styles.css'
+
+import { 
+  AboutContainerContent,
+  AboutContainerImages,
+  ExerciseAboutContainer 
+} from './exercise-about.styles';
 
 export type ExerciseAboutProps = {
   exercise: Exercise;
@@ -21,8 +26,8 @@ const ExerciseAbout = ({ exercise }: ExerciseAboutProps) => {
   } = exercise;
 
   return (
-    <div className='exercise-about-container'>
-      <div className='about-container__images'>
+    <ExerciseAboutContainer>
+      <AboutContainerImages>
         {
           images!.map((image) => (
             <img 
@@ -32,9 +37,9 @@ const ExerciseAbout = ({ exercise }: ExerciseAboutProps) => {
             /> 
           ))
         }
-      </div>
+      </AboutContainerImages>
 
-      <div className='about-container__content'>
+      <AboutContainerContent>
         <h1>{name}</h1>
         <ul>
           <ExerciseAboutContent contentType='category' content={category} />
@@ -46,8 +51,8 @@ const ExerciseAbout = ({ exercise }: ExerciseAboutProps) => {
           <ExerciseAboutContent contentType='secondaryMuscles' content={secondaryMuscles} />
           <ExerciseAboutContent contentType='instructions' content={instructions} />
         </ul>
-      </div>
-    </div>
+      </AboutContainerContent>
+    </ExerciseAboutContainer>
   );
 };
 
