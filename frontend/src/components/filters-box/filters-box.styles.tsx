@@ -1,5 +1,14 @@
 import { styled } from "styled-components";
 import { ReactComponent as CloseIcon } from '../../assets/icons/close-icon.svg';
+import LinkTag from "../link-tag/link-tag.component";
+
+export const ClearFilters = styled(LinkTag)`
+  color: black;
+  width: 41%;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  font-weight: bold;
+`;
 
 export const FilterBoxContentLabel = styled.summary`
   margin: 1rem;

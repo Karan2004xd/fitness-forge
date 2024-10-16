@@ -77,19 +77,10 @@ const memberSlice = createSlice({
       state.isAuthenticated = false;
       state.error = action.payload;
     },
-    
-    signOutStart: (state) => {
-      state.isAuthenticated = true;
-    },
 
-    signOutSuccess: (state, action: PayloadAction<{ member: Member | null}> ) => {
+    signOut: (state) => {
       state.isAuthenticated = false;
-      state.currentMember = action.payload.member;
-    },
-
-    signOutFailed: (state, action: PayloadAction<Object> ) => {
-      state.isAuthenticated = true;
-      state.error = action.payload;
+      state.currentMember = null;
     },
 
     getRefreshTokenStart: (state) => {
@@ -118,12 +109,10 @@ export const {
   signInStart,
   signInSuccess,
   signInFailed,
+  signOut,
   googleSignInStart,
   googleSignInSuccess,
   googleSignInFailed,
-  signOutStart,
-  signOutSuccess,
-  signOutFailed,
   getRefreshTokenStart,
   getRefreshTokenSuccess,
   getRefreshTokenFailed

@@ -33,3 +33,13 @@ export const selectToggleFilterBox = createSelector(
   selectExersiceReducer,
   (exercise: ExerciseState) => exercise.toggleFilterBox
 );
+
+export const selectIsLoading = createSelector(
+  selectExersiceReducer,
+  (exercise: ExerciseState) => exercise.isLoading
+);
+
+export const selectCurrentSize = createSelector(
+  selectExersiceReducer,
+  (exercise: ExerciseState) => exercise.currentSize
+);

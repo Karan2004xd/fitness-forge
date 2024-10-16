@@ -5,6 +5,8 @@ import {
   fetchExerciseByPageStart,
   fetchExerciseByPageWithFilterStart,
   fetchTotalExercisesStart, 
+  setCurrentExercise, 
+  setCurrentSize, 
   setFilters,
   setToggleFilterBox
 } from '../../store/exercise/exercise.reducer';
@@ -12,14 +14,15 @@ import {
 import { 
   selectCurrentExercises, 
   selectCurrentPage, 
+  selectCurrentSize, 
   selectFilters, 
   selectToggleFilterBox, 
   selectTotalExercises 
 } from '../../store/exercise/exersice.selector';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import useDebounce from '../../utils/debounce/use-debounce.utils';
-import { DEFAULT_SIZE } from '../../store/exercise/exercise.types';
+import { DEFAULT_SIZE, Exercise } from '../../store/exercise/exercise.types';
 import { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import FiltersBox from '../../components/filters-box/filters-box.component';
 import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.component';
@@ -27,6 +30,7 @@ import Backdrop, { BACKDROP_TYPES } from '../../components/backdrop/backdrop.com
 import {
   ApplyFilterButton,
   ExerciseNotFound,
+  LoadMoreExerciseButton,
   MainContainer,
   MainContainerExercises,
   MainContainerTitle,
@@ -34,16 +38,27 @@ import {
   SearchExercise,
   TitleCount 
 } from './exercises.styles';
+import { useNavigate } from 'react-router';
+import { EXERCISE_API_ROUTES } from '../../utils/api/api-routes.util';
 
 const Exercises = () => {
   const dispatch = useDispatch();
   const currentCount = useSelector(selectTotalExercises);
   const currentExercises = useSelector(selectCurrentExercises);
   const page = useSelector(selectCurrentPage);
+  const currentSize = useSelector(selectCurrentSize);
   const filters = useSelector(selectFilters);
+  const navigate = useNavigate();
 
   const [searchFieldValue, setSearchFieldValue] = useState('');
   const toggleFilterBox = useSelector(selectToggleFilterBox);
+
+  const handleExerciseCardClick = (exercise: Exercise | undefined) => {
+    if (exercise) {
+      dispatch(setCurrentExercise({currentExercise: exercise}))
+      navigate(`${EXERCISE_API_ROUTES.getExerciseInfo}/${exercise.id}`);
+    }
+  }
   
   const getTotalExercises = () => {
     if (currentCount === 0) {
@@ -60,6 +75,18 @@ const Exercises = () => {
     dispatch(setFilters({filters: newFilter}));
   }, 500);
 
+  const loadExercises = useCallback(() => {
+    if (filters) {
+      dispatch(fetchExerciseByPageWithFilterStart({
+        pageNumber: page,
+        size: currentSize,
+        filters: filters
+      }));
+    } else {
+      dispatch(fetchExerciseByPageStart({pageNumber: page, size: currentSize}));
+    }
+  }, [filters, page, currentSize, dispatch]);
+
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     if (value && value !== '') {
@@ -74,10 +101,19 @@ const Exercises = () => {
     dispatch(setToggleFilterBox({toggleFilterBox: !toggleFilterBox}));
   };
 
+  const loadMoreExercisesClick = () => {
+    dispatch(setCurrentSize({currentSize: currentSize + DEFAULT_SIZE}));
+  };
+
+  useEffect(() => {
+    loadExercises();
+  }, [loadExercises]);
+
   useEffect(() => {
     getTotalExercises();
-    if (!currentExercises) {
-      dispatch(fetchExerciseByPageStart({pageNumber: page, size: DEFAULT_SIZE}));
+    if (!currentExercises || currentExercises.length === 0) {
+      dispatch(fetchExerciseByPageStart({pageNumber: 0, size: DEFAULT_SIZE}));
+      dispatch(setCurrentSize({currentSize: DEFAULT_SIZE}));
     }
   });
 
@@ -85,11 +121,11 @@ const Exercises = () => {
     if (filters) {
       dispatch(fetchExerciseByPageWithFilterStart({
         pageNumber: page,
-        size: DEFAULT_SIZE,
+        size: currentSize,
         filters: filters
       }));
     }
-  }, [filters, dispatch, page]);
+  }, [filters, dispatch, page, currentSize]);
 
   return (
     <MainContainer>
@@ -134,7 +170,10 @@ const Exercises = () => {
           currentExercises?.length ? (
             currentExercises.map(
               (item) => (
-                <ExerciseCard exercise={item} key={item.exerciseId} />
+                <ExerciseCard 
+                  exercise={item}
+                  key={item.exerciseId}
+                  onClick={() => handleExerciseCardClick(item ? item : undefined)} />
               )
             )
           ) : (
@@ -142,6 +181,11 @@ const Exercises = () => {
             )
         }
       </MainContainerExercises>
+
+      <LoadMoreExerciseButton buttonType={BUTTON_TYPE_CLASSES.base} onClick={loadMoreExercisesClick}>
+        Load More
+      </LoadMoreExerciseButton>
+
     </MainContainer>
   );
 }

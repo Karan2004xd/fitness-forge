@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
 import LinkTag from "../../components/link-tag/link-tag.component";
-import { signOutStart } from "../../store/member/member.reducer";
+import { signOut } from "../../store/member/member.reducer";
 import { selectIsMemberAuthenticated } from "../../store/member/member.selector";
 import { MainContainerNavbar, MainLogo, NavbarBodyLeft, NavbarBodyMiddle, NavbarBodyRight } from "./navigation.styles";
 
@@ -27,7 +27,7 @@ const Navigation = () => {
 
   const handleBtnClick = () => {
     if (buttonChildren === defaultBtnValues.signOut) {
-      dispatch(signOutStart());
+      dispatch(signOut());
     }
     navigate(buttonChildren.path);
   }

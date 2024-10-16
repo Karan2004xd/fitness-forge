@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Exercise, ExerciseFilter } from "./exercise.types"
+import { DEFAULT_SIZE, Exercise, ExerciseFilter } from "./exercise.types"
 
 export type ExerciseState = {
   currentExercises: Exercise[] | null;
   isLoading: boolean;
   currentPage: number;
+  currentSize: number;
   error: Object | null;
   totalExercises: number;
   currentExercise: Exercise | null;
@@ -20,7 +21,8 @@ const initialState: ExerciseState = {
   currentPage: 0,
   currentExercise: null,
   filters: null,
-  toggleFilterBox: false
+  toggleFilterBox: false,
+  currentSize: DEFAULT_SIZE
 };
 
 const exerciseSlice = createSlice({
@@ -120,6 +122,14 @@ const exerciseSlice = createSlice({
 
     setToggleFilterBox: (state, action: PayloadAction<{ toggleFilterBox: boolean }>) => {
       state.toggleFilterBox = action.payload.toggleFilterBox;
+    },
+
+    setCurrentExercise: (state, action: PayloadAction<{ currentExercise: Exercise }>) => {
+      state.currentExercise = action.payload.currentExercise;
+    },
+
+    setCurrentSize: (state, action: PayloadAction<{ currentSize: number }>) => {
+      state.currentSize = action.payload.currentSize;
     }
   }
 });
@@ -138,7 +148,9 @@ export const {
   fetchExerciseByPageWithFilterSuccess,
   fetchExerciseByPageWithFilterFailed,
   setFilters,
-  setToggleFilterBox
+  setToggleFilterBox,
+  setCurrentExercise,
+  setCurrentSize
 } = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;
