@@ -44,7 +44,7 @@ public class Member {
   @Column(name = "email", unique = true)
   private String email;
 
-  @NotBlank(message = "Password cannot be blank")
+  // @NotBlank(message = "Password cannot be blank")
   @Column(name = "password", nullable = false)
   private String password;
 

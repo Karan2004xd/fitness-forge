@@ -46,8 +46,14 @@ public class MemberController {
    * */
   @PostMapping("/create")
   public ResponseEntity<Map<String, String>> createNewMember(@Valid @RequestBody Member member) {
-    Member savedMember = memberService.createNewMember(member);
+    String password = member.getPassword();
     Map<String, String> responseToSend = new HashMap<>();
+
+    if (password == null || password.isBlank() || password.isEmpty()) {
+      responseToSend.put("error", "Password is required");
+      return new ResponseEntity<>(responseToSend, HttpStatus.BAD_REQUEST);
+    }
+    Member savedMember = memberService.createNewMember(member);
 
     responseToSend.put("id", savedMember.getId().toString());
     responseToSend.put("email", savedMember.getEmail());
@@ -80,5 +86,10 @@ public class MemberController {
   @GetMapping("/auth_refresh/{id}")
   public ResponseEntity<String> getRefreshToken(@PathVariable Long id) {
     return new ResponseEntity<>(memberService.getRefreshToken(id), HttpStatus.OK);
+  }
+
+  @PostMapping("/update")
+  public ResponseEntity<Member> updateMember(@Valid @RequestBody Member member) {
+    return new ResponseEntity<>(memberService.updateMember(member), HttpStatus.OK);
   }
 }

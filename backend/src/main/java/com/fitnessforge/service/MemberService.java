@@ -41,4 +41,6 @@ public interface MemberService {
    * @return String of new JWT token
    * */
   String getRefreshToken(Long id);
+
+  Member updateMember(Member member);
 }

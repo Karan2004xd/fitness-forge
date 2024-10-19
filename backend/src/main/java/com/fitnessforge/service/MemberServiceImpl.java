@@ -107,4 +107,16 @@ public class MemberServiceImpl implements MemberService {
       throw new DatabaseException(DatabaseExceptionTypes.MEMBER_NOT_FOUND, MemberService.class.getName());
     }
   }
+
+  @Override
+  public Member updateMember(Member member) {
+    Member existingMember = FetchEntityUtil.GetEntity(memberRepository.findById(member.getId()), Member.class);
+    if (existingMember != null) {
+      member.setPassword(existingMember.getPassword());
+      Member memberToReturn = memberRepository.save(member);
+      memberToReturn.setPassword(null);
+      return memberToReturn;
+    }
+    return null;
+  }
 }
