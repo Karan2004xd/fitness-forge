@@ -65,21 +65,10 @@ public class MemberController {
    * @return an object of org.springframework.http.ResponseEntity
    * */
   @GetMapping("/{id}")
-  public ResponseEntity<Map<String, String>> getMember(@PathVariable Long id) {
+  public ResponseEntity<Member> getMember(@PathVariable Long id) {
     Member savedMember = memberService.getMember(id);
-    Map<String, String> responseToSend = new HashMap<>();
-
-    responseToSend.put("id", savedMember.getId().toString());
-    responseToSend.put("name", savedMember.getName());
-    responseToSend.put("age", String.valueOf(savedMember.getAge()));
-    responseToSend.put("gender", savedMember.getGender());
-    responseToSend.put("fitnessLevel", savedMember.getFitnessLevel());
-    responseToSend.put("weight", String.valueOf(savedMember.getWeight()));
-    responseToSend.put("height", String.valueOf(savedMember.getHeight()));
-    responseToSend.put("email", savedMember.getEmail());
-    responseToSend.put("joinedOn", savedMember.getJoinedOn().toString());
-
-    return new ResponseEntity<>(responseToSend, HttpStatus.OK);
+    savedMember.setPassword(null);
+    return new ResponseEntity<>(savedMember, HttpStatus.OK);
   }
 
   /** 
