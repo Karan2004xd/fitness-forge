@@ -48,5 +48,15 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long>, JpaSp
    * */
   Optional<Exercise> findByExerciseId(Long exerciseId);
 
+  /** 
+   * This methods fetches exercises in a pagination format,
+   * meaning it fetches pages based on their size and page number.
+   *
+   * It also filters the pages based on the specification passed in the parameter
+   *
+   * @param pageable an object of interface org.springframework.data.domain.Pageable
+   * @param specification an object of interface org.springframework.data.jpa.domain.Specification
+   * @return an object of org.springframework.data.domain.Page
+   * */
   Page<Exercise> findAll(Specification<Exercise> specification, Pageable pageable);
 }

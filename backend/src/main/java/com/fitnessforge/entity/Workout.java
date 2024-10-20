@@ -53,6 +53,14 @@ public class Workout {
   @Column(name = "exercise_to_exclude")
   private List<String> exerciseToExclude;
 
+  @NotEmpty(message = "Need to specify you fitness Levels")
+  @Column(name = "level")
+  private List<String> level;
+
+  @NotNull(message = "Need to specify the number of sets")
+  @Column(name = "sets")
+  private int sets;
+
   public Workout() {
 
   }
@@ -90,6 +98,12 @@ public class Workout {
   public String getName() {
     return name;
   }
+  public List<String> getLevel() {
+    return level;
+  }
+  public int getSets() {
+    return sets;
+  }
 
   public void setCardioDays(List<String> cardioDays) {
     CardioDays = cardioDays;
@@ -123,5 +137,11 @@ public class Workout {
   }
   public void setName(String name) {
     this.name = name;
+  }
+  public void setLevel(List<String> level) {
+    this.level = level;
+  }
+  public void setSets(int sets) {
+    this.sets = sets;
   }
 }
