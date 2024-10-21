@@ -32,9 +32,9 @@ public class Workout {
   @Column(name = "duration")
   private int duration;
 
-  @NotNull(message = "Need to specify the reps for every exercise")
-  @Column(name = "reps")
-  private int reps;
+//   @NotNull(message = "Need to specify the reps for every exercise")
+//   @Column(name = "reps")
+//   private int reps;
 
   @NotEmpty(message = "Need to specify the equipments availability")
   @Column(name = "equipments")
@@ -77,9 +77,9 @@ public class Workout {
   public Long getId() {
     return id;
   }
-  public int getReps() {
-    return reps;
-  }
+  // public int getReps() {
+  //   return reps;
+  // }
   public int getDuration() {
     return duration;
   }
@@ -123,9 +123,9 @@ public class Workout {
   public void setDuration(int duration) {
     this.duration = duration;
   }
-  public void setReps(int reps) {
-    this.reps = reps;
-  }
+  // public void setReps(int reps) {
+  //   this.reps = reps;
+  // }
   public void setRestDuration(int restDuration) {
     this.restDuration = restDuration;
   }

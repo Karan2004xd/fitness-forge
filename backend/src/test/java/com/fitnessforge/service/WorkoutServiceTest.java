@@ -53,7 +53,7 @@ public class WorkoutServiceTest {
     workout.setWorkoutCategories(workoutCategories);
     workout.setWorkoutDays(workoutDays);
     workout.setDuration(duration);
-    workout.setReps(reps);
+    // workout.setReps(reps);
     workout.setRestDuration(restDuration);
     workout.setEquipments(equipments);
     workout.setSets(sets);
@@ -79,7 +79,7 @@ public class WorkoutServiceTest {
     assertEquals(workout.getCardioDays(), testWorkout.getCardioDays());
     assertEquals(workout.getWorkoutCategories(), testWorkout.getWorkoutCategories());
     assertEquals(workout.getDuration(), testWorkout.getDuration());
-    assertEquals(workout.getReps(), testWorkout.getReps());
+    // assertEquals(workout.getReps(), testWorkout.getReps());
     assertEquals(workout.getRestDuration(), testWorkout.getRestDuration());
     assertEquals(workout.getWorkoutDays(), testWorkout.getWorkoutDays());
     assertEquals(workout.getEquipments(), testWorkout.getEquipments());
@@ -101,7 +101,7 @@ public class WorkoutServiceTest {
     assertEquals(workout.getCardioDays(), testWorkout.getCardioDays());
     assertEquals(workout.getWorkoutCategories(), testWorkout.getWorkoutCategories());
     assertEquals(workout.getDuration(), testWorkout.getDuration());
-    assertEquals(workout.getReps(), testWorkout.getReps());
+    // assertEquals(workout.getReps(), testWorkout.getReps());
     assertEquals(workout.getRestDuration(), testWorkout.getRestDuration());
     assertEquals(workout.getWorkoutDays(), testWorkout.getWorkoutDays());
     assertEquals(workout.getEquipments(), testWorkout.getEquipments());
@@ -123,7 +123,7 @@ public class WorkoutServiceTest {
     assertEquals(workout.getCardioDays(), testWorkout.getCardioDays());
     assertEquals(workout.getWorkoutCategories(), testWorkout.getWorkoutCategories());
     assertEquals(workout.getDuration(), testWorkout.getDuration());
-    assertEquals(workout.getReps(), testWorkout.getReps());
+    // assertEquals(workout.getReps(), testWorkout.getReps());
     assertEquals(workout.getRestDuration(), testWorkout.getRestDuration());
     assertEquals(workout.getWorkoutDays(), testWorkout.getWorkoutDays());
     assertEquals(workout.getEquipments(), testWorkout.getEquipments());
