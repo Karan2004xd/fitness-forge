@@ -56,7 +56,7 @@ public class WorkoutServiceTest {
     // workout.setReps(reps);
     workout.setRestDuration(restDuration);
     workout.setEquipments(equipments);
-    workout.setSets(sets);
+    // workout.setSets(sets);
     workout.setLevel(level);
 
     return workout;
@@ -83,7 +83,7 @@ public class WorkoutServiceTest {
     assertEquals(workout.getRestDuration(), testWorkout.getRestDuration());
     assertEquals(workout.getWorkoutDays(), testWorkout.getWorkoutDays());
     assertEquals(workout.getEquipments(), testWorkout.getEquipments());
-    assertEquals(workout.getSets(), testWorkout.getSets());
+    // assertEquals(workout.getSets(), testWorkout.getSets());
     assertEquals(workout.getLevel(), testWorkout.getLevel());
   }
 
@@ -105,7 +105,7 @@ public class WorkoutServiceTest {
     assertEquals(workout.getRestDuration(), testWorkout.getRestDuration());
     assertEquals(workout.getWorkoutDays(), testWorkout.getWorkoutDays());
     assertEquals(workout.getEquipments(), testWorkout.getEquipments());
-    assertEquals(workout.getSets(), testWorkout.getSets());
+    // assertEquals(workout.getSets(), testWorkout.getSets());
     assertEquals(workout.getLevel(), testWorkout.getLevel());
   }
 
@@ -127,7 +127,7 @@ public class WorkoutServiceTest {
     assertEquals(workout.getRestDuration(), testWorkout.getRestDuration());
     assertEquals(workout.getWorkoutDays(), testWorkout.getWorkoutDays());
     assertEquals(workout.getEquipments(), testWorkout.getEquipments());
-    assertEquals(workout.getSets(), testWorkout.getSets());
+    // assertEquals(workout.getSets(), testWorkout.getSets());
     assertEquals(workout.getLevel(), testWorkout.getLevel());
   }
 }

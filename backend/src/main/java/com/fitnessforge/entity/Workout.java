@@ -16,6 +16,10 @@ public class Workout {
   @Column(name = "id")
   private Long id;
 
+  @NotEmpty(message = "Need to specify you fitness Levels")
+  @Column(name = "level")
+  private List<String> level;
+
   @NotBlank(message = "Name cannot be blank")
   @Column(name = "name", unique = true)
   private String name;
@@ -32,9 +36,11 @@ public class Workout {
   @Column(name = "duration")
   private int duration;
 
-//   @NotNull(message = "Need to specify the reps for every exercise")
-//   @Column(name = "reps")
-//   private int reps;
+  @Column(name = "sets")
+  private List<String> sets;
+
+  @Column(name = "reps")
+  private String reps;
 
   @NotEmpty(message = "Need to specify the equipments availability")
   @Column(name = "equipments")
@@ -53,14 +59,6 @@ public class Workout {
   @Column(name = "exercise_to_exclude")
   private List<String> exerciseToExclude;
 
-  @NotEmpty(message = "Need to specify you fitness Levels")
-  @Column(name = "level")
-  private List<String> level;
-
-  @NotNull(message = "Need to specify the number of sets")
-  @Column(name = "sets")
-  private int sets;
-
   public Workout() {
 
   }
@@ -77,9 +75,9 @@ public class Workout {
   public Long getId() {
     return id;
   }
-  // public int getReps() {
-  //   return reps;
-  // }
+  public String getReps() {
+    return reps;
+  }
   public int getDuration() {
     return duration;
   }
@@ -101,7 +99,7 @@ public class Workout {
   public List<String> getLevel() {
     return level;
   }
-  public int getSets() {
+  public List<String> getSets() {
     return sets;
   }
 
@@ -123,9 +121,9 @@ public class Workout {
   public void setDuration(int duration) {
     this.duration = duration;
   }
-  // public void setReps(int reps) {
-  //   this.reps = reps;
-  // }
+  public void setReps(String reps) {
+    this.reps = reps;
+  }
   public void setRestDuration(int restDuration) {
     this.restDuration = restDuration;
   }
@@ -141,7 +139,7 @@ public class Workout {
   public void setLevel(List<String> level) {
     this.level = level;
   }
-  public void setSets(int sets) {
+  public void setSets(List<String> sets) {
     this.sets = sets;
   }
 }

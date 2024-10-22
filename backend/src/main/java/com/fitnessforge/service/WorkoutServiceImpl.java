@@ -41,7 +41,6 @@ public class WorkoutServiceImpl implements WorkoutService {
     return workout;
   }
 
-
   @Override
   public Map<String, List<Exercise>> getWorkoutExercises(int page, int size, Workout workout) {
     return null;
