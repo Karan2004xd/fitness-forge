@@ -36,8 +36,8 @@ public class Workout {
   @Column(name = "duration")
   private int duration;
 
-  @Column(name = "sets")
-  private List<String> sets;
+  @Column(name = "set")
+  private String set;
 
   @Column(name = "reps")
   private String reps;
@@ -52,6 +52,9 @@ public class Workout {
 
   @Column(name = "cardio_days")
   private List<String> CardioDays;
+
+  @Column(name = "cardio_duration")
+  private int cardioDuration;
 
   @Column(name = "exercise_to_include")
   private List<String> exerciseToInclude;
@@ -99,8 +102,11 @@ public class Workout {
   public List<String> getLevel() {
     return level;
   }
-  public List<String> getSets() {
-    return sets;
+  public String getSet() {
+    return set;
+  }
+  public int getCardioDuration() {
+    return cardioDuration;
   }
 
   public void setCardioDays(List<String> cardioDays) {
@@ -139,7 +145,10 @@ public class Workout {
   public void setLevel(List<String> level) {
     this.level = level;
   }
-  public void setSets(List<String> sets) {
-    this.sets = sets;
+  public void setSet(String set) {
+    this.set = set;
+  }
+  public void setCardioDuration(int cardioDuration) {
+    this.cardioDuration = cardioDuration;
   }
 }
