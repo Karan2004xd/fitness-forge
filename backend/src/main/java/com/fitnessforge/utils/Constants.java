@@ -24,8 +24,4 @@ public class Constants {
    * (For more information: https://github.com/yuhonas/free-exercise-db)
    * */
   public static final String EXERCISE_DB_URL_ENDPOINT = "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/dist/exercises.json";
-
-  // Workout Constants
-  
-  public static final int AVERAGE_REP_DURATION = 5;
 }

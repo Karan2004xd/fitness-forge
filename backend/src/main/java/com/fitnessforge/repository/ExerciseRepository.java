@@ -1,5 +1,6 @@
 package com.fitnessforge.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -59,4 +60,6 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long>, JpaSp
    * @return an object of org.springframework.data.domain.Page
    * */
   Page<Exercise> findAll(Specification<Exercise> specification, Pageable pageable);
+
+  List<Exercise> findAll(Specification<Exercise> specification);
 }

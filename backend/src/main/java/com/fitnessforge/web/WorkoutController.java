@@ -1,5 +1,8 @@
 package com.fitnessforge.web;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fitnessforge.entity.Exercise;
 import com.fitnessforge.entity.Workout;
 import com.fitnessforge.service.WorkoutService;
 
@@ -40,5 +44,11 @@ public class WorkoutController {
     @RequestParam(name = "name", required = true) String name
   ) {
     return new ResponseEntity<>(workoutService.getWorkout(name), HttpStatus.OK);
+  }
+
+  @GetMapping("/{id}/exercises")
+  public ResponseEntity<List<Map<String, List<Exercise>>>> getWorkoutExercises(@PathVariable Long id) {
+    Workout workout = workoutService.getWorkout(id);
+    return new ResponseEntity<>(workoutService.getWorkoutExercises(workout), HttpStatus.OK);
   }
 }

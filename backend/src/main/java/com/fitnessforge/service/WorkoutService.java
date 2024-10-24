@@ -14,5 +14,5 @@ public interface WorkoutService {
 
   Workout getWorkout(String name);
 
-  Map<String, List<Exercise>> getWorkoutExercises(int page, int size, Workout workout);
+  List<Map<String, List<Exercise>>> getWorkoutExercises(Workout workout);
 }

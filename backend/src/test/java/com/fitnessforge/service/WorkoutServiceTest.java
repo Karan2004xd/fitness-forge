@@ -43,7 +43,7 @@ public class WorkoutServiceTest {
     int restDuration = 30;
 
     List<String> cardioDays = List.of("monday");
-    List<String> level = List.of("beginner");
+    String level = "beginner";
 
     int sets = 3;
 
