@@ -108,6 +108,13 @@ public class MemberServiceImpl implements MemberService {
     }
   }
 
+  /** 
+   * Updates the existing member with the new member passed from the request,
+   * while checking if the member exists in the database or not.
+   *
+   * @param member an object of entity {@link com.fitnessforge.entity.Member}
+   * @return object of class {@link com.fitnessforge.entity.Member}
+   * */
   @Override
   public Member updateMember(Member member) {
     Member existingMember = FetchEntityUtil.GetEntity(memberRepository.findById(member.getId()), Member.class);

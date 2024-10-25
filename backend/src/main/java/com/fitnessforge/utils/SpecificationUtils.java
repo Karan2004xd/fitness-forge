@@ -51,7 +51,7 @@ public class SpecificationUtils {
   /** 
    * The method takes the value passed in the paramter and uses
    * it run a query using the 'in' opeartor to check whether defined value in the
-   * list of values in present inside the defined column.
+   * list of values is present inside the defined column.
    * 
    * @param <T> type of different generic specification
    * @param field The column name from the database.
@@ -60,5 +60,21 @@ public class SpecificationUtils {
    * */
   public static <T> Specification<T> in(String field, List<?> values) {
     return (root, query, cb) -> (values == null || values.isEmpty()) ? null : root.get(field).in(values);
+  }
+
+  /** 
+   * The method takes the value passed in the paramter and uses
+   * it run a query using the 'not in' opeartor to check whether defined value in the
+   * list of values is not present inside the defined column.
+   * 
+   * @param <T> type of different generic specification
+   * @param field The column name from the database.
+   * @param values The value to compared with to be like.
+   * @return An object of org.springframework.data.jpa.domain.Specification.
+   * */
+  public static <T> Specification<T> notIn(String field, List<?> values) {
+    return (root, query, cb) -> (values == null || values.isEmpty()) 
+          ? null 
+          : cb.not(root.get(field).in(values));
   }
 }

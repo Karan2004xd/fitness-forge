@@ -42,5 +42,11 @@ public interface MemberService {
    * */
   String getRefreshToken(Long id);
 
+  /** 
+   * Updates the existing member with the new member passed from the request
+   *
+   * @param member an object of entity {@link com.fitnessforge.entity.Member}
+   * @return object of class {@link com.fitnessforge.entity.Member}
+   * */
   Member updateMember(Member member);
 }

@@ -61,5 +61,12 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long>, JpaSp
    * */
   Page<Exercise> findAll(Specification<Exercise> specification, Pageable pageable);
 
+  /** 
+   * Fetches the exercises based on the specification specified
+   * in the parameter.
+   *
+   * @param specification an object of interface org.springframework.data.jpa.domain.Specification
+   * @return a list of {@link com.fitnessforge.entity.Exercise}
+   * */
   List<Exercise> findAll(Specification<Exercise> specification);
 }

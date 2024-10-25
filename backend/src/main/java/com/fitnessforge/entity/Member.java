@@ -1,6 +1,7 @@
 package com.fitnessforge.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -44,13 +45,16 @@ public class Member {
   @Column(name = "email", unique = true)
   private String email;
 
-  // @NotBlank(message = "Password cannot be blank")
+  @NotBlank(message = "Password cannot be blank")
   @Column(name = "password", nullable = false)
   private String password;
 
   @Column(name = "joined_on")
   @Temporal(TemporalType.DATE)
   private Date joinedOn = new Date();
+
+  @Column(name = "workouts")
+  private List<Long> workouts;
 
   /** 
    * Default Constructor of Member class
@@ -138,6 +142,14 @@ public class Member {
   }
 
   /** 
+   * Getter of the private attribute joinedOn 
+   * @return list of workouts id of entity {@link com.fitnessforge.entity.Workout}
+   * */
+  public List<Long> getWorkouts() {
+    return workouts;
+  }
+
+  /** 
    * Setter of the private attribute age 
    * @param age the age of member
    * */
@@ -215,5 +227,13 @@ public class Member {
    * */
   public void setJoinedOn(Date joinedOn) {
     this.joinedOn = joinedOn;
+  }
+
+  /** 
+   * Setter of the private attribute joinedOn 
+   * @param workouts the list of workout id of entity {@link com.fitnessforge.entity.Workout}
+   * */
+  public void setWorkouts(List<Long> workouts) {
+    this.workouts = workouts;
   }
 }

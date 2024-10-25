@@ -89,6 +89,13 @@ public class MemberController {
     return new ResponseEntity<>(memberService.getRefreshToken(id), HttpStatus.OK);
   }
 
+  /** 
+   * Updates the existing member from with the member passed,
+   * if the member exists.
+   *
+   * @param member an object of {@link com.fitnessforge.entity.Member} class
+   * @return an object of org.springframework.http.ResponseEntity
+   * */
   @PutMapping("/update")
   public ResponseEntity<Member> updateMember(@Valid @RequestBody Member member) {
     return new ResponseEntity<>(memberService.updateMember(member), HttpStatus.OK);
