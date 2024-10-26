@@ -7,7 +7,8 @@ export enum AUTHENTICATION {
 export enum MEMBER_API_ROUTES {
   createMember = 'member/create',
   getMember = 'member/',
-  getRefreshToken = 'member/auth_refresh/'
+  getRefreshToken = 'member/auth_refresh/',
+  getWorkouts = 'member/workouts/'
 };
 
 export enum EXERCISE_API_ROUTES {
@@ -17,4 +18,8 @@ export enum EXERCISE_API_ROUTES {
   getImage = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises',
   getExerciseByPageWithFilter = 'exercise/page/filter?',
   getExerciseInfo = '/exercise/info'
+};
+
+export enum WORKOUT_API_ROUTES {
+  createWorkout = 'workout'
 };

@@ -1,5 +1,7 @@
 package com.fitnessforge.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -125,5 +127,18 @@ public class MemberServiceImpl implements MemberService {
       return memberToReturn;
     }
     return null;
+  }
+
+  /** 
+   * Fetches the list of workout ids associated with the
+   * member of the provided id.
+   *
+   * @param id the id of {@link com.fitnessforge.entity.Member} entity
+   * @return an list of ids of {@link com.fitnessforge.entity.Workout} entity
+   * */
+  @Override
+  public List<Long> getWorkoutIds(Long id) {
+    Member member = FetchEntityUtil.GetEntity(memberRepository.findById(id), Member.class);
+    return member.getWorkouts();
   }
 }

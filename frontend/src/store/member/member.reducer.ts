@@ -4,7 +4,7 @@ import { Member } from "./member.types";
 export type MemberState = {
   currentMember: Member | null;
   isAuthenticated: boolean;
-  error: Object | null
+  error: Object | null;
 };
 
 const initialState: MemberState = {
@@ -95,7 +95,7 @@ const memberSlice = createSlice({
     getRefreshTokenFailed: (state, action: PayloadAction<Object>) => {
       state.error = action.payload;
       state.currentMember = null;
-    }
+    },
   }
 });
 

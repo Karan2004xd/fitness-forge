@@ -12,8 +12,20 @@ export interface ApiVariables {
   accessToken: string;
 }
 
-export const makePostRequest = async (url: string, data: any) => {
-  const clientApi = axios.create({...apiDetails});
+export const makePostRequest = async (url: string, data: any, variables?: ApiVariables) => {
+  let clientApi;
+  if (variables) {
+    clientApi = axios.create({
+      ...apiDetails,
+      headers: {
+        ...apiDetails.headers,
+        Authorization: `Bearer ${variables.accessToken}`
+      }
+    });
+  } else {
+    clientApi = axios.create({...apiDetails});
+  }
+
   return await clientApi.post(url, data);
 };
 
@@ -28,3 +40,23 @@ export const makeGetRequest = async (url: string, variables: ApiVariables) => {
 
   return await clientApi.get(url);
 }
+
+export const getRequestParamsUrl = (filters: Map<string, string[] | string | number>, url: string) => {
+  const queryParams: string[] = [];
+
+  filters.forEach((value, key) => {
+    if (value !== undefined && value !== null) {
+      if (key === 'name' || typeof value === 'number') {
+        queryParams.push(`${key}=${encodeURIComponent(value.toString())}`);
+      } else if (Array.isArray(value)) {
+        queryParams.push(`${key}=${value.map(v => encodeURIComponent(v)).join(',')}`);
+      }
+    }
+  });
+
+  if (queryParams.length > 0) {
+    url += `${queryParams.join('&')}`;
+  }
+
+  return url;
+};

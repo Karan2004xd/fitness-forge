@@ -190,7 +190,6 @@ export function* memberSagas() {
   yield all([
     call(onSignUpStart),
     call(onGoogleSignUpStart),
-    call(onSignInStart),
-    call(onGoogleSignInStart)
+    call(onSignInStart)
   ]);
 }

@@ -114,7 +114,7 @@ export const MainContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  background-color: -webkit-linear-gradient(to right, #414345, #232526);
-  background: linear-gradient(to right, #414345, #232526);
+  background: -webkit-linear-gradient(to right, #A43931, #1D4350);
+  background: linear-gradient(to right, #A43931, #1D4350);
   background-size: cover;
 `;

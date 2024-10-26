@@ -12,4 +12,9 @@ export const selectCurrentMember = createSelector(
 export const selectIsMemberAuthenticated = createSelector(
   selectMemberReducer,
   (member: MemberState) => member.isAuthenticated
-)
+);
+
+export const selectWorkouts = createSelector(
+  selectMemberReducer,
+  (member: MemberState) => member.currentMember?.workouts
+);

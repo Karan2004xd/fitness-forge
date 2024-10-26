@@ -8,7 +8,7 @@ import {
 
 import { PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios"
-import { makeGetRequest } from "../../utils/api/api-calls.utils"
+import { getRequestParamsUrl, makeGetRequest } from "../../utils/api/api-calls.utils"
 import { EXERCISE_API_ROUTES } from "../../utils/api/api-routes.util";
 import { selectCurrentMember } from "../member/member.selector";
 import { Member } from "../member/member.types";
@@ -29,27 +29,6 @@ import {
 } from "./exercise.reducer";
 
 import { Exercise, ExerciseFilter } from "./exercise.types";
-
-const getFilterUrl = (filters: Map<string, string[] | string | number>) => {
-  let url: string = EXERCISE_API_ROUTES.getExerciseByPageWithFilter;
-  const queryParams: string[] = [];
-
-  filters.forEach((value, key) => {
-    if (value !== undefined && value !== null) {
-      if (key === 'name' || typeof value === 'number') {
-        queryParams.push(`${key}=${encodeURIComponent(value.toString())}`);
-      } else if (Array.isArray(value)) {
-        queryParams.push(`${key}=${value.map(v => encodeURIComponent(v)).join(',')}`);
-      }
-    }
-  });
-
-  if (queryParams.length > 0) {
-    url += `${queryParams.join('&')}`;
-  }
-
-  return url;
-};
 
 function* getTotalExercises() {
   try {
@@ -129,7 +108,7 @@ function* getExerciseByPageWithFilters(action: PayloadAction<{
       };
 
       const filtersMap = new Map<string, string | number | string[]>(Object.entries(newFilter));
-      const url = getFilterUrl(filtersMap);
+      const url = getRequestParamsUrl(filtersMap, EXERCISE_API_ROUTES.getExerciseByPageWithFilter);
 
       const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
       if (response.data) {

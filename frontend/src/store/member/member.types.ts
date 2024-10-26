@@ -10,4 +10,5 @@ export interface Member {
   joinedOn?: string;
   accessToken?: string;
   age?: number;
+  workouts?: number[]
 };

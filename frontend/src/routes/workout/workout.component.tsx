@@ -1,4 +1,4 @@
-const About = () => {
+const Workout = () => {
   return (
     <div>
       This is the about page.
@@ -6,4 +6,4 @@ const About = () => {
   );
 }
 
-export default About;
+export default Workout;

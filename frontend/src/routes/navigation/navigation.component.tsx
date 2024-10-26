@@ -62,8 +62,8 @@ const Navigation = () => {
           </li>
 
           <li>
-            <LinkTag to='/about' animate={true}>
-              About
+            <LinkTag to='/workout' animate={true}>
+              Workout
             </LinkTag>
           </li>
         </NavbarBodyMiddle>

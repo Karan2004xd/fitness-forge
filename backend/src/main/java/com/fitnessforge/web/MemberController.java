@@ -1,6 +1,7 @@
 package com.fitnessforge.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,5 +100,17 @@ public class MemberController {
   @PutMapping("/update")
   public ResponseEntity<Member> updateMember(@Valid @RequestBody Member member) {
     return new ResponseEntity<>(memberService.updateMember(member), HttpStatus.OK);
+  }
+
+  /** 
+   * Fetches the workout ids that the member is associatied with, 
+   * and returns it in list format.
+   *
+   * @param id an object of {@link com.fitnessforge.entity.Member} class
+   * @return an object of org.springframework.http.ResponseEntity
+   * */
+  @GetMapping("/workouts/{id}")
+  public ResponseEntity<List<Long>> getMemberWorkouts(@PathVariable Long id) {
+    return new ResponseEntity<>(memberService.getWorkoutIds(id), HttpStatus.OK);
   }
 }
