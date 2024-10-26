@@ -1,4 +1,4 @@
-import { call, put, all, takeLatest } from "@redux-saga/core/effects";
+import { call, put, all, takeLatest, select } from "@redux-saga/core/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import { UserCredential } from "firebase/auth";
@@ -12,6 +12,9 @@ import {
   googleSignUpFailed, 
   googleSignUpStart, 
   googleSignUpSuccess, 
+  refreshCurrentMemberFailed, 
+  refreshCurrentMemberStart, 
+  refreshCurrentMemberSuccess, 
   signInFailed, 
   signInStart, 
   signInSuccess, 
@@ -19,6 +22,7 @@ import {
   signUpStart, 
   signUpSuccess 
 } from "./member.reducer";
+import { selectCurrentMember } from "./member.selector";
 import { Member } from "./member.types";
 
 const signUpApi = async (path: string, member: Member | any) => {
@@ -170,6 +174,21 @@ function* googleSignIn() {
   }
 }
 
+function* refreshCurrentMember() {
+  const { id, accessToken } = yield select(selectCurrentMember);
+
+  try {
+    if (id && accessToken) {
+      const url = `${MEMBER_API_ROUTES.getMember}${id}`;
+      const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
+
+      yield put(refreshCurrentMemberSuccess({currentMember: response.data}));
+    }
+  } catch (error: any) {
+    yield put(refreshCurrentMemberFailed(error.response.data));
+  }
+}
+
 export function* onSignUpStart() {
   yield takeLatest(signUpStart.type, signUp);
 }
@@ -186,10 +205,15 @@ export function* onSignInStart() {
   yield takeLatest(signInStart.type, signIn);
 }
 
+export function* onRefreshCurrentMemberStart() {
+  yield takeLatest(refreshCurrentMemberStart.type, refreshCurrentMember);
+}
+
 export function* memberSagas() {
   yield all([
     call(onSignUpStart),
     call(onGoogleSignUpStart),
-    call(onSignInStart)
+    call(onSignInStart),
+    call(onRefreshCurrentMemberStart)
   ]);
 }

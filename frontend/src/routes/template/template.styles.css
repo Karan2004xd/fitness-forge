@@ -1,0 +1,14 @@
+.main-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin: 10px;
+}
+
+.main-container {
+  position: absolute;
+  top: 15%;
+  color: black;
+};

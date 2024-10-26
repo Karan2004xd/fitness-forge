@@ -3,6 +3,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import { getRequestParamsUrl, makePostRequest } from "../../utils/api/api-calls.utils";
 import { WORKOUT_API_ROUTES } from "../../utils/api/api-routes.util";
+import { refreshCurrentMemberStart } from "../member/member.reducer";
 import { selectCurrentMember } from "../member/member.selector";
 import { createWorkoutFailed, createWorkoutStart, createWorkoutSuccess } from "./workout.reducer";
 import { Workout } from "./workout.types";
@@ -24,6 +25,7 @@ function* createWorkout(action: PayloadAction<{ workout: Workout }>) {
       );
 
       yield put(createWorkoutSuccess({ workout: response.data }));
+      yield put(refreshCurrentMemberStart());
     }
   } catch (error: any) {
     yield put(createWorkoutFailed(error.response.data));
