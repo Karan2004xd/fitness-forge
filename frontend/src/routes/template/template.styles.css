@@ -7,6 +7,11 @@ input {
   margin: 10px;
 }
 
+span {
+  margin-left: 5px;
+  font-weight: bold;
+}
+
 .main-container {
   position: absolute;
   top: 15%;
