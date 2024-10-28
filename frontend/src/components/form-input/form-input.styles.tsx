@@ -27,7 +27,7 @@ export const InputContainer = styled.input`
 `;
 
 export const InputFieldContainer = styled.div`
-  width: 75%;
+  width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -37,8 +37,6 @@ export const InputFieldContainer = styled.div`
 
   svg {
     position: absolute;
-    left: 4%;
-    top: 30%;
     transform: translateX(-50%);
     fill: black;
   }

@@ -97,7 +97,7 @@ const FilterOptions = ({ filterType, ...otherProps }: FilterOptionsProps) => {
       {
         options.map((option, index) => (
           <label key={index}>
-            <input 
+            <input key={index}
               type='checkbox'
               checked={checkIfOptionExists(option.toLowerCase())}
               onChange={() => checkboxClickHandler(option.toLowerCase())}
@@ -105,6 +105,7 @@ const FilterOptions = ({ filterType, ...otherProps }: FilterOptionsProps) => {
           </label>
         ))
       }
+
     </FilterOptionsContainer>
   );
 };

@@ -29,6 +29,15 @@ export const MainInputBox = styled.form`
   a {
     margin-bottom: 2rem;
   }
+
+  input {
+    width: 68%;
+  }
+  
+  svg {
+    left: 15%;
+    top: 30%;
+  }
 `;
 
 export const MainInputBoxTitle = styled.p`
@@ -64,27 +73,3 @@ export const MainInputGoogleBtn = styled(Button)`
   position: relative;
   left: 4%;
 `;
-
-// .auth-main-container {
-// }
-
-// .main-input-box {
-// }
-
-// .main-input-box__title {
-// }
-
-// .main-input-box__title span:first-child {
-// }
-
-// .main-input-box-btn-container {
-// }
-
-// #main-input-box__sign-in-btn {
-// }
-
-// #main-input-box__google-sign-in-btn {
-// }
-
-// .main-input-box a {
-// }

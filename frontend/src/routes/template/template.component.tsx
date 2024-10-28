@@ -1,148 +1,123 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Workout } from '../../store/workout/workout.types';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './template.styles.css';
 
 import {
-  createWorkoutStart, deleteWorkoutStart, updateWorkoutStart
+  createWorkoutStart,
+  defaultFormFields,
+  setFormFields,
 } from '../../store/workout/workout.reducer';
 
-const defaultFormFields: Workout = {
-  name: '',
-  level: '',
-  duration: 0,
-  workoutCategories: [],
-  workoutDays: [],
-  restDuration: 0,
-  cardioDays: [],
-  cardioDuration: 0,
-  equipments: [],
-  exerciseToExclude: []
+import FormInput from '../../components/form-input/form-input.component';
+import { EXERCISE_FILTER_TYPES } from '../../components/filter-options/filter-options.component';
+import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
+import WorkoutOptions from '../../components/workout-options/workout-options.component';
+import { selectFormFields } from '../../store/workout/workout.selector';
+
+export const WORKOUT_CONSTANTS = {
+  days: [
+    'Monday', 'Tuesday',
+    'Wednesday', 'Thursday',
+    'Friday', 'Saturday',
+    'Sunday'
+  ]
 };
 
 const Template = () => {
-  const [formFields, setFormFields] = useState(defaultFormFields);
+  const [formFieldsValues, setFormFieldsValues] = useState(defaultFormFields);
+
   const dispatch = useDispatch();
+  const fields = useSelector(selectFormFields);
+
+  const { days } = WORKOUT_CONSTANTS;
+  const { category, equipment } = EXERCISE_FILTER_TYPES;
+
+  useEffect(() => {
+    if (fields) {
+      setFormFieldsValues(fields);
+    } else {
+      setFormFieldsValues(defaultFormFields);
+    }
+  }, [fields]);
 
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(createWorkoutStart({workout: formFields}));
+    dispatch(setFormFields({ formFields: defaultFormFields }));
+    dispatch(createWorkoutStart({workout: formFieldsValues}));
   };
-
-  const deleteWorkout = (id: number) => {
-    dispatch(deleteWorkoutStart({workoutId: id}));
-  };
-
-  const updateWorkout = () => {
-    dispatch(updateWorkoutStart({workout: formFields}));
-  }
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
-    const { name, value, type, checked } = event.target;
-    setFormFields((prevFields) => {
-      const fieldValue = prevFields[name as keyof Workout];
+    const { name, value } = event.target;
+    const newFormFieldsValue = { ...formFieldsValues, [name]: value };
 
-      if (Array.isArray(fieldValue)) {
-        let updatedArray;
-
-        if (type === 'checkbox') {
-          updatedArray = checked
-            ? [...fieldValue, value]
-            : fieldValue.filter((item) => item !== value);
-        } else {
-          updatedArray = [value];
-        }
-        return { ...prevFields, [name]: updatedArray};
-      }
-
-      return { ...prevFields, [name]: type === 'checkbox' ? checked : value };
-    });
+    setFormFieldsValues(newFormFieldsValue);
+    dispatch(setFormFields({ formFields: newFormFieldsValue }));
   }
 
   return (
     <div className="main-container">
-      <form onSubmit={onSubmitHandler}>
+      <form onSubmit={onSubmitHandler} className="main-container__form">
 
+        <span>Workout Level</span>
         <select onChange={onChangeHandler} name='level'>
-          <option value={undefined}/>
+          <option value={''}>Choose a Level</option>
           <option value={'Beginner'}>Beginner</option>
           <option value={'Intermediate'}>Intermediate</option>
           <option value={'Expert'}>Expert</option>
         </select>
 
-        <input 
+        <span>Workout Name</span>
+        <FormInput 
           type='text'
           placeholder={"Name"}
           onChange={onChangeHandler}
           name='name'
+          id='text-input'
         />
 
         <span>Workout Categories</span>
-        <label>
-          <input 
-            type='checkbox' 
-            onChange={onChangeHandler} 
-            name='workoutCategories' 
-            value={'Strength'}
-          /> Strength
-        </label>
+        <WorkoutOptions type='workoutCategories' data={category} />
 
         <span>Workout Days</span>
-        <label>
-          <input
-            type='checkbox'
-            onChange={onChangeHandler}
-            name='workoutDays'
-            value={'Monday'}
-          /> Monday 
-        </label>
+        <WorkoutOptions type='workoutDays' data={days} />
 
-        <input 
+        <span>Enter Workout Duration (minutes)</span>
+        <FormInput 
           type='number'
-          placeholder='duration'
+          placeholder='Duration'
           name='duration'
           onChange={onChangeHandler}
+          id='text-input'
         />
 
         <span>Equipments</span>
-        <label>
-          <input 
-            type='checkbox'
-            onChange={onChangeHandler}
-            name='equipments'
-            value={'None'}
-          /> None 
-        </label>
+        <WorkoutOptions type='equipments' data={equipment} />
 
-        <input 
+        <span>Enter Rest Duration (seconds)</span>
+        <FormInput 
           type='number'
-          placeholder='rest duration'
+          placeholder='Rest Duration'
           name='restDuration'
           onChange={onChangeHandler}
+          id='text-input'
         />
 
         <span>Cardio Days</span>
-        <label>
-          <input
-            type='checkbox'
-            onChange={onChangeHandler}
-            name='cardioDays'
-            value={'Monday'}
-          /> Monday 
-        </label>
+        <WorkoutOptions type='cardioDays' data={days} />
 
-        <input 
+        <span>Enter Cardio Duration (minutes)</span>
+        <FormInput 
           type='number'
-          placeholder='cardio duration'
+          placeholder='Cardio Duration'
           name='cardioDuration'
           onChange={onChangeHandler}
+          id='text-input'
         />
 
-        <input type='submit' value={'Create Workout Template'} />
+        <Button type='submit' buttonType={BUTTON_TYPE_CLASSES.base}>
+          Create Workout Template
+        </Button>
       </form>
-
-      <button onClick={() => deleteWorkout(5)}>Delete Workout</button>
-      <button onClick={updateWorkout}>Update Workout</button>
     </div>
   );
 }

@@ -1,0 +1,23 @@
+.option-label {
+  font-size: 18px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.option-label:hover,
+.option-label:active {
+  cursor: pointer;
+  color: #E42E41;
+  transition: 0.1s;
+}
+
+.option-label [type="checkbox"] {
+  transform: scale(1.5);
+  margin-right: 8px;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}

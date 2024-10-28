@@ -13,6 +13,20 @@ export type WorkoutState = {
   workoutExercises: WorkoutExerciseType[];
   lastDeletedWorkout: number | undefined;
   lastWorkout: Workout | null;
+  formFields: Workout | null;
+};
+
+export const defaultFormFields: Workout = {
+  name: '',
+  level: '',
+  duration: 0,
+  workoutCategories: [],
+  workoutDays: [],
+  restDuration: 0,
+  cardioDays: [],
+  cardioDuration: 0,
+  equipments: [],
+  exerciseToExclude: []
 };
 
 const initialState: WorkoutState = {
@@ -20,7 +34,8 @@ const initialState: WorkoutState = {
   error: null,
   workoutExercises: [],
   lastDeletedWorkout: undefined,
-  lastWorkout: null
+  lastWorkout: null,
+  formFields: defaultFormFields 
 };
 
 const workoutSlice = createSlice({
@@ -67,6 +82,10 @@ const workoutSlice = createSlice({
       state.error = action.payload;
       state.currentWorkout = state.lastWorkout;
     },
+
+    setFormFields: (state, action: PayloadAction<{ formFields: Workout }>) => {
+      state.formFields = action.payload.formFields;
+    }
   }
 });
 
@@ -79,7 +98,8 @@ export const {
   deleteWorkoutFailed,
   updateWorkoutStart,
   updateWorkoutSuccess,
-  updateWorkoutFailed
+  updateWorkoutFailed,
+  setFormFields
 } = workoutSlice.actions;
 
 export default workoutSlice.reducer;
