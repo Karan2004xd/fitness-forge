@@ -123,6 +123,6 @@ public class WorkoutController {
     @RequestParam(name = "memberId", required = true) Long memberId 
   ) {
     workoutService.deleteWorkout(workoutId, memberId);
-    return new ResponseEntity<>(HttpStatus.FOUND);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }

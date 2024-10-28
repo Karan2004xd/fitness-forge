@@ -2,7 +2,7 @@ import { call, put, all, takeLatest, select } from "@redux-saga/core/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import { UserCredential } from "firebase/auth";
-import { ApiVariables, makeGetRequest, makePostRequest } from "../../utils/api/api-calls.utils";
+import { makeRequest, REQUEST_TYPE } from "../../utils/api/api-calls.utils";
 import { AUTHENTICATION, MEMBER_API_ROUTES } from "../../utils/api/api-routes.util";
 import { signInWithGooglePopUp } from "../../utils/firebase/firebase.util";
 import { 
@@ -25,18 +25,12 @@ import {
 import { selectCurrentMember } from "./member.selector";
 import { Member } from "./member.types";
 
-const signUpApi = async (path: string, member: Member | any) => {
+const getMemberById = async (id: number, accessToken: string) => {
   try {
-    const response = makePostRequest(path, member);
-    return response;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const getMemberById = async (id: number, accessToken: ApiVariables) => {
-  try {
-    const resposne = makeGetRequest(`${MEMBER_API_ROUTES.getMember}${id}`, accessToken);
+    const resposne = makeRequest(`${MEMBER_API_ROUTES.getMember}${id}`, {
+      accessToken: accessToken,
+      type: REQUEST_TYPE.GET
+    });
     return resposne;
   } catch (error) {
     throw error;
@@ -44,9 +38,16 @@ const getMemberById = async (id: number, accessToken: ApiVariables) => {
 }
 
 const getAccessTokenAndId = async (email: string, password: string) => {
-  const firstResponse: AxiosResponse = await signUpApi(
+  const firstResponse: AxiosResponse = await makeRequest(
     AUTHENTICATION.authencticateMember,
-    { email: email, password: password }
+    {
+      data: {
+        email: email,
+        password: password
+      },
+
+      type: REQUEST_TYPE.POST
+    },
   );
 
   let accessToken: string = firstResponse.headers['authorization'];
@@ -65,7 +66,7 @@ const getAccessTokenAndId = async (email: string, password: string) => {
 };
 
 const populateMember = async (id: number, accessToken: string) => {
-  const secondResponse: AxiosResponse = await getMemberById(id, { accessToken });
+  const secondResponse: AxiosResponse = await getMemberById(id, accessToken);
 
   const resultMember: Member = {
     ...secondResponse.data,
@@ -98,7 +99,11 @@ const signUpMemberWithGoogle = async (userCredential: UserCredential, member?: M
       name: displayName
     };
 
-    await signUpApi(MEMBER_API_ROUTES.createMember, newMember);
+    await makeRequest(MEMBER_API_ROUTES.createMember, {
+      type: REQUEST_TYPE.POST,
+      data: newMember
+    });
+
     if (email && uid) {
       const resultMember = await getAccessTokenAndId(email, uid);
       return resultMember;
@@ -110,7 +115,15 @@ const signUpMemberWithGoogle = async (userCredential: UserCredential, member?: M
 
 function* signUp(action: PayloadAction<{member: Member}>) {
   try {
-    const respone: AxiosResponse = yield call(signUpApi, MEMBER_API_ROUTES.createMember, action.payload.member);
+    const respone: AxiosResponse = yield call(
+      makeRequest, 
+      MEMBER_API_ROUTES.createMember,
+      {
+        type: REQUEST_TYPE.POST,
+        data: action.payload.member 
+      }
+    );
+
     const { email, password } = action.payload.member;
 
     if (email && password) {
@@ -123,7 +136,7 @@ function* signUp(action: PayloadAction<{member: Member}>) {
     }
 
   } catch (error: any) {
-    yield put(signUpFailed(error.response.data));
+    yield put(signUpFailed(error));
   }
 }
 
@@ -146,7 +159,7 @@ function* signIn(action: PayloadAction<{ member: Member}> ) {
       yield put(signInSuccess({member: resultMember}));
     }
   } catch (error: any) {
-    yield put(signInFailed(error.response.data));
+    yield put(signInFailed(error));
   }
 }
 
@@ -168,9 +181,9 @@ function* googleSignIn() {
       yield put(googleSignUpSuccess({member: member}));
       return;
     } catch (error: any) {
-      yield put(googleSignUpFailed(error.response.data));
+      yield put(googleSignUpFailed(error));
     }
-    yield put(googleSignInFailed(error.response.data));
+    yield put(googleSignInFailed(error));
   }
 }
 
@@ -180,12 +193,19 @@ function* refreshCurrentMember() {
   try {
     if (id && accessToken) {
       const url = `${MEMBER_API_ROUTES.getMember}${id}`;
-      const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
+      const response: AxiosResponse = yield call(makeRequest, url, {
+        accessToken: accessToken,
+        type: REQUEST_TYPE.GET
+      });
+      const newMember: Member = {
+        ...response.data,
+        accessToken: accessToken
+      };
 
-      yield put(refreshCurrentMemberSuccess({currentMember: response.data}));
+      yield put(refreshCurrentMemberSuccess({currentMember: newMember}));
     }
   } catch (error: any) {
-    yield put(refreshCurrentMemberFailed(error.response.data));
+    yield put(refreshCurrentMemberFailed(error));
   }
 }
 

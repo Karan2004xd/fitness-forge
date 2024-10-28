@@ -86,8 +86,8 @@ export const MainContainerUtils = styled.div`
 export const MainContainerExercises = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 10px;
-  row-gap: 10px;
+  column-gap: 20px;
+  row-gap: 20px;
 
   @media (max-width: 75rem) {
     display: grid;

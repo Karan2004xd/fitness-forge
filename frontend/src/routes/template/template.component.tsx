@@ -1,6 +1,11 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Workout } from '../../store/workout/workout.types';
 import './template.styles.css';
+
+import {
+  createWorkoutStart, deleteWorkoutStart, updateWorkoutStart
+} from '../../store/workout/workout.reducer';
 
 const defaultFormFields: Workout = {
   name: '',
@@ -17,161 +22,127 @@ const defaultFormFields: Workout = {
 
 const Template = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const dispatch = useDispatch();
 
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    dispatch(createWorkoutStart({workout: formFields}));
   };
 
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    console.log(name, value);
-    setFormFields({...formFields, [name]: value});
+  const deleteWorkout = (id: number) => {
+    dispatch(deleteWorkoutStart({workoutId: id}));
+  };
+
+  const updateWorkout = () => {
+    dispatch(updateWorkoutStart({workout: formFields}));
+  }
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
+    const { name, value, type, checked } = event.target;
+    setFormFields((prevFields) => {
+      const fieldValue = prevFields[name as keyof Workout];
+
+      if (Array.isArray(fieldValue)) {
+        let updatedArray;
+
+        if (type === 'checkbox') {
+          updatedArray = checked
+            ? [...fieldValue, value]
+            : fieldValue.filter((item) => item !== value);
+        } else {
+          updatedArray = [value];
+        }
+        return { ...prevFields, [name]: updatedArray};
+      }
+
+      return { ...prevFields, [name]: type === 'checkbox' ? checked : value };
+    });
   }
 
   return (
     <div className="main-container">
       <form onSubmit={onSubmitHandler}>
 
-        <select>
-          <option>Choose a level</option>
-          <option>Beginner</option>
-          <option>Intermediate</option>
-          <option>Expert</option>
+        <select onChange={onChangeHandler} name='level'>
+          <option value={undefined}/>
+          <option value={'Beginner'}>Beginner</option>
+          <option value={'Intermediate'}>Intermediate</option>
+          <option value={'Expert'}>Expert</option>
         </select>
 
-        <input type='text' placeholder={"Name"} onChange={onChangeHandler}/>
+        <input 
+          type='text'
+          placeholder={"Name"}
+          onChange={onChangeHandler}
+          name='name'
+        />
 
         <span>Workout Categories</span>
         <label>
-          <input type='checkbox' onChange={onChangeHandler} name='strength' value={'Strength'}/> Strength
-        </label>
-
-        <label>
-          <input type='checkbox' onChange={onChangeHandler}/> Powerlifting
-        </label>
-
-        <label>
-          <input type='checkbox'/> Strongman 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Olympic WeightLifting 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Polymetrics
-        </label>
-
-        <label>
-          <input type='checkbox'/> Stretching
+          <input 
+            type='checkbox' 
+            onChange={onChangeHandler} 
+            name='workoutCategories' 
+            value={'Strength'}
+          /> Strength
         </label>
 
         <span>Workout Days</span>
         <label>
-          <input type='checkbox'/> Sunday 
+          <input
+            type='checkbox'
+            onChange={onChangeHandler}
+            name='workoutDays'
+            value={'Monday'}
+          /> Monday 
         </label>
 
-        <label>
-          <input type='checkbox'/> Monday 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Tuesday 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Wednesday
-        </label>
-
-        <label>
-          <input type='checkbox'/> Thursday 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Friday 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Saturday 
-        </label>
-
-        <input type='number' placeholder='duration'/>
+        <input 
+          type='number'
+          placeholder='duration'
+          name='duration'
+          onChange={onChangeHandler}
+        />
 
         <span>Equipments</span>
         <label>
-          <input type='checkbox'/> Medicine ball
-        </label>
-        <label>
-          <input type='checkbox'/> Dumbbell
-        </label>
-        <label>
-          <input type='checkbox'/> Body only 
-        </label>
-        <label>
-          <input type='checkbox'/> Olympic WeightLifting 
-        </label>
-        <label>
-          <input type='checkbox'/> Kettlebells
-        </label>
-        <label>
-          <input type='checkbox'/> Foam roll
-        </label>
-        <label>
-          <input type='checkbox'/> Cable 
-        </label>
-        <label>
-          <input type='checkbox'/> Machine
-        </label>
-        <label>
-          <input type='checkbox'/> Barbell
-        </label>
-        <label>
-          <input type='checkbox'/> Exercise ball
-        </label>
-        <label>
-          <input type='checkbox'/> E-Z curl bar
-        </label>
-        <label>
-          <input type='checkbox'/> Other
+          <input 
+            type='checkbox'
+            onChange={onChangeHandler}
+            name='equipments'
+            value={'None'}
+          /> None 
         </label>
 
-        <input type='number' placeholder='rest duration'/>
+        <input 
+          type='number'
+          placeholder='rest duration'
+          name='restDuration'
+          onChange={onChangeHandler}
+        />
 
         <span>Cardio Days</span>
         <label>
-          <input type='checkbox'/> Sunday 
+          <input
+            type='checkbox'
+            onChange={onChangeHandler}
+            name='cardioDays'
+            value={'Monday'}
+          /> Monday 
         </label>
 
-        <label>
-          <input type='checkbox'/> Monday 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Tuesday 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Wednesday
-        </label>
-
-        <label>
-          <input type='checkbox'/> Thursday 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Friday 
-        </label>
-
-        <label>
-          <input type='checkbox'/> Saturday 
-        </label>
-
-        <input type='number' placeholder='cardio duration'/>
-
-        <input type='text' placeholder='exercise to exclude'/>
+        <input 
+          type='number'
+          placeholder='cardio duration'
+          name='cardioDuration'
+          onChange={onChangeHandler}
+        />
 
         <input type='submit' value={'Create Workout Template'} />
       </form>
+
+      <button onClick={() => deleteWorkout(5)}>Delete Workout</button>
+      <button onClick={updateWorkout}>Update Workout</button>
     </div>
   );
 }

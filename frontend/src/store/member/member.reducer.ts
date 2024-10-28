@@ -97,9 +97,7 @@ const memberSlice = createSlice({
       state.currentMember = null;
     },
 
-    refreshCurrentMemberStart: (state) => {
-      state.currentMember = null;
-      state.isAuthenticated = false;
+    refreshCurrentMemberStart: () => {
     },
 
     refreshCurrentMemberSuccess: (state, action: PayloadAction<{ currentMember: Member }>) => {

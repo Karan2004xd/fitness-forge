@@ -8,7 +8,7 @@ import {
 
 import { PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios"
-import { getRequestParamsUrl, makeGetRequest } from "../../utils/api/api-calls.utils"
+import { getRequestParamsUrl, makeRequest, REQUEST_TYPE } from "../../utils/api/api-calls.utils"
 import { EXERCISE_API_ROUTES } from "../../utils/api/api-routes.util";
 import { selectCurrentMember } from "../member/member.selector";
 import { Member } from "../member/member.types";
@@ -35,7 +35,13 @@ function* getTotalExercises() {
     const accessMember: Member = yield select(selectCurrentMember);
     const { accessToken } = accessMember;
     if (accessToken) {
-      const response: AxiosResponse = yield call(makeGetRequest, EXERCISE_API_ROUTES.getTotalExercises, { accessToken });
+      const response: AxiosResponse = yield call(
+        makeRequest, 
+        EXERCISE_API_ROUTES.getTotalExercises,
+        {
+          accessToken: accessToken,
+          type: REQUEST_TYPE.GET
+        });
       const { count } = response.data;
 
       if (count) {
@@ -43,7 +49,7 @@ function* getTotalExercises() {
       }
     }
   } catch (error: any) {
-    yield put(fetchTotalExercisesFailed(error.response.data));
+    yield put(fetchTotalExercisesFailed(error));
   }
 };
 
@@ -56,14 +62,17 @@ function* getExerciseByPage(action: PayloadAction<{pageNumber: number; size: num
       const { pageNumber, size } = action.payload;
       const url = `${EXERCISE_API_ROUTES.getExerciseByPage}?page=${pageNumber}&size=${size}`;
 
-      const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
+      const response: AxiosResponse = yield call(makeRequest, url, {
+        type: REQUEST_TYPE.GET,
+        accessToken: accessToken
+      });
       if (response.data) {
         const exercises: Exercise[] = response.data;
         yield put(fetchExerciseByPageSuccess({currentExercises: exercises, currentPage: pageNumber}));
       }
     }
   } catch (error: any) {
-    yield put(fetchExerciseByPageFailed(error.response.data));
+    yield put(fetchExerciseByPageFailed(error));
   }
 };
 
@@ -76,7 +85,10 @@ function* getExerciseById(action: PayloadAction<{exerciseId: number}>) {
       const { exerciseId } = action.payload;
       const url = `${EXERCISE_API_ROUTES.getExerciseById}${exerciseId}`;
 
-      const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
+      const response: AxiosResponse = yield call(makeRequest, url, {
+        accessToken: accessToken,
+        type: REQUEST_TYPE.GET
+      });
       if (response.data) {
         const exercise: Exercise = response.data;
         yield put(fetchExerciseByExerciseIdSuccess({currentExercise: exercise}));
@@ -84,7 +96,7 @@ function* getExerciseById(action: PayloadAction<{exerciseId: number}>) {
     }
 
   } catch (error: any) {
-    yield put(fetchExerciseByExerciseIdFailed(error.response.data));
+    yield put(fetchExerciseByExerciseIdFailed(error));
   }
 };
 
@@ -110,7 +122,15 @@ function* getExerciseByPageWithFilters(action: PayloadAction<{
       const filtersMap = new Map<string, string | number | string[]>(Object.entries(newFilter));
       const url = getRequestParamsUrl(filtersMap, EXERCISE_API_ROUTES.getExerciseByPageWithFilter);
 
-      const response: AxiosResponse = yield call(makeGetRequest, url, { accessToken });
+      const response: AxiosResponse = yield call(
+        makeRequest,
+        url,
+        {
+          type: REQUEST_TYPE.GET,
+          accessToken: accessToken
+        }
+      );
+
       if (response.data) {
         const exercises: Exercise[] = response.data;
 
@@ -123,7 +143,7 @@ function* getExerciseByPageWithFilters(action: PayloadAction<{
       }
     }
   } catch (error: any) {
-    yield put(fetchExerciseByPageWithFilterFailed(error.response.data));
+    yield put(fetchExerciseByPageWithFilterFailed(error));
   }
 };
 
