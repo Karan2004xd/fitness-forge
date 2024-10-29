@@ -18,3 +18,8 @@ export const selectFormFields = createSelector(
   selectWorkoutReducer,
   (state: WorkoutState) => state.formFields
 );
+
+export const selectCompleted = createSelector(
+  selectWorkoutReducer,
+  (state: WorkoutState) => state.completed
+);

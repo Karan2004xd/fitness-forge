@@ -14,6 +14,7 @@ export type WorkoutState = {
   lastDeletedWorkout: number | undefined;
   lastWorkout: Workout | null;
   formFields: Workout | null;
+  completed: boolean;
 };
 
 export const defaultFormFields: Workout = {
@@ -26,7 +27,7 @@ export const defaultFormFields: Workout = {
   cardioDays: [],
   cardioDuration: 0,
   equipments: [],
-  exerciseToExclude: []
+  exerciseToExclude: [],
 };
 
 const initialState: WorkoutState = {
@@ -35,7 +36,8 @@ const initialState: WorkoutState = {
   workoutExercises: [],
   lastDeletedWorkout: undefined,
   lastWorkout: null,
-  formFields: defaultFormFields 
+  formFields: defaultFormFields,
+  completed: false
 };
 
 const workoutSlice = createSlice({
@@ -48,11 +50,13 @@ const workoutSlice = createSlice({
 
     createWorkoutSuccess: (state, action: PayloadAction< { workout: Workout }>) => {
       state.currentWorkout = action.payload.workout;
+      state.completed = true;
     },
 
     createWorkoutFailed: (state, action: PayloadAction<Object>) => {
       state.error = action.payload;
       state.currentWorkout = null;
+      state.completed = false;
     },
 
     deleteWorkoutStart: (state, action: PayloadAction<{ workoutId: number }>) => {
@@ -85,6 +89,10 @@ const workoutSlice = createSlice({
 
     setFormFields: (state, action: PayloadAction<{ formFields: Workout }>) => {
       state.formFields = action.payload.formFields;
+    },
+
+    setCompleted: (state, action: PayloadAction<{ completed: boolean }>) => {
+      state.completed = action.payload.completed;
     }
   }
 });
@@ -99,7 +107,8 @@ export const {
   updateWorkoutStart,
   updateWorkoutSuccess,
   updateWorkoutFailed,
-  setFormFields
+  setFormFields,
+  setCompleted
 } = workoutSlice.actions;
 
 export default workoutSlice.reducer;

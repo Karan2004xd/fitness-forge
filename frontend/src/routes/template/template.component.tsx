@@ -5,6 +5,7 @@ import './template.styles.css';
 import {
   createWorkoutStart,
   defaultFormFields,
+  setCompleted,
   setFormFields,
 } from '../../store/workout/workout.reducer';
 
@@ -12,7 +13,8 @@ import FormInput from '../../components/form-input/form-input.component';
 import { EXERCISE_FILTER_TYPES } from '../../components/filter-options/filter-options.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import WorkoutOptions from '../../components/workout-options/workout-options.component';
-import { selectFormFields } from '../../store/workout/workout.selector';
+import { selectCompleted, selectFormFields } from '../../store/workout/workout.selector';
+import { useNavigate } from 'react-router';
 
 export const WORKOUT_CONSTANTS = {
   days: [
@@ -25,9 +27,12 @@ export const WORKOUT_CONSTANTS = {
 
 const Template = () => {
   const [formFieldsValues, setFormFieldsValues] = useState(defaultFormFields);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const fields = useSelector(selectFormFields);
+
+  const completed = useSelector(selectCompleted);
 
   const { days } = WORKOUT_CONSTANTS;
   const { category, equipment } = EXERCISE_FILTER_TYPES;
@@ -40,10 +45,17 @@ const Template = () => {
     }
   }, [fields]);
 
+  useEffect(() => {
+    if (completed) {
+      navigate('/workout/my_templates');
+      dispatch(setCompleted({completed: false}));
+    }
+  }, [completed]);
+
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(setFormFields({ formFields: defaultFormFields }));
     dispatch(createWorkoutStart({workout: formFieldsValues}));
+    dispatch(setFormFields({ formFields: defaultFormFields }));
   };
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
@@ -59,7 +71,7 @@ const Template = () => {
       <form onSubmit={onSubmitHandler} className="main-container__form">
 
         <span>Workout Level</span>
-        <select onChange={onChangeHandler} name='level'>
+        <select onChange={onChangeHandler} name='level' required>
           <option value={''}>Choose a Level</option>
           <option value={'Beginner'}>Beginner</option>
           <option value={'Intermediate'}>Intermediate</option>
@@ -73,6 +85,7 @@ const Template = () => {
           onChange={onChangeHandler}
           name='name'
           id='text-input'
+          required
         />
 
         <span>Workout Categories</span>
@@ -88,6 +101,7 @@ const Template = () => {
           name='duration'
           onChange={onChangeHandler}
           id='text-input'
+          required
         />
 
         <span>Equipments</span>
@@ -100,6 +114,7 @@ const Template = () => {
           name='restDuration'
           onChange={onChangeHandler}
           id='text-input'
+          required
         />
 
         <span>Cardio Days</span>
@@ -112,6 +127,7 @@ const Template = () => {
           name='cardioDuration'
           onChange={onChangeHandler}
           id='text-input'
+          required
         />
 
         <Button type='submit' buttonType={BUTTON_TYPE_CLASSES.base}>

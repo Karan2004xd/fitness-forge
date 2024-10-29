@@ -10,6 +10,7 @@ import Navigation from './routes/navigation/navigation.component';
 import ExerciseInfo from './routes/exercise-info/exercise-info.commponent';
 import Workout from './routes/workout/workout.component';
 import Template from './routes/template/template.component';
+import MyTemplates from './routes/my-templates/my-templates.component';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path='/register' element={<Register />} />
         <Route path='/exercises' element={<Exercises />} />
         <Route path='/workout' element={<Workout />} />
+        <Route path='/workout/my_templates' element={<MyTemplates />} />
         <Route path='/workout/template' element={<Template />} />
         <Route path='/exercise/info/:exerciseName' element={<ExerciseInfo />} />
       </Route>
