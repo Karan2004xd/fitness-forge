@@ -9,9 +9,10 @@ import './workout-options.styles.css';
 export type WorkoutOptionsProps = {
   data: string[];
   type: keyof Workout;
+  disabled: boolean;
 } & HTMLAttributes<HTMLInputElement>;
 
-const WorkoutOptions = ({ data, type, ...otherProps }: WorkoutOptionsProps) => {
+const WorkoutOptions = ({ data, type, disabled, ...otherProps }: WorkoutOptionsProps) => {
   const formFields = useSelector(selectFormFields);
   const [fields, setFields] = useState(defaultFormFields);
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ const WorkoutOptions = ({ data, type, ...otherProps }: WorkoutOptionsProps) => {
               name={type}
               onChange={onChangeHandler}
               checked={checkIfExisting(data)}
+              disabled={disabled}
             /> {data}
           </label>
         ))

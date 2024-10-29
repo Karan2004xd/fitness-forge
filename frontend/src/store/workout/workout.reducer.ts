@@ -15,11 +15,12 @@ export type WorkoutState = {
   lastWorkout: Workout | null;
   formFields: Workout | null;
   completed: boolean;
+  currentTemplates: Workout[];
 };
 
 export const defaultFormFields: Workout = {
   name: '',
-  level: '',
+  level: 'Choose a level',
   duration: 0,
   workoutCategories: [],
   workoutDays: [],
@@ -37,7 +38,8 @@ const initialState: WorkoutState = {
   lastDeletedWorkout: undefined,
   lastWorkout: null,
   formFields: defaultFormFields,
-  completed: false
+  completed: false,
+  currentTemplates: [] 
 };
 
 const workoutSlice = createSlice({
@@ -87,12 +89,28 @@ const workoutSlice = createSlice({
       state.currentWorkout = state.lastWorkout;
     },
 
-    setFormFields: (state, action: PayloadAction<{ formFields: Workout }>) => {
+    setFormFields: (state, action: PayloadAction<{ formFields: Workout | null }>) => {
       state.formFields = action.payload.formFields;
     },
 
     setCompleted: (state, action: PayloadAction<{ completed: boolean }>) => {
       state.completed = action.payload.completed;
+    },
+
+    fetchCurrentTemplatesStart: (state) => {
+      state.currentTemplates = [];
+    },
+
+    fetchCurrentTemplatesSuccess: (state, action: PayloadAction<{ currentTemplates: Workout[] }>) => {
+      state.currentTemplates = action.payload.currentTemplates;
+    },
+
+    fetchCurrentTemplatesFailed: (state, action: PayloadAction<Object>) => {
+      state.error = action.payload;
+    },
+
+    setCurrentWorkout: (state, action: PayloadAction<{ workout: Workout | null }>) => {
+      state.currentWorkout = action.payload.workout;
     }
   }
 });
@@ -108,7 +126,11 @@ export const {
   updateWorkoutSuccess,
   updateWorkoutFailed,
   setFormFields,
-  setCompleted
+  setCompleted,
+  fetchCurrentTemplatesStart,
+  fetchCurrentTemplatesSuccess,
+  fetchCurrentTemplatesFailed,
+  setCurrentWorkout
 } = workoutSlice.actions;
 
 export default workoutSlice.reducer;

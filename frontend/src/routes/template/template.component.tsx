@@ -7,6 +7,7 @@ import {
   defaultFormFields,
   setCompleted,
   setFormFields,
+  updateWorkoutStart,
 } from '../../store/workout/workout.reducer';
 
 import FormInput from '../../components/form-input/form-input.component';
@@ -15,6 +16,7 @@ import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.comp
 import WorkoutOptions from '../../components/workout-options/workout-options.component';
 import { selectCompleted, selectFormFields } from '../../store/workout/workout.selector';
 import { useNavigate } from 'react-router';
+import { selectWorkouts } from '../../store/member/member.selector';
 
 export const WORKOUT_CONSTANTS = {
   days: [
@@ -31,11 +33,26 @@ const Template = () => {
 
   const dispatch = useDispatch();
   const fields = useSelector(selectFormFields);
+  const currentWorkouts = useSelector(selectWorkouts);
+
+  const [disable, setDisable] = useState(false);
+  const [edit, setEdit] = useState(false);
 
   const completed = useSelector(selectCompleted);
 
   const { days } = WORKOUT_CONSTANTS;
   const { category, equipment } = EXERCISE_FILTER_TYPES;
+
+  const editWorkoutTemplate = () => {
+    setEdit(true);
+    setDisable(false);
+  }
+
+  const updateWorkoutTemplate = () => {
+    dispatch(updateWorkoutStart({workout: formFieldsValues}));
+    setEdit(false);
+    setDisable(true);
+  }
 
   useEffect(() => {
     if (fields) {
@@ -44,6 +61,18 @@ const Template = () => {
       setFormFieldsValues(defaultFormFields);
     }
   }, [fields]);
+
+  useEffect(() => {
+    if (!edit) {
+      if (fields && fields.id && currentWorkouts) {
+        if (currentWorkouts.indexOf(fields?.id) !== -1) {
+          setDisable(true);
+        } else {
+          setDisable(false);
+        }
+      }
+    }
+  })
 
   useEffect(() => {
     if (completed) {
@@ -71,8 +100,8 @@ const Template = () => {
       <form onSubmit={onSubmitHandler} className="main-container__form">
 
         <span>Workout Level</span>
-        <select onChange={onChangeHandler} name='level' required>
-          <option value={''}>Choose a Level</option>
+        <select onChange={onChangeHandler} name='level' required disabled={disable}>
+          <option value={formFieldsValues.level}>{formFieldsValues.level}</option>
           <option value={'Beginner'}>Beginner</option>
           <option value={'Intermediate'}>Intermediate</option>
           <option value={'Expert'}>Expert</option>
@@ -85,14 +114,24 @@ const Template = () => {
           onChange={onChangeHandler}
           name='name'
           id='text-input'
+          value={formFieldsValues.name}
           required
+          disabled={disable}
         />
 
         <span>Workout Categories</span>
-        <WorkoutOptions type='workoutCategories' data={category} />
+        <WorkoutOptions 
+          type='workoutCategories' 
+          data={category}
+          disabled={disable}
+        />
 
         <span>Workout Days</span>
-        <WorkoutOptions type='workoutDays' data={days} />
+        <WorkoutOptions 
+          type='workoutDays' 
+          data={days}
+          disabled={disable}
+        />
 
         <span>Enter Workout Duration (minutes)</span>
         <FormInput 
@@ -101,11 +140,17 @@ const Template = () => {
           name='duration'
           onChange={onChangeHandler}
           id='text-input'
+          value={formFieldsValues.duration}
           required
+          disabled={disable}
         />
 
         <span>Equipments</span>
-        <WorkoutOptions type='equipments' data={equipment} />
+        <WorkoutOptions 
+          type='equipments' 
+          data={equipment}
+          disabled={disable}
+        />
 
         <span>Enter Rest Duration (seconds)</span>
         <FormInput 
@@ -114,11 +159,17 @@ const Template = () => {
           name='restDuration'
           onChange={onChangeHandler}
           id='text-input'
+          value={formFieldsValues.restDuration}
           required
+          disabled={disable}
         />
 
         <span>Cardio Days</span>
-        <WorkoutOptions type='cardioDays' data={days} />
+        <WorkoutOptions 
+          type='cardioDays' 
+          data={days}
+          disabled={disable}
+        />
 
         <span>Enter Cardio Duration (minutes)</span>
         <FormInput 
@@ -127,12 +178,44 @@ const Template = () => {
           name='cardioDuration'
           onChange={onChangeHandler}
           id='text-input'
+          value={formFieldsValues.cardioDuration}
           required
+          disabled={disable}
         />
 
-        <Button type='submit' buttonType={BUTTON_TYPE_CLASSES.base}>
-          Create Workout Template
-        </Button>
+        {
+          edit && (
+            <Button 
+              type='submit' 
+              buttonType={BUTTON_TYPE_CLASSES.base}
+              onClick={updateWorkoutTemplate}
+            >
+              Save Changes
+            </Button>
+          )
+        }
+
+        {
+          (disable && !edit) && (
+            <>
+              <Button 
+                type='submit' 
+                buttonType={BUTTON_TYPE_CLASSES.base}
+                onClick={editWorkoutTemplate}
+              >
+                Edit Workout Template
+              </Button>
+            </>
+          )  
+        }
+
+        {
+          (!disable && !edit) && (
+            <Button type='submit' buttonType={BUTTON_TYPE_CLASSES.base}>
+              Create Workout Template
+            </Button>
+          )
+        }
       </form>
     </div>
   );

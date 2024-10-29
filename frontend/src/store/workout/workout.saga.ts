@@ -13,11 +13,15 @@ import {
   deleteWorkoutFailed,
   deleteWorkoutStart,
   deleteWorkoutSuccess,
+  fetchCurrentTemplatesFailed,
+  fetchCurrentTemplatesStart,
+  fetchCurrentTemplatesSuccess,
   updateWorkoutFailed,
   updateWorkoutStart,
   updateWorkoutSuccess
 } from "./workout.reducer";
 import { Workout } from "./workout.types";
+import { Member } from "../member/member.types";
 
 function* createWorkout(action: PayloadAction<{ workout: Workout }>) {
   try {
@@ -94,6 +98,30 @@ function* updateWorkout(action: PayloadAction<{ workout: Workout }>) {
   }
 }
 
+function* fetchCurrentTemplates() {
+  try {
+    const { accessToken, workouts }: Member = yield select(selectCurrentMember);
+    if (accessToken && workouts) {
+      const resultWorkouts: Workout[] = []
+
+      for (let i = 0; i < workouts.length; i++) {
+        const url = `${WORKOUT_API_ROUTES.getWorkoutTemplate}${workouts.at(i)}`;
+
+        const response: AxiosResponse = yield call(makeRequest, url, {
+          type: REQUEST_TYPE.GET,
+          accessToken: accessToken
+        });
+
+        resultWorkouts.push(response.data);
+      }
+
+      yield put(fetchCurrentTemplatesSuccess({ currentTemplates: resultWorkouts }));
+    }
+  } catch (error: any) {
+    yield put(fetchCurrentTemplatesFailed(error.response.data));
+  }
+}
+
 export function* onCreateWorkoutStart() {
   yield takeLatest(createWorkoutStart.type, createWorkout);
 }
@@ -106,10 +134,15 @@ export function* onUpdateWorkoutStart() {
   yield takeLatest(updateWorkoutStart.type, updateWorkout);
 }
 
+export function* onFetchCurrentTemplates() {
+  yield takeLatest(fetchCurrentTemplatesStart.type, fetchCurrentTemplates);
+}
+
 export function* workoutSagas() {
   yield all([
     call(onCreateWorkoutStart),
     call(onDeleteWorkoutStart),
-    call(onUpdateWorkoutStart)
+    call(onUpdateWorkoutStart),
+    call(onFetchCurrentTemplates)
   ]);
 };

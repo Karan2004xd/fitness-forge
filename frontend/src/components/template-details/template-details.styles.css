@@ -1,0 +1,31 @@
+.details-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 10% 60% 20% 10%;
+  font-size: 20px;
+  padding: 1rem;
+  border: 2px solid #E42E41;
+  width: 60%;
+  margin: 1rem;
+  border-radius: 8px;
+  font-weight: 550;
+  margin-left: 9.8rem;
+}
+
+.details-container:active,
+.details-container:hover {
+  background: #FCEAEC;
+  cursor: pointer;
+  transition: 0.2s ease-out;
+}
+
+.details-container svg {
+  fill: black;
+  width: 40px;
+}
+
+.details-container svg:active,
+.details-container svg:hover {
+  fill: #E42E41;
+  transition: 0.2s ease-out;
+}

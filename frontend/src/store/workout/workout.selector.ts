@@ -23,3 +23,8 @@ export const selectCompleted = createSelector(
   selectWorkoutReducer,
   (state: WorkoutState) => state.completed
 );
+
+export const selectCurrentTemplates = createSelector(
+  selectWorkoutReducer,
+  (state: WorkoutState) => state.currentTemplates
+);
