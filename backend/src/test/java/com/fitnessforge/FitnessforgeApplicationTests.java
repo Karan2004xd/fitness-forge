@@ -19,5 +19,4 @@ class FitnessforgeApplicationTests {
 	void contextLoads() {
     assertNotNull(mockMvc);
 	}
-
 }

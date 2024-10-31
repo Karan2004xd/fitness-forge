@@ -1,5 +1,7 @@
 package com.fitnessforge.service;
 
+import java.util.List;
+
 import com.fitnessforge.entity.Member;
 
 /** 
@@ -41,4 +43,21 @@ public interface MemberService {
    * @return String of new JWT token
    * */
   String getRefreshToken(Long id);
+
+  /** 
+   * Updates the existing member with the new member passed from the request
+   *
+   * @param member an object of entity {@link com.fitnessforge.entity.Member}
+   * @return object of class {@link com.fitnessforge.entity.Member}
+   * */
+  Member updateMember(Member member);
+
+  /** 
+   * Fetches the list of workout ids associated with the
+   * member of the provided id.
+   *
+   * @param id the id of {@link com.fitnessforge.entity.Member} entity
+   * @return an list of ids of {@link com.fitnessforge.entity.Workout} entity
+   * */
+  List<Long> getWorkoutIds(Long id);
 }

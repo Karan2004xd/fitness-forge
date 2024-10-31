@@ -1,5 +1,7 @@
 package com.fitnessforge.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -106,5 +108,37 @@ public class MemberServiceImpl implements MemberService {
     } catch (DatabaseException e) {
       throw new DatabaseException(DatabaseExceptionTypes.MEMBER_NOT_FOUND, MemberService.class.getName());
     }
+  }
+
+  /** 
+   * Updates the existing member with the new member passed from the request,
+   * while checking if the member exists in the database or not.
+   *
+   * @param member an object of entity {@link com.fitnessforge.entity.Member}
+   * @return object of class {@link com.fitnessforge.entity.Member}
+   * */
+  @Override
+  public Member updateMember(Member member) {
+    Member existingMember = FetchEntityUtil.GetEntity(memberRepository.findById(member.getId()), Member.class);
+    if (existingMember != null) {
+      member.setPassword(existingMember.getPassword());
+      Member memberToReturn = memberRepository.save(member);
+      memberToReturn.setPassword(null);
+      return memberToReturn;
+    }
+    return null;
+  }
+
+  /** 
+   * Fetches the list of workout ids associated with the
+   * member of the provided id.
+   *
+   * @param id the id of {@link com.fitnessforge.entity.Member} entity
+   * @return an list of ids of {@link com.fitnessforge.entity.Workout} entity
+   * */
+  @Override
+  public List<Long> getWorkoutIds(Long id) {
+    Member member = FetchEntityUtil.GetEntity(memberRepository.findById(id), Member.class);
+    return member.getWorkouts();
   }
 }

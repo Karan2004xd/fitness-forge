@@ -1,4 +1,5 @@
 com.fitnessforge
+com.fitnessforge.config
 com.fitnessforge.entity
 com.fitnessforge.exception
 com.fitnessforge.repository

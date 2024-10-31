@@ -1,15 +1,16 @@
 package com.fitnessforge.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 /**
  * <b>Description:</b>
  * <p>
- *  This is a member Entity. It holds all the member data 
+ *  This is a member Entity class.
+ *  It holds the blueprint of all the member data.
  * </p>
  * */
 @Entity
@@ -31,15 +32,12 @@ public class Member {
   @Column(name = "gender")
   private String gender;
 
-  @NotBlank(message = "Fitness Level is required")
   @Column(name = "fitness_level")
   private String fitnessLevel;
 
-  @NotNull(message = "Weight of the member is required")
   @Column(name = "weight")
   private float weight;
 
-  @NotNull(message = "Height of the member is required")
   @Column(name = "height")
   private float height;
 
@@ -54,6 +52,9 @@ public class Member {
   @Column(name = "joined_on")
   @Temporal(TemporalType.DATE)
   private Date joinedOn = new Date();
+
+  @Column(name = "workouts")
+  private List<Long> workouts;
 
   /** 
    * Default Constructor of Member class
@@ -141,6 +142,14 @@ public class Member {
   }
 
   /** 
+   * Getter of the private attribute joinedOn 
+   * @return list of workouts id of entity {@link com.fitnessforge.entity.Workout}
+   * */
+  public List<Long> getWorkouts() {
+    return workouts;
+  }
+
+  /** 
    * Setter of the private attribute age 
    * @param age the age of member
    * */
@@ -218,5 +227,13 @@ public class Member {
    * */
   public void setJoinedOn(Date joinedOn) {
     this.joinedOn = joinedOn;
+  }
+
+  /** 
+   * Setter of the private attribute joinedOn 
+   * @param workouts the list of workout id of entity {@link com.fitnessforge.entity.Workout}
+   * */
+  public void setWorkouts(List<Long> workouts) {
+    this.workouts = workouts;
   }
 }

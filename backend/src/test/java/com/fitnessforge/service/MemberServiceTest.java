@@ -3,6 +3,7 @@ package com.fitnessforge.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -161,5 +162,57 @@ public class MemberServiceTest {
       String token = memberService.getRefreshToken(id);
       assertNotNull(token);
     });
+  }
+
+  @Test
+  public void updateMemberTest() {
+    Member member = new Member();
+
+    Long id = 1L;
+    String name = "test";
+    String password = "test123";
+    String email = "test@gmail.com";
+    Date joinedOn = new Date();
+
+    String fitnessLevel = "beginner";
+    int age = 18;
+    String gender = "male";
+    float weight = 88.9f;
+    float height = 5.11f;
+
+    member.setId(id);
+    member.setName(name);
+    member.setPassword(password);
+    member.setEmail(email);
+    member.setJoinedOn(joinedOn);
+
+    when(memberRepository.findById(id)).thenReturn(Optional.of(member));
+    Member existingMember = memberService.getMember(id);
+
+    assertNotNull(existingMember);
+
+    member.setFitnessLevel(fitnessLevel);
+    member.setAge(age);
+    member.setGender(gender);
+    member.setWeight(weight);
+    member.setHeight(height);
+
+    when(memberRepository.save(member)).thenReturn(member);
+
+    Member testMember = memberService.updateMember(member);
+
+    assertNotNull(testMember);
+
+    assertEquals(testMember.getId(), id);
+    assertEquals(testMember.getName(), name);
+    assertEquals(testMember.getEmail(), email);
+    assertEquals(testMember.getJoinedOn(), joinedOn);
+    assertEquals(testMember.getFitnessLevel(), fitnessLevel);
+    assertEquals(testMember.getAge(), age);
+    assertEquals(testMember.getGender(), gender);
+    assertEquals(testMember.getWeight(), weight);
+    assertEquals(testMember.getHeight(), height);
+
+    assertNull(testMember.getPassword());
   }
 }

@@ -1,12 +1,15 @@
 package com.fitnessforge.security.filter;
 
 import com.fitnessforge.security.manager.MemberAuthenticationManager;
+import com.fitnessforge.service.MemberService;
 import com.fitnessforge.utils.JWTTokenGeneratorUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitnessforge.entity.Member;
 import com.fitnessforge.security.SecurityConstants;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +39,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   @Autowired
   private MemberAuthenticationManager authenticationManager;
 
+  @Autowired
+  private MemberService memberService;
+
   /** 
    * Sets the Object of the authentication manager {@link com.fitnessforge.security.manager.MemberAuthenticationManager}
    * @param authenticationManager An object of custom authentication Manager 
@@ -43,6 +49,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
    * */
   public AuthenticationFilter(MemberAuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
+  }
+
+  /** 
+   * Sets the Object of the authentication manager {@link com.fitnessforge.security.manager.MemberAuthenticationManager}
+   * and the Object of Member Service, an object of the Member Entity
+   * {@link com.fitnessforge.service.MemberService}
+   * 
+   * @param authenticationManager An object of custom authentication Manager 
+   * {@link com.fitnessforge.security.manager.MemberAuthenticationManager}
+   * @param memberService An object of the Member Entity
+   * {@link com.fitnessforge.service.MemberService}
+   * */
+  public AuthenticationFilter(MemberAuthenticationManager authenticationManager, MemberService memberService) {
+    this.authenticationManager = authenticationManager;
+    this.memberService = memberService;
   }
 
   /** 
@@ -74,7 +95,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
       Authentication authResult) throws IOException, ServletException {
     String token = JWTTokenGeneratorUtil.getNewJWTToken(authResult.getName());
+    Member member = memberService.getMember(authResult.getName());
+
+    Map<String, String> responseMap = new HashMap<>();
+    responseMap.put("id", member.getId().toString());
+    
+    response.setContentType("application/json");
     response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);
+    new ObjectMapper().writeValue(response.getOutputStream(), responseMap);
   }
 
   /** 

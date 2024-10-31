@@ -20,7 +20,7 @@ public class DatabaseExceptionTest {
       DatabaseExceptionTest.class.getName()
     );
 
-    String actualString = "\nClass : " + className + "\nException : " + "The provided member was not found";
+    String actualString = "\nClass : " + className + "\nException : " + "The provided entity was not found";
     assertEquals(actualString, testString);
   }
 

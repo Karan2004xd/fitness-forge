@@ -10,7 +10,8 @@ import com.fitnessforge.entity.Member;
 /** 
  * <b>Description:</b>
  * <p>
- *  Interface which provides the methods to perform CRUD operation on the database
+ *  Interface which provides the methods to perform CRUD operation on the database 
+ *  table entity {@link com.fitnessforge.entity.Member} 
  * </p>
  * */
 @Repository

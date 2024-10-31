@@ -3,7 +3,7 @@ package com.fitnessforge.security;
 /** 
  * <b>Description:</b>
  * <p>
- *  An Constants class which contains constains which are used inside the security methods.
+ *  An Constants class which contains constants which are used inside the security methods.
  *  {@link com.fitnessforge.security}
  * </p>
  * */
@@ -17,7 +17,7 @@ public class SecurityConstants {
   /** 
    * Contains the path which does not require JWT token for authorization
    * */
-  public static final String REGISTER_PATH = "/member/*";
+  public static final String REGISTER_PATH = "/member/create";
 
   /** 
    * Contains the Secret key which is used in generation of JWT token which is
