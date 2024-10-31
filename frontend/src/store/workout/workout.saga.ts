@@ -144,8 +144,19 @@ function* fetchWorkoutExercises() {
         }
       );
 
-      const workoutExercises: WorkoutExerciseType[] = response.data;
-      yield put(fetchWorkoutExercisesSuccess({ workoutExercises: workoutExercises }));
+      if (response.data) {
+        const workoutExercises: WorkoutExerciseType[] = response.data;
+        yield put(fetchWorkoutExercisesSuccess({ workoutExercises: workoutExercises }));
+      } else {
+        const error = {
+          response: {
+            data: {
+              message: "No data found"
+            }
+          }
+        };
+        throw error;
+      }
     }
 
   } catch (error: any) {

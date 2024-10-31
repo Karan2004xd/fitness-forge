@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import WorkoutExercises from "../../routes/workout-exercises/workout-exercises.component";
 import { Exercise } from "../exercise/exercise.types";
 import { Workout } from "./workout.types";
 
@@ -131,6 +132,10 @@ const workoutSlice = createSlice({
     fetchWorkoutExercisesFailed: (state, action: PayloadAction<Object>) => {
       state.error = action.payload;
       state.completed = false;
+    },
+
+    setWorkoutExercises: (state, action: PayloadAction<{ WorkoutExercises: WorkoutExerciseType[] }>) => {
+      state.workoutExercises = action.payload.WorkoutExercises;
     }
   }
 });
@@ -153,7 +158,8 @@ export const {
   setCurrentWorkout,
   fetchWorkoutExercisesStart,
   fetchWorkoutExercisesSuccess,
-  fetchWorkoutExercisesFailed
+  fetchWorkoutExercisesFailed,
+  setWorkoutExercises
 } = workoutSlice.actions;
 
 export default workoutSlice.reducer;

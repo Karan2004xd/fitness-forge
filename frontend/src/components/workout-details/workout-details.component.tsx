@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { fetchWorkoutExercisesStart } from '../../store/workout/workout.reducer';
+import { fetchWorkoutExercisesStart, setWorkoutExercises } from '../../store/workout/workout.reducer';
 import { selectCurrentWorkout, selectWorkoutExercises } from '../../store/workout/workout.selector';
 import { WorkoutDetailsContent } from './workout-details.styles';
 
@@ -15,6 +15,8 @@ const WorkoutDetails = () => {
   useEffect(() => {
     if (currentWorkoutTemplate) {
       dispatch(fetchWorkoutExercisesStart());
+    } else {
+      dispatch(setWorkoutExercises({ WorkoutExercises: [] }));
     }
   }, [currentWorkoutTemplate, dispatch]);
 
@@ -25,6 +27,8 @@ const WorkoutDetails = () => {
   return (
     <>
       {
+        (workoutExercises.length > 0) ? (
+
         workoutExercises.map((item, index) => (
           <WorkoutDetailsContent 
             key={index} 
@@ -35,6 +39,9 @@ const WorkoutDetails = () => {
             <span>{item.exercises.length}</span>
           </WorkoutDetailsContent>
         ))
+        ) : (
+          <h1>No Exercises found for the applied template</h1>
+        )
       }
     </>
   );
