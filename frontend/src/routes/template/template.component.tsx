@@ -13,10 +13,12 @@ import {
 import FormInput from '../../components/form-input/form-input.component';
 import { EXERCISE_FILTER_TYPES } from '../../components/filter-options/filter-options.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
-import WorkoutOptions from '../../components/workout-options/workout-options.component';
 import { selectCompleted, selectFormFields } from '../../store/workout/workout.selector';
 import { useNavigate } from 'react-router';
 import { selectWorkouts } from '../../store/member/member.selector';
+import TemplateOptions from '../../components/template-options/template-options.component';
+
+import { Workout } from '../../store/workout/workout.types';
 
 export const WORKOUT_CONSTANTS = {
   days: [
@@ -83,13 +85,28 @@ const Template = () => {
 
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(createWorkoutStart({workout: formFieldsValues}));
+
+    let acc: Partial<Workout> = {};
+
+    Object.entries(formFieldsValues).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        acc[key as keyof Workout] = value.map(item => item.toLowerCase()) as any;
+      } else if (typeof value === 'string') {
+        acc[key as keyof Workout] = value.toLowerCase() as any;
+      } else {
+        acc[key as keyof Workout] = value;
+      }
+    });
+
+    const updatedWorkout: Workout = acc as Workout;
+
+    dispatch(createWorkoutStart({workout: updatedWorkout}));
     dispatch(setFormFields({ formFields: defaultFormFields }));
   };
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
     const { name, value } = event.target;
-    const newFormFieldsValue = { ...formFieldsValues, [name]: value };
+    let newFormFieldsValue  = { ...formFieldsValues, [name]: value };
 
     setFormFieldsValues(newFormFieldsValue);
     dispatch(setFormFields({ formFields: newFormFieldsValue }));
@@ -120,14 +137,14 @@ const Template = () => {
         />
 
         <span>Workout Categories</span>
-        <WorkoutOptions 
-          type='workoutCategories' 
+        <TemplateOptions 
+          type='workoutCategory' 
           data={category}
           disabled={disable}
         />
 
         <span>Workout Days</span>
-        <WorkoutOptions 
+        <TemplateOptions 
           type='workoutDays' 
           data={days}
           disabled={disable}
@@ -146,7 +163,7 @@ const Template = () => {
         />
 
         <span>Equipments</span>
-        <WorkoutOptions 
+        <TemplateOptions 
           type='equipments' 
           data={equipment}
           disabled={disable}
@@ -165,7 +182,7 @@ const Template = () => {
         />
 
         <span>Cardio Days</span>
-        <WorkoutOptions 
+        <TemplateOptions 
           type='cardioDays' 
           data={days}
           disabled={disable}

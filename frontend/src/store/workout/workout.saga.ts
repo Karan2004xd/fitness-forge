@@ -5,7 +5,7 @@ import { getRequestParamsUrl, makeRequest, REQUEST_TYPE } from "../../utils/api/
 import { WORKOUT_API_ROUTES } from "../../utils/api/api-routes.util";
 import { refreshCurrentMemberStart } from "../member/member.reducer";
 import { selectCurrentMember } from "../member/member.selector";
-import { selectLastWorkout } from "./workout.selector";
+import { selectCurrentWorkout, selectLastWorkout } from "./workout.selector";
 import { 
   createWorkoutFailed,
   createWorkoutStart,
@@ -16,9 +16,13 @@ import {
   fetchCurrentTemplatesFailed,
   fetchCurrentTemplatesStart,
   fetchCurrentTemplatesSuccess,
+  fetchWorkoutExercisesFailed,
+  fetchWorkoutExercisesStart,
+  fetchWorkoutExercisesSuccess,
   updateWorkoutFailed,
   updateWorkoutStart,
-  updateWorkoutSuccess
+  updateWorkoutSuccess,
+  WorkoutExerciseType
 } from "./workout.reducer";
 import { Workout } from "./workout.types";
 import { Member } from "../member/member.types";
@@ -122,6 +126,33 @@ function* fetchCurrentTemplates() {
   }
 }
 
+function* fetchWorkoutExercises() {
+  try {
+    const { accessToken } = yield select(selectCurrentMember);
+    const { id } = yield select(selectCurrentWorkout);
+
+    if (accessToken && id) {
+      let url: string = WORKOUT_API_ROUTES.getWorkoutExercises;
+      url = url.replace('id', id);
+
+      const response: AxiosResponse = yield call(
+        makeRequest,
+        url,
+        {
+          type: REQUEST_TYPE.GET,
+          accessToken: accessToken
+        }
+      );
+
+      const workoutExercises: WorkoutExerciseType[] = response.data;
+      yield put(fetchWorkoutExercisesSuccess({ workoutExercises: workoutExercises }));
+    }
+
+  } catch (error: any) {
+    yield put(fetchWorkoutExercisesFailed(error.response.data));
+  }
+}
+
 export function* onCreateWorkoutStart() {
   yield takeLatest(createWorkoutStart.type, createWorkout);
 }
@@ -138,11 +169,16 @@ export function* onFetchCurrentTemplates() {
   yield takeLatest(fetchCurrentTemplatesStart.type, fetchCurrentTemplates);
 }
 
+export function* onFetchWorkoutExercises() {
+  yield takeLatest(fetchWorkoutExercisesStart.type, fetchWorkoutExercises);
+}
+
 export function* workoutSagas() {
   yield all([
     call(onCreateWorkoutStart),
     call(onDeleteWorkoutStart),
     call(onUpdateWorkoutStart),
-    call(onFetchCurrentTemplates)
+    call(onFetchCurrentTemplates),
+    call(onFetchWorkoutExercises)
   ]);
 };

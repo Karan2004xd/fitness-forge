@@ -4,15 +4,15 @@ import { defaultFormFields, setFormFields } from "../../store/workout/workout.re
 import { selectFormFields } from "../../store/workout/workout.selector";
 import { Workout } from "../../store/workout/workout.types";
 
-import './workout-options.styles.css';
+import './template-options.styles.css';
 
-export type WorkoutOptionsProps = {
+export type TemplateOptionsProps = {
   data: string[];
   type: keyof Workout;
   disabled: boolean;
 } & HTMLAttributes<HTMLInputElement>;
 
-const WorkoutOptions = ({ data, type, disabled, ...otherProps }: WorkoutOptionsProps) => {
+const TemplateOptions = ({ data, type, disabled, ...otherProps }: TemplateOptionsProps) => {
   const formFields = useSelector(selectFormFields);
   const [fields, setFields] = useState(defaultFormFields);
   const dispatch = useDispatch();
@@ -75,4 +75,4 @@ const WorkoutOptions = ({ data, type, disabled, ...otherProps }: WorkoutOptionsP
   );
 };
 
-export default WorkoutOptions;
+export default TemplateOptions;

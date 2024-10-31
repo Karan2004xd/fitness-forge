@@ -2,7 +2,7 @@ export interface Workout {
   id?: number;
   level: string;
   name: string;
-  workoutCategories: string[];
+  workoutCategory: string;
   workoutDays: string[];
   duration: number;
   equipments: string[];

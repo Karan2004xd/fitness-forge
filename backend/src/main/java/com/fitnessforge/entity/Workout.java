@@ -32,8 +32,8 @@ public class Workout {
   private String name;
 
   @NotEmpty(message = "Need to select atleast one category")
-  @Column(name = "workoutCategories")
-  private List<String> workoutCategories;
+  @Column(name = "workoutCategory")
+  private String workoutCategory;
 
   @NotEmpty(message = "Need to select atleast one day")
   @Column(name = "workout_days")
@@ -122,11 +122,11 @@ public class Workout {
   }
 
   /** 
-   * Getter of the private attribute workoutCategories 
-   * @return List of workoutCategories 
+   * Getter of the private attribute workoutCategory 
+   * @return String of workoutCategory 
    * */
-  public List<String> getWorkoutCategories() {
-    return workoutCategories;
+  public String getWorkoutCategory() {
+    return workoutCategory;
   }
 
   /** 
@@ -210,11 +210,11 @@ public class Workout {
   }
 
   /** 
-   * Setter of the private attribute workoutCategories 
-   * @param workoutCategories list of categories of exercise
+   * Setter of the private attribute workoutCategory 
+   * @param workoutCategory category of exercise
    * */
-  public void setWorkoutCategories(List<String> workoutCategories) {
-    this.workoutCategories = workoutCategories;
+  public void setWorkoutCategory(String workoutCategory) {
+    this.workoutCategory = workoutCategory;
   }
 
   /** 

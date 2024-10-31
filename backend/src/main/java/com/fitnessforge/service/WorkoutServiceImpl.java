@@ -147,7 +147,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
     totalExerciseDuration *= 60;
 
-    return totalExerciseDuration / workout.getWorkoutCategories().size();
+    return totalExerciseDuration;
   }
 
   /** 
@@ -196,27 +196,26 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     Map<String, Integer> exerciseMap = new HashMap<>();
 
-    for (String category : workout.getWorkoutCategories()) {
-      ExerciseRange exerciseRange = WorkoutConstants.GetRange(category, level);
-      int exerciseToInclude;
+    String category = workout.getWorkoutCategory();
+    ExerciseRange exerciseRange = WorkoutConstants.GetRange(category, level);
+    int exerciseToInclude;
 
-      if (category == WorkoutConstants.STRETCHING) {
-        int totalDuration = getTotalDuration(exerciseRange.getDuration(), workout.getRestDuration());
-        exerciseToInclude = exerciseDuration / totalDuration;
-      } else {
-        int totalDuration = getTotalDuration(exerciseRange.getReps(), exerciseRange.getSets(), workout.getRestDuration());
-        exerciseToInclude = exerciseDuration / totalDuration;
-      }
-
-      exerciseMap.put(category, exerciseToInclude);
+    if (category == WorkoutConstants.STRETCHING) {
+      int totalDuration = getTotalDuration(exerciseRange.getDuration(), workout.getRestDuration());
+      exerciseToInclude = exerciseDuration / totalDuration;
+    } else {
+      int totalDuration = getTotalDuration(exerciseRange.getReps(), exerciseRange.getSets(), workout.getRestDuration());
+      exerciseToInclude = exerciseDuration / totalDuration;
     }
 
-    if (checkCurrentDay(workout.getCardioDays())) {
-      ExerciseRange exerciseRange = WorkoutConstants.GetRange(WorkoutConstants.CARDIO, level);
-      int totalDuration = getTotalDuration(exerciseRange.getDuration(), workout.getRestDuration());
-      int exerciseToInclude = exerciseDuration / totalDuration;
+    exerciseMap.put(category, exerciseToInclude);
 
-      exerciseMap.put(WorkoutConstants.CARDIO, exerciseToInclude);
+    if (checkCurrentDay(workout.getCardioDays())) {
+      ExerciseRange exerciseRangeTwo = WorkoutConstants.GetRange(WorkoutConstants.CARDIO, level);
+      int totalDuration = getTotalDuration(exerciseRangeTwo.getDuration(), workout.getRestDuration());
+      int exerciseToIncludeTwo = exerciseDuration / totalDuration;
+
+      exerciseMap.put(WorkoutConstants.CARDIO, exerciseToIncludeTwo);
     }
     return exerciseMap;
   }
@@ -245,7 +244,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
         spec = spec.and(SpecificationUtils.like(WorkoutConstants.LEVEL, workout.getLevel()));
         spec = spec.and(SpecificationUtils.in(WorkoutConstants.EQUIPMENTS, workout.getEquipments()));
-        spec = spec.and(SpecificationUtils.in(WorkoutConstants.WORKOUT_CATEGORIES, List.of(category)));
+        spec = spec.and(SpecificationUtils.like(WorkoutConstants.WORKOUT_CATEGORIES, category));
         spec = spec.and(SpecificationUtils.notIn(WorkoutConstants.EXERCISE_TO_EXCLUDE, exercisesToExclude));
 
         List<Exercise> exercises = exerciseRepository.findAll(spec);

@@ -24,5 +24,6 @@ export enum WORKOUT_API_ROUTES {
   createWorkout = 'workout/create?',
   deleteWorkout = 'workout/delete?',
   updateWorkout = 'workout/update',
-  getWorkoutTemplate = 'workout/'
+  getWorkoutTemplate = 'workout/',
+  getWorkoutExercises = 'workout/id/exercises'
 };

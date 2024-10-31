@@ -22,7 +22,7 @@ export const defaultFormFields: Workout = {
   name: '',
   level: 'Choose a level',
   duration: 0,
-  workoutCategories: [],
+  workoutCategory: '',
   workoutDays: [],
   restDuration: 0,
   cardioDays: [],
@@ -111,6 +111,24 @@ const workoutSlice = createSlice({
 
     setCurrentWorkout: (state, action: PayloadAction<{ workout: Workout | null }>) => {
       state.currentWorkout = action.payload.workout;
+    },
+
+    fetchWorkoutExercisesStart: (state) => {
+      state.completed = false;
+    },
+
+    fetchWorkoutExercisesSuccess: (
+      state, 
+      action: PayloadAction<{
+        workoutExercises: WorkoutExerciseType[]
+      }>) => {
+      state.workoutExercises = action.payload.workoutExercises;
+      state.completed = true;
+    },
+
+    fetchWorkoutExercisesFailed: (state, action: PayloadAction<Object>) => {
+      state.error = action.payload;
+      state.completed = false;
     }
   }
 });
@@ -130,7 +148,10 @@ export const {
   fetchCurrentTemplatesStart,
   fetchCurrentTemplatesSuccess,
   fetchCurrentTemplatesFailed,
-  setCurrentWorkout
+  setCurrentWorkout,
+  fetchWorkoutExercisesStart,
+  fetchWorkoutExercisesSuccess,
+  fetchWorkoutExercisesFailed
 } = workoutSlice.actions;
 
 export default workoutSlice.reducer;

@@ -28,3 +28,8 @@ export const selectCurrentTemplates = createSelector(
   selectWorkoutReducer,
   (state: WorkoutState) => state.currentTemplates
 );
+
+export const selectWorkoutExercises = createSelector(
+  selectWorkoutReducer,
+  (state: WorkoutState) => state.workoutExercises
+);

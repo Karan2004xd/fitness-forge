@@ -39,7 +39,7 @@ public class WorkoutServiceTest {
     Long id = 1L;
     String name = "testWorkout";
 
-    List<String> workoutCategories = List.of("strength");
+    String workoutCategory = "strength";
     List<String> workoutDays = List.of("monday","tuesday");
 
     int duration = 60;
@@ -53,7 +53,7 @@ public class WorkoutServiceTest {
     workout.setId(id);
     workout.setName(name);
     workout.setCardioDays(cardioDays);
-    workout.setWorkoutCategories(workoutCategories);
+    workout.setWorkoutCategory(workoutCategory);
     workout.setWorkoutDays(workoutDays);
     workout.setDuration(duration);
     workout.setRestDuration(restDuration);
@@ -70,7 +70,7 @@ public class WorkoutServiceTest {
     assertEquals(workout.getId(), testWorkout.getId());
     assertEquals(workout.getName(), testWorkout.getName());
     assertEquals(workout.getCardioDays(), testWorkout.getCardioDays());
-    assertEquals(workout.getWorkoutCategories(), testWorkout.getWorkoutCategories());
+    assertEquals(workout.getWorkoutCategory(), testWorkout.getWorkoutCategory());
     assertEquals(workout.getDuration(), testWorkout.getDuration());
     assertEquals(workout.getRestDuration(), testWorkout.getRestDuration());
     assertEquals(workout.getWorkoutDays(), testWorkout.getWorkoutDays());
@@ -135,8 +135,8 @@ public class WorkoutServiceTest {
     int duration = workout.getDuration();
     int cardioDuration = workout.getCardioDuration();
 
-    int testOne = ((duration) * 60) / workout.getWorkoutCategories().size();
-    int testTwo = ((duration + cardioDuration) * 60) / workout.getWorkoutCategories().size();
+    int testOne = ((duration) * 60);
+    int testTwo = ((duration + cardioDuration) * 60);
 
     assertEquals(workoutServiceImpl.getExerciseDuration(workout), testOne);
 
