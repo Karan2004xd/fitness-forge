@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { defaultFormFields, setFormFields } from "../../store/workout/workout.reducer";
 import { selectFormFields } from "../../store/workout/workout.selector";
 import { Workout } from "../../store/workout/workout.types";
-
-import './template-options.styles.css';
+import { OptionContainer, OptionLabel } from "./template-options.styles";
 
 export type TemplateOptionsProps = {
   data: string[];
@@ -29,7 +28,7 @@ const TemplateOptions = ({ data, type, disabled, ...otherProps }: TemplateOption
     const fieldValue = fields[type];
 
     if (Array.isArray(fieldValue)) {
-      return fieldValue.indexOf(value) !== -1;
+      return fieldValue.indexOf(value.toLowerCase()) !== -1;
     } else {
       return fieldValue === value;
     }
@@ -55,23 +54,23 @@ const TemplateOptions = ({ data, type, disabled, ...otherProps }: TemplateOption
   };
 
   return (
-    <div className="options-container">
+    <OptionContainer>
       {
         data.map((data, index) => (
-          <label key={index} className='option-label'>
+          <OptionLabel key={index}>
             <input
               type='checkbox'
               {...otherProps}
-              value={data}
+              value={data.toLowerCase()}
               name={type}
               onChange={onChangeHandler}
-              checked={checkIfExisting(data)}
+              checked={checkIfExisting(data.toLowerCase())}
               disabled={disabled}
             /> {data}
-          </label>
+          </OptionLabel>
         ))
       }
-    </div>
+    </OptionContainer>
   );
 };
 

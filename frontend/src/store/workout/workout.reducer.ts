@@ -7,8 +7,7 @@ export type WorkoutExerciseType = {
   exercises: Exercise[];
 };
 
-export type WorkoutState = {
-  currentWorkout: Workout | null;
+export type WorkoutState = { currentWorkout: Workout | null;
   error: Object | null;
   workoutExercises: WorkoutExerciseType[];
   lastDeletedWorkout: number | undefined;
@@ -48,6 +47,7 @@ const workoutSlice = createSlice({
   reducers: {
     createWorkoutStart: (state, action: PayloadAction<{ workout: Workout }>) => {
       state.currentWorkout = action.payload.workout;
+      state.completed = false;
     },
 
     createWorkoutSuccess: (state, action: PayloadAction< { workout: Workout }>) => {
@@ -103,10 +103,12 @@ const workoutSlice = createSlice({
 
     fetchCurrentTemplatesSuccess: (state, action: PayloadAction<{ currentTemplates: Workout[] }>) => {
       state.currentTemplates = action.payload.currentTemplates;
+      state.completed = false;
     },
 
     fetchCurrentTemplatesFailed: (state, action: PayloadAction<Object>) => {
       state.error = action.payload;
+      state.completed = true;
     },
 
     setCurrentWorkout: (state, action: PayloadAction<{ workout: Workout | null }>) => {

@@ -34,10 +34,10 @@ const Home = () => {
 
         <MainDescription>
           <p>
-            Forge your Fitness with Customized Workouts and Smart Calorie Tracking,
+            Forge Your Perfect Workout: Personalized, Data-Driven Fitness Plans Tailored to Your Goals and Schedule.
           </p>
           <p>
-            if you are ready to see the change get started now!
+            If you are ready to see the change forge your workout now!
           </p>
         </MainDescription>
 

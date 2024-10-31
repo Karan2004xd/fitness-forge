@@ -16,6 +16,15 @@ public class WorkoutConstants {
    * */
   public static final int AVERAGE_REP_DURATION = 45;
 
+  /** 
+   * The name key from the result object returned in list of exercises
+   * */
+  public static final String NAME = "name";
+
+  /** 
+   * The exercises key from the result object returned in list of exercises
+   * */
+  public static final String EXERCISES = "exercises";
 
   /** 
    * Constant for the column 'level' from {@link com.fitnessforge.entity.Exercise}

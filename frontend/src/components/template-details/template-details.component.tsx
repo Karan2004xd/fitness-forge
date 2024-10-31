@@ -3,10 +3,10 @@ import { Workout } from "../../store/workout/workout.types";
 import { ReactComponent as DeleteForever } from '../../assets/icons/delete-forever.svg';
 import { ReactComponent as ApplyOn } from '../../assets/icons/apply-on.svg';
 import { ReactComponent as ApplyOff } from '../../assets/icons/apply-off.svg';
-import './template-details.styles.css';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteWorkoutStart, setCurrentWorkout } from "../../store/workout/workout.reducer";
 import { selectCurrentWorkout } from "../../store/workout/workout.selector";
+import { DetailsContainer } from "./template-details.styles";
 
 export type TemplateDetailsProps = {
   template: Workout;
@@ -42,7 +42,7 @@ const TemplateDetails = ({ template, ...otherProps }: TemplateDetailsProps) => {
   }, [currentWorkout]);
 
   return (
-    <div className="details-container" {...otherProps}>
+    <DetailsContainer {...otherProps}>
       <span>{id}</span>
       <span>{name}</span>
       {
@@ -51,7 +51,7 @@ const TemplateDetails = ({ template, ...otherProps }: TemplateDetailsProps) => {
           : <ApplyOff onClick={iconClickHandler} />
       }
       <DeleteForever onClick={deleteWorkoutTemplate} />
-    </div>
+    </DetailsContainer>
   );
 };
 

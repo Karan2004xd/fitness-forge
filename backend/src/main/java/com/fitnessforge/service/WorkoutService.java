@@ -3,7 +3,6 @@ package com.fitnessforge.service;
 import java.util.List;
 import java.util.Map;
 
-import com.fitnessforge.entity.Exercise;
 import com.fitnessforge.entity.Workout;
 
 /** 
@@ -44,9 +43,9 @@ public interface WorkoutService {
    * which is passed in the parameter.
    *
    * @param workout an object of {@link com.fitnessforge.entity.Workout} entity
-   * @return an list of map of category and list of Exercise ( List(Map(String, List(Exercise))) )
+   * @return an list of map of category and list of Exercise ( List(Map(String, List(Object))) )
    * */
-  List<Map<String, List<Exercise>>> getWorkoutExercises(Workout workout);
+  List<Map<String, Object>> getWorkoutExercises(Workout workout);
 
   /** 
    * Updates the existing workout with new workout passed

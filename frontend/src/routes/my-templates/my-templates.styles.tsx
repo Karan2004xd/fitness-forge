@@ -1,17 +1,6 @@
-.mytemplates-container button {
-  width: 15%;
-  margin-top: 1rem;
-  justify-content: center;
-  border-radius: 12px;
-  margin-left: 10rem;
-}
+import { styled } from "styled-components";
 
-.mytemplates-container h1 {
-  margin-top: 10rem;
-  margin-left: 10rem;
-}
-
-.mytemplates-container {
+export const MyTemplatesContainer = styled.div`
   position: absolute;
   top: 10%;
   display: flex;
@@ -21,9 +10,22 @@
   background: -webkit-linear-gradient(to right, #A43931, #1D4350);
   background: linear-gradient(to right, #A43931, #1D4350);
   background-size: cover;
-}
 
-.mytemplates-container__title {
+  button {
+    width: 15%;
+    margin-top: 1rem;
+    justify-content: center;
+    border-radius: 12px;
+    margin-left: 10rem;
+  }
+
+  h1 {
+    margin-top: 10rem;
+    margin-left: 10rem;
+  }
+`;
+
+export const MyTemplatesContainerTitle = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-columns: 10% 60% 20% 10%;
@@ -32,5 +34,4 @@
   font-size: 20px;
   font-weight: bold;
   margin-top: 2rem;
-}
-
+`;

@@ -226,11 +226,11 @@ public class WorkoutServiceImpl implements WorkoutService {
    * defined in it.
    *
    * @param workout an object of entity {@link com.fitnessforge.entity.Workout}
-   * @return an list of map of category and list of Exercise ( List(Map(String, List(Exercise))) )
+   * @return an list of map of category and list of Exercise ( List(Map(String, List(Object))) )
    * */
   @Override
-  public List<Map<String, List<Exercise>>> getWorkoutExercises(Workout workout) {
-    List<Map<String, List<Exercise>>> result = new ArrayList<>();
+  public List<Map<String, Object>> getWorkoutExercises(Workout workout) {
+    List<Map<String, Object>> result = new ArrayList<>();
 
     if (checkCurrentDay(workout.getWorkoutDays())) {
 
@@ -240,7 +240,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
       for (String category : exerciseMap.keySet()) {
         Specification<Exercise> spec = Specification.where(null);
-        Map<String, List<Exercise>> resultWorkout = new LinkedHashMap<>();
+        Map<String, Object> resultWorkout = new LinkedHashMap<>();
 
         spec = spec.and(SpecificationUtils.like(WorkoutConstants.LEVEL, workout.getLevel()));
         spec = spec.and(SpecificationUtils.in(WorkoutConstants.EQUIPMENTS, workout.getEquipments()));
@@ -255,15 +255,16 @@ public class WorkoutServiceImpl implements WorkoutService {
           Exercise exercise = exercises.get(i);
           if (exercise != null) {
             String newCategory = category + '_' + Integer.toString((i / numberOfExercises) + 1);
-            if (resultWorkout.get(newCategory) == null) {
-              resultWorkout.put(newCategory, new ArrayList<>(List.of(exercise)));
-            } else {
-              resultWorkout.get(newCategory).add(exercise);
-            }
+            resultWorkout.put(WorkoutConstants.NAME, newCategory);
+
+            List<Exercise> resultExercises = (List<Exercise>) resultWorkout
+              .computeIfAbsent(WorkoutConstants.EXERCISES, k -> new ArrayList<>());
+
+            resultExercises.add(exercise);
             counter++;
 
             if (counter == numberOfExercises) {
-              result.add(resultWorkout);
+              result.add(new LinkedHashMap<>(resultWorkout));
               resultWorkout = new LinkedHashMap<>();
               counter = 0;
             }

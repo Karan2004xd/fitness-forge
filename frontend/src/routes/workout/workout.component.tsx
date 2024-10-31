@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import WorkoutDetails from '../../components/workout-details/workout-details.component';
-import './workout.styles.css';
+import { WorkoutContainer, WorkoutContainerTitle } from './workout.styles';
 
 const Workout = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const Workout = () => {
   };
 
   return (
-    <div className='workout-container'>
+    <WorkoutContainer>
       <h1>My Workout</h1>
 
       <Button 
@@ -21,14 +21,14 @@ const Workout = () => {
         Apply Template
       </Button>
 
-      <div className='workout-container__title'>
+      <WorkoutContainerTitle>
         <span>Number</span>
         <span>Name</span>
         <span>Number of exercises</span>
-      </div>
+      </WorkoutContainerTitle>
 
       <WorkoutDetails />
-    </div>
+    </WorkoutContainer>
   );
 }
 

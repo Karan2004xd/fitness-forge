@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fitnessforge.entity.Exercise;
 import com.fitnessforge.entity.Workout;
 import com.fitnessforge.service.WorkoutService;
 
@@ -92,7 +91,7 @@ public class WorkoutController {
    * @return an object of org.springframework.http.ResponseEntity
    * */
   @GetMapping("/{id}/exercises")
-  public ResponseEntity<List<Map<String, List<Exercise>>>> getWorkoutExercises(@PathVariable Long id) {
+  public ResponseEntity<List<Map<String, Object>>> getWorkoutExercises(@PathVariable Long id) {
     Workout workout = workoutService.getWorkout(id);
     return new ResponseEntity<>(workoutService.getWorkoutExercises(workout), HttpStatus.OK);
   }

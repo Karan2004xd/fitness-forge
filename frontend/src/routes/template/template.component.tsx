@@ -1,6 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './template.styles.css';
 
 import {
   createWorkoutStart,
@@ -10,7 +9,6 @@ import {
   updateWorkoutStart,
 } from '../../store/workout/workout.reducer';
 
-import FormInput from '../../components/form-input/form-input.component';
 import { EXERCISE_FILTER_TYPES } from '../../components/filter-options/filter-options.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../../components/button/button.component';
 import { selectCompleted, selectFormFields } from '../../store/workout/workout.selector';
@@ -19,6 +17,7 @@ import { selectWorkouts } from '../../store/member/member.selector';
 import TemplateOptions from '../../components/template-options/template-options.component';
 
 import { Workout } from '../../store/workout/workout.types';
+import { MainContainer, MainContainerForm, TextInput } from './template.styles';
 
 export const WORKOUT_CONSTANTS = {
   days: [
@@ -74,7 +73,7 @@ const Template = () => {
         }
       }
     }
-  })
+  }, [])
 
   useEffect(() => {
     if (completed) {
@@ -113,8 +112,8 @@ const Template = () => {
   }
 
   return (
-    <div className="main-container">
-      <form onSubmit={onSubmitHandler} className="main-container__form">
+    <MainContainer>
+      <MainContainerForm onSubmit={onSubmitHandler}>
 
         <span>Workout Level</span>
         <select onChange={onChangeHandler} name='level' required disabled={disable}>
@@ -125,7 +124,7 @@ const Template = () => {
         </select>
 
         <span>Workout Name</span>
-        <FormInput 
+        <TextInput 
           type='text'
           placeholder={"Name"}
           onChange={onChangeHandler}
@@ -151,7 +150,7 @@ const Template = () => {
         />
 
         <span>Enter Workout Duration (minutes)</span>
-        <FormInput 
+        <TextInput 
           type='number'
           placeholder='Duration'
           name='duration'
@@ -170,7 +169,7 @@ const Template = () => {
         />
 
         <span>Enter Rest Duration (seconds)</span>
-        <FormInput 
+        <TextInput 
           type='number'
           placeholder='Rest Duration'
           name='restDuration'
@@ -189,7 +188,7 @@ const Template = () => {
         />
 
         <span>Enter Cardio Duration (minutes)</span>
-        <FormInput 
+        <TextInput 
           type='number'
           placeholder='Cardio Duration'
           name='cardioDuration'
@@ -233,8 +232,8 @@ const Template = () => {
             </Button>
           )
         }
-      </form>
-    </div>
+      </MainContainerForm>
+    </MainContainer>
   );
 }
 

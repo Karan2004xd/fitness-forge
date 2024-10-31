@@ -7,7 +7,7 @@ import { selectWorkouts } from '../../store/member/member.selector';
 import { fetchCurrentTemplatesStart, setFormFields } from '../../store/workout/workout.reducer';
 import { selectCurrentTemplates } from '../../store/workout/workout.selector';
 import { Workout } from '../../store/workout/workout.types';
-import './my-templates.styles.css';
+import { MyTemplatesContainer, MyTemplatesContainerTitle } from './my-templates.styles';
 
 const MyTemplates = () => {
   const dispatch = useDispatch();
@@ -31,15 +31,15 @@ const MyTemplates = () => {
   }
 
   return (
-    <div className='mytemplates-container'>
+    <MyTemplatesContainer>
       <h1>My Templates</h1>
       <Button buttonType={BUTTON_TYPE_CLASSES.base} onClick={addNewTemplate}>Add new Template</Button>
-      <div className='mytemplates-container__title'>
+      <MyTemplatesContainerTitle>
         <span>ID</span>
         <span>Name</span>
         <span>Applied</span>
         <span>Delete</span>
-      </div>
+      </MyTemplatesContainerTitle>
       {
         currentTemplates.length ? (
         currentTemplates.map((template, index) => (
@@ -53,7 +53,7 @@ const MyTemplates = () => {
           <h1>No Templates created yet!</h1>
         )
       }
-    </div>
+    </MyTemplatesContainer>
   );
 };
 
