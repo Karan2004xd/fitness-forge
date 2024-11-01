@@ -13,6 +13,8 @@ spring:
   jpa:
       database-platform: org.hibernate.dialect.PostgreSQLDialect
       hibernate:
+        # update: will use the existing database and data.
+        # create: will delete all the existing database and tables and will start fresh
         ddl-auto: update 
       show-sql: true
       properties:
