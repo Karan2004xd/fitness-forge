@@ -14,6 +14,13 @@ Fitness Forge provides a comprehensive API for creating customized workout templ
     - [Get Exercise By Id](#get-exercise-by-id)
     - [Get Exercise By Page](#get-exercise-by-page)
     - [Get Exercise Page With Filter](#get-exercise-page-with-filter)
+- [Workout](#workout)
+    - [Create Workout](#create-workout)
+    - [Get Workout By Id](#get-workout-by-id)
+    - [Get Workout By Name](#get-workout-by-name)
+    - [Get Workout Exercises](#get-workout-exercises)
+    - [Update Workout](#update-workout)
+    - [Delete Workout](#delete-workout)
 
 ## Authentication
 
@@ -604,4 +611,469 @@ Authorization: Bearer <token>
         ]
     }
 ]
+```
+**Note**: For more information on different types of filters refer to the [Schema of the Database](https://github.com/yuhonas/free-exercise-db/blob/main/schema.json)
+
+## Workout
+
+This application provides a flexible way ot create your workout, and hence provides a lot of features to facilitate generating a workout. And the algorithm to generate the workout is designed to generate workout not based on assumptions but proper research based reps and sets required for every workout goal and calculates the appropiate amount of time requried. Due to which it is able to generate a very productive and usefull workout plan all personalized by the user it self.
+
+### Create Workout
+
+- **URL**: `/workout/create?memberId={memberId}`
+- **Method**: `POST`
+- **Description**: Creates a new workout (if doesn't exist already)
+
+#### Parameters
+
+| Parameter         | Type     | Description                                | Required |
+|-------------------|----------|--------------------------------------------|----------|
+| `name`              | `string`   | Name of new workout                        | Yes      |
+| `level`             | `string`   | The level of workout                       | Yes      |
+| `workoutCategory`   | `string`   | The category of workout                    | Yes      |
+| `duration`          | `number`   | The total duration of workout (in minutes) | Yes      |
+| `equipments`        | `string[]` | The equipments available                   | Yes      |
+| `restDuration`      | `number`   | The duration of rest between sets          | Yes      |
+| `cardioDays`        | `string[]` | The days of week to perform cardio on      | Yes      |
+| `workoutDays`       | `string[]` | The days of week to perform workout on     | Yes      |
+| `exerciseToExclude` | `string[]` | The exercise to exclude (by name)          | No       |
+
+#### Query Parameters
+
+| Parameter | Type   | Description               | Required |
+|-----------|--------|---------------------------|----------|
+| `memberId`  | `number` | The id of existing member | Yes      |
+
+#### Example Request
+```http
+POST /workout/create?memberId=1
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+#### Example Request Body
+```json
+{
+    "name": "workout",
+    "workoutCategory": "strength",
+    "workoutDays": ["monday", "tuesday", "thursday", "friday"],
+    "duration": 45,
+    "equipments": ["dumbell", "machine"],
+    "restDuration": 30,
+    "cardioDays": ["monday", "thursday"],
+    "level": "beginner",
+    "exerciseToExclude": ["Standing Calf Raises"]
+}
+```
+
+#### Example Response Body (Success)
+```json
+# status code: 200 OK
+{
+    "id": 4,
+    "level": "beginner",
+    "name": "workout",
+    "workoutCategory": "strength",
+    "workoutDays": [
+        "monday",
+        "tuesday",
+        "thursday",
+        "friday"
+    ],
+    "duration": 45,
+    "equipments": [
+        "dumbell",
+        "machine"
+    ],
+    "restDuration": 30,
+    "cardioDuration": 0,
+    "exerciseToExclude": [
+        "Standing Calf Raises"
+    ],
+    "cardioDays": [
+        "monday",
+        "thursday"
+    ]
+}
+```
+
+#### Example Response Body (Failure)
+```json
+# status code: 403 FORBIDDEN (in case if the workout already exists)
+```
+
+### Get Workout By Id
+
+- **URL**: `/workout/{id}`
+- **Method**: `GET`
+- **Description**: Fetches existing workout based on the provided id.
+
+#### Parameters
+
+| Parameter    | Type   | Description                    | Required |
+|--------------|--------|--------------------------------|----------|
+| `id`           | `path`   | The id of the existing workout | Yes      |
+
+#### Example Request
+```http
+GET /workout/1
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
+#### Example Response Body (Success)
+```json
+# status code: 200 OK 
+{
+    "id": 1,
+    "level": "beginner",
+    "name": "workout_11",
+    "workoutCategory": "strength",
+    "workoutDays": [
+        "monday",
+        "tuesday",
+        "thursday",
+        "friday"
+    ],
+    "duration": 45,
+    "equipments": [
+        "dumbell",
+        "machine"
+    ],
+    "restDuration": 30,
+    "cardioDuration": 0,
+    "exerciseToExclude": [
+        "Standing Calf Raises"
+    ],
+    "cardioDays": [
+        "monday",
+        "thursday"
+    ]
+}
+```
+
+#### Example Response Body (Failure)
+```json
+# status code: 404 NOT FOUND (in case if the workout was not found for the provided id)
+{
+    "timestamp": "01-11-2024 04:45:47",
+    "messages": [
+        "\nClass : com.fitnessforge.entity.Workout\nException : The provided entity was not found"
+    ]
+}
+```
+
+### Get Workout By Name
+
+- **URL**: `/workout?name={workout_name}`
+- **Method**: `GET`
+- **Description**: Fetches existing workout based on the name provided.
+
+#### Parameters
+
+| Parameter | Type | Description                                       | Required |
+|-----------|------|---------------------------------------------------|----------|
+| `name`      | `path` | The name of the existing workout (case sensitive) | Yes      |
+
+#### Example Request
+```http
+GET /workout?name=workout
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
+#### Example Response Body (Success)
+```json
+# status code: 200 OK 
+{
+    "id": 4,
+    "level": "beginner",
+    "name": "workout",
+    "workoutCategory": "strength",
+    "workoutDays": [
+        "monday",
+        "tuesday",
+        "thursday",
+        "friday"
+    ],
+    "duration": 45,
+    "equipments": [
+        "dumbell",
+        "machine"
+    ],
+    "restDuration": 30,
+    "cardioDuration": 0,
+    "exerciseToExclude": [
+        "Standing Calf Raises"
+    ],
+    "cardioDays": [
+        "monday",
+        "thursday"
+    ]
+}
+```
+
+#### Example Response Body (Failure)
+```json
+# status code: 404 NOT FOUND (in case if the workout was not found for the provided name)
+{
+    "timestamp": "01-11-2024 04:45:47",
+    "messages": [
+        "\nClass : com.fitnessforge.entity.Workout\nException : The provided entity was not found"
+    ]
+}
+```
+
+### Get Workout Exercises
+
+- **URL**: `/workout/{id}/exercises`
+- **Method**: `GET`
+- **Description**: Fetches exercises based on the workout template of the provided id.
+
+#### Parameters
+
+| Parameter | Type | Description                    | Required |
+|-----------|------|--------------------------------|----------|
+| `id`        | `path` | The id of the existing workout | Yes      |
+
+#### Example Request
+```http
+GET /workout/{id}/exercises
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+#### Example Response Body (Success)
+```json
+# status code: 200 OK 
+[
+    {
+        "name": "strength_1",
+        "exercises": [
+            {
+                "exerciseId": 109,
+                "id": "Butterfly",
+                "name": "Butterfly",
+                "force": "pull",
+                "level": "beginner",
+                "mechanic": "isolation",
+                "equipment": "machine",
+                "primaryMuscles": [
+                    "chest"
+                ],
+                "secondaryMuscles": [],
+                "instructions": [
+                    "Sit on the machine with your back flat on the pad.",
+                    "Take hold of the handles. Tip: Your upper arms should be positioned parallel to the floor; adjust the machine accordingly. This will be your starting position.",
+                    "Push the handles together slowly as you squeeze your chest in the middle. Breathe out during this part of the motion and hold the contraction for a second.",
+                    "Return back to the starting position slowly as you inhale until your chest muscles are fully stretched.",
+                    "Repeat for the recommended amount of repetitions."
+                ],
+                "category": "strength",
+                "images": [
+                    "Butterfly/0.jpg",
+                    "Butterfly/1.jpg"
+                ]
+            },
+            {
+                "exerciseId": 134,
+                "id": "Calf-Machine_Shoulder_Shrug",
+                "name": "Calf-Machine Shoulder Shrug",
+                "force": "pull",
+                "level": "beginner",
+                "mechanic": "isolation",
+                "equipment": "machine",
+                "primaryMuscles": [
+                    "traps"
+                ],
+                "secondaryMuscles": [],
+                "instructions": [
+                    "Position yourself on the calf machine so that the shoulder pads are above your shoulders. Your torso should be straight with the arms extended normally by your side. This will be your starting position.",
+                    "Raise your shoulders up towards your ears as you exhale and hold the contraction for a full second.",
+                    "Slowly return to the starting position as you inhale.",
+                    "Repeat for the recommended amount of repetitions."
+                ],
+                "category": "strength",
+                "images": [
+                    "Calf-Machine_Shoulder_Shrug/0.jpg",
+                    "Calf-Machine_Shoulder_Shrug/1.jpg"
+                ]
+            },
+            {
+                "exerciseId": 135,
+                "id": "Calf_Press",
+                "name": "Calf Press",
+                "force": "push",
+                "level": "beginner",
+                "mechanic": "isolation",
+                "equipment": "machine",
+                "primaryMuscles": [
+                    "calves"
+                ],
+                "secondaryMuscles": [],
+                "instructions": [
+                    "Adjust the seat so that your legs are only slightly bent in the start position. The balls of your feet should be firmly on the platform.",
+                    "Select an appropriate weight, and grasp the handles. This will be your starting position.",
+                    "Straighten the legs by extending the knees, just barely lifting the weight from the stack. Your ankle should be fully flexed, toes pointing up. Execute the movement by pressing downward through the balls of your feet as far as possible.",
+                    "After a brief pause, reverse the motion and repeat."
+                ],
+                "category": "strength",
+                "images": [
+                    "Calf_Press/0.jpg",
+                    "Calf_Press/1.jpg"
+                ]
+            },
+            {
+                "exerciseId": 136,
+                "id": "Calf_Press_On_The_Leg_Press_Machine",
+                "name": "Calf Press On The Leg Press Machine",
+                "force": "push",
+                "level": "beginner",
+                "mechanic": "isolation",
+                "equipment": "machine",
+                "primaryMuscles": [
+                    "calves"
+                ],
+                "secondaryMuscles": [],
+                "instructions": [
+                    "Using a leg press machine, sit down on the machine and place your legs on the platform directly in front of you at a medium (shoulder width) foot stance.",
+                    "Lower the safety bars holding the weighted platform in place and press the platform all the way up until your legs are fully extended in front of you without locking your knees. (Note: In some leg press units you can leave the safety bars on for increased safety. If your leg press unit allows for this, then this is the preferred method of performing the exercise.) Your torso and the legs should make perfect 90-degree angle. Now carefully place your toes and balls of your feet on the lower portion of the platform with the heels extending off. Toes should be facing forward, outwards or inwards as described at the beginning of the chapter. This will be your starting position.",
+                    "Press on the platform by raising your heels as you breathe out by extending your ankles as high as possible and flexing your calf. Ensure that the knee is kept stationary at all times. There should be no bending at any time. Hold the contracted position by a second before you start to go back down.",
+                    "Go back slowly to the starting position as you breathe in by lowering your heels as you bend the ankles until calves are stretched.",
+                    "Repeat for the recommended amount of repetitions."
+                ],
+                "category": "strength",
+                "images": [
+                    "Calf_Press_On_The_Leg_Press_Machine/0.jpg",
+                    "Calf_Press_On_The_Leg_Press_Machine/1.jpg"
+                ]
+            }
+        ]
+    },
+    {other sets of exercises...}
+]
+```
+
+#### Example Response Body (Failure)
+```json
+# status code: 404 NOT FOUND (in case if the workout was not found for the provided id)
+{
+    "timestamp": "01-11-2024 04:56:16",
+    "messages": [
+        "\nClass : com.fitnessforge.entity.Workout\nException : The provided entity was not found"
+    ]
+}
+```
+
+### Update Workout
+
+- **URL**: `/workout/update`
+- **Method**: `PUT`
+- **Description**: Updates the workout with the provided workout if the access token is valid and workout exists in the database.
+
+#### Parameters
+
+| Parameter         | Type     | Description                                | Required |
+|-------------------|----------|--------------------------------------------|----------|
+| `id`                | `number`   | The id of the existing workout             | Yes      |
+| `name`              | `string`   | Name of new workout                        | Yes      |
+| `level`             | `string`   | The level of workout                       | Yes      |
+| `workoutCategory`   | `string`   | The category of workout                    | Yes      |
+| `duration`          | `number`   | The total duration of workout (in minutes) | Yes      |
+| `equipments`        | `string[]` | The equipments available                   | Yes      |
+| `restDuration`      | `number`   | The duration of rest between sets          | Yes      |
+| `cardioDays`        | `string[]` | The days of week to perform cardio on      | Yes      |
+| `workoutDays`       | `string[]` | The days of week to perform workout on     | Yes      |
+| `exerciseToExclude` | `string[]` | The exercise to exclude (by name)          | No       |
+
+#### Example Request
+```http
+POST /workout/update
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+#### Example Request Body
+```json
+{
+    "id": 1,
+    "name": "workout_11",
+    "workoutCategory": "strength",
+    "workoutDays": ["monday", "tuesday", "thursday", "friday"],
+    "duration": 60,
+    "equipments": ["dumbell", "machine"],
+    "restDuration": 30,
+    "cardioDays": ["monday", "thursday", "friday"],
+    "level": "beginner",
+    "exerciseToExclude": ["Standing Calf Raises"]
+}
+```
+#### Example Response Body (Success)
+```json
+# status code: 200 OK
+{
+    "id": 1,
+    "level": "beginner",
+    "name": "workout_11",
+    "workoutCategory": "strength",
+    "workoutDays": [
+        "monday",
+        "tuesday",
+        "thursday",
+        "friday"
+    ],
+    "duration": 60,
+    "equipments": [
+        "dumbell",
+        "machine"
+    ],
+    "restDuration": 30,
+    "cardioDuration": 0,
+    "exerciseToExclude": [
+        "Standing Calf Raises"
+    ],
+    "cardioDays": [
+        "monday",
+        "thursday",
+        "friday"
+    ]
+}
+```
+
+#### Example Response Body (Failure)
+```json
+# status code: 404 NOT FOUND (in case if the workout was not found for the provided workout)
+{
+    "timestamp": "01-11-2024 04:56:16",
+    "messages": [
+        "\nClass : com.fitnessforge.entity.Workout\nException : The provided entity was not found"
+    ]
+}
+```
+
+### Delete Workout
+
+- **URL**: `/workout/delete?workoutId={workout_id}&memberId={member_id}`
+- **Method**: `DELETE`
+- **Description**: Deletes existing workout based on the provided workoutId and memberId.
+
+#### Query Parameters
+
+| Parameter | Type   | Description             | Required |
+|-----------|--------|-------------------------|----------|
+| `workoutId` | `number` | The existing workout id | Yes      |
+| `memberId`  | `number` | The existing member id  | Yes      |
+
+#### Example Request
+```http
+GET /workout/delete?workoutId=1&memberId=1
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+#### Example Response Body (Failure)
+```json
+# status code: 404 NOT FOUND (in case if the workout was not found for the provided workout)
+{
+    "timestamp": "01-11-2024 04:56:16",
+    "messages": [
+        "\nClass : com.fitnessforge.entity.Workout\nException : The provided entity was not found"
+    ]
+}
 ```
